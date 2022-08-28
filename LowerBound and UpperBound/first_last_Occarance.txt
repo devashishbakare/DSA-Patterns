@@ -1,0 +1,64 @@
+ Problem : https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+ 
+ public int[] searchRange(int[] arr, int x) {
+      
+        int ans[] = {-1, -1};
+        
+		//if there is only single element in array
+        if(arr.length == 1){
+          if(arr[0] == x) return new int[2];
+          else return ans;
+        } 
+     
+		 //if there nothing in array
+        if(arr.length == 0) return ans;
+        
+        int num1 = lowerBound(arr, x);
+		//if we don't found first occurance then no need to check for last
+        if(num1 == -1) return ans;
+        int num2 = upperBound(arr, x);
+        
+        if(num1 != -1 && num2 != -1){
+            ans[0] = num1;
+            ans[1] = num2;
+            return ans;
+        }else{
+            return ans;
+        }
+    }
+    
+    public int lowerBound(int arr[], int key){
+        int low = 0;
+        int high = arr.length-1;
+        
+        while( low < high){
+            
+            int mid = low + (high -low)/2;
+          
+            if(arr[mid] >= key) high = mid;
+            else low = mid+1;
+        }
+        
+        if(arr[low] != key) return -1;
+        return low;
+    }
+    
+    public int upperBound(int arr[], int key){
+        
+        int low = 0;
+        int high = arr.length -1;
+        int N = arr.length;
+        
+		if(arr[high] == key) return high;
+        
+		while(low < high && low != N){
+            int mid = low + (high - low)/2;
+            if( arr[mid] <= key) low = mid+1;
+            else high = mid;            
+        }
+        //if upperBound of key in out of array then key is not present
+        if(low == N ) return -1;
+        
+        return low-1;
+        
+    }

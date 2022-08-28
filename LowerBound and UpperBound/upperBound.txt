@@ -1,0 +1,81 @@
+public class Upper_Bound_Java {
+
+	public static void main(String[] args) {
+		
+		int array[] = { 4, 6, 10, 12, 18, 20, 20, 30, 45 };
+	    int key = 20;
+	    
+	    Arrays.sort(array);	    
+	    System.out.println("index @ "+findUpperBound(array, key));
+	    System.out.println("index @ "+upperBound(array, key));
+	    System.out.println("index @ "+inBuildFunction(array, key));
+	    
+	    
+    }
+	// linear Search
+	public static int findUpperBound(int arr[], int key) {
+		
+		int upperBound = 0;
+		if(key > arr[arr.length-1]) return -1;
+		
+		while( upperBound < arr.length) {
+			if(arr[upperBound] <= key) {
+				upperBound++;
+			}else {
+				return upperBound;
+			}
+		}
+		return upperBound;
+	}
+	
+    //using binary Search
+	public static int upperBound(int arr[], int key) {
+		
+		int low = 0;
+		int high = arr.length-1;
+		int N = arr.length;
+		
+		if(key > arr[arr.length-1]) return -1;
+		
+		while(low < high && low != N) {
+			
+			int mid = low + (high - low)/2;
+			
+			if( arr[mid] <= key) {
+				low = mid+1;
+			}else {
+				high = mid;
+			}			
+			
+		}
+		
+		if(low == N) return -1;
+		
+		return low;
+		
+	}
+
+	 // using inBuildFunctio
+	public static int inBuildFunction( int arr[],int key) {
+		
+		int index = Arrays.binarySearch(arr, key);
+		
+		if(index > 0) {
+			
+			while(index < arr.length) {
+				if(arr[index] == key)index++;
+				else return index;
+			}
+			
+		}else {
+			int possibleInsertPossition = Math.abs(index);
+			
+			if(possibleInsertPossition < arr.length) return possibleInsertPossition;
+		}
+		
+		
+		return -1;
+	}
+	
+
+}

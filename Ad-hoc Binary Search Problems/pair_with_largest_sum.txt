@@ -1,0 +1,30 @@
+problem : https://practice.geeksforgeeks.org/problems/pair-with-largest-sum-which-is-less-than-k-in-the-array/1
+
+ static ArrayList<Integer> Max_Sum(int[] arr, int n, int k) {
+        
+    int maxSum = Integer.MIN_VALUE;
+    Arrays.sort(arr);
+    int low = 0;
+    int high = n-1;
+    int ind1 = 0, ind2 = 0;
+    
+    
+    while(low < high){
+        int sum = arr[low] + arr[high];
+        if(sum >= k){
+            high--;
+        }else{
+            if(sum > maxSum){
+                maxSum = sum;
+                ind1 = arr[low];
+                ind2 = arr[high];
+            }
+            low++;
+        }
+    }
+    ArrayList<Integer> ans = new ArrayList<>();
+    ans.add(ind1);
+    ans.add(ind2);
+    
+    return ans;
+}

@@ -1,0 +1,93 @@
+public class Lower_Bound_Java {
+
+	public static void main(String[] args) {
+		
+		int array[] = { 4, 6, 10,12, 16, 20, 28};
+	    int key = 18;
+	    
+	    Arrays.sort(array);
+	    
+	    System.out.println("index " + findTargetIteratively2(array, key));
+	    System.out.println("index " + lowerBoundIteratively(array, 30));
+	    System.out.println("index " + lowerBoundRecursively(array, 0, array.length-1, 30));
+	    System.out.println("index " + inBuiltFunction(array, 11));
+	}
+	
+    //linear Search
+	public static int findTargetIteratively2(int arr[], int key) {
+		
+		int lowerBound = 0;
+		int lastIndex = arr.length;
+		
+		while(lowerBound < lastIndex) {
+			
+			if(key > arr[lowerBound]) lowerBound++;
+			else return lowerBound;
+				
+		}
+		return lowerBound;
+		
+
+	}
+	
+    // using Iterative BinarySearch
+	public static int lowerBoundIteratively(int arr[], int key) {
+		
+		int low = 0;
+		int high = arr.length-1;
+		
+		if(key <= arr[0]) return 0;
+		if(key >= arr[high-1]) return arr.length;
+		
+		while(low < high) {
+			
+			int mid = low + (high - low)/2;
+			
+			if(arr[mid] >= key) {
+				high = mid;
+			}else {
+				low = mid+1;
+			}
+			
+		}		
+		
+		return low;
+	}
+	
+	// recursive binarySearch
+	public static int lowerBoundRecursively(int arr[], int low, int high, int key) {
+		
+		if(low > high) return low;
+		
+		int mid = low + (high - low)/2;
+		
+		if( arr[mid] >= key) {
+			return lowerBoundRecursively(arr, low, mid-1, key);
+		}
+		
+		return lowerBoundRecursively(arr, mid+1, high, key);
+		
+	}
+    // using inBuildFunction
+	public static int inBuiltFunction(int arr[], int key) {
+		
+		int index = Arrays.binarySearch(arr,  key);
+		
+		if(index < 0 ) {
+			return Math.abs(index) -1;
+		}else {
+			while(index > 0) {
+				
+				if(arr[index-1] == key) {
+					index--;
+				}else {
+					return index;
+				}				
+				
+			}
+		}
+		
+		return index;
+		
+	}
+}

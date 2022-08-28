@@ -1,0 +1,67 @@
+Problem : https://leetcode.com/problems/search-a-2d-matrix/
+
+public boolean binarySearch(int arr[],int low, int high, int x){
+        
+        while(low <= high){
+            int mid = low + (high-low)/2;
+            if(arr[mid] == x) return true;
+            else if( arr[mid] > x) high = mid-1;
+            else low = mid+1;
+        }
+        return false;
+    }
+    
+    public boolean searchMatrix(int[][] matrix, int x) {
+     
+        int n = matrix.length;
+        int m = matrix[0].length;
+        
+        if(n == 1){
+            return binarySearch(matrix[0], 0, m-1, x);
+        }
+        
+        if(m == 1){
+            for(int arr[] : matrix) 
+                if(arr[0] == x) return true;
+            
+            return false;
+        }
+        
+        int rowLow = 0;
+        int rowHigh = n-1;
+        int colMid = m/2;
+        
+        
+        while((rowLow + 1) < rowHigh) {
+            
+            int rowMid = (rowLow + rowHigh)/2;
+            
+            if(matrix[rowMid][colMid] == x ) return true;
+            else if(matrix[rowMid][colMid] > x) rowHigh = rowMid;
+            else rowLow = rowMid;
+            
+        }
+        
+        //checking in mid area
+        if(matrix[rowLow][colMid] == x) return true;
+        if(matrix[rowLow+1][colMid] == x) return true;
+        
+        //checking in eighter left or right area
+        
+       if(x < matrix[rowLow][colMid]){
+          if(binarySearch(matrix[rowLow], 0, colMid-1, x)) return true;   
+       }         
+       else if(x > matrix[rowLow][colMid] && x <= matrix[rowLow][m-1]){
+            if(binarySearch(matrix[rowLow], colMid+1, m-1, x)) return true;
+        }
+       else if(x < matrix[rowLow+1][colMid]){
+            if(binarySearch(matrix[rowLow+1], 0, colMid-1, x)) return true;;
+       }           
+       else {
+            if(binarySearch(matrix[rowLow+1], colMid+1, m-1, x)) return true;
+        }
+            
+            
+    return false;      
+      
+}

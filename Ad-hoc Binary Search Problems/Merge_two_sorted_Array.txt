@@ -1,0 +1,88 @@
+problem : https://leetcode.com/problems/median-of-two-sorted-arrays/
+
+//Brute Force
+public double findMedianSortedArrays(int[] num1, int[] num2) {
+        
+       int mergeArray[] = new int[num1.length + num2.length];
+        int ind = 0;
+        for(int i : num1)mergeArray[ind++] = i;
+        for(int j : num2)mergeArray[ind++] = j;
+        
+        Arrays.sort(mergeArray);
+        int size = num1.length + num2.length;
+        
+        
+        //edge case : what if there in zero element
+        if(size == 0) return (double)0;
+        
+        //edge case : what if there single element;
+        if(size == 1) return (double)mergeArray[0];
+        
+        //edge case: what if there is only two element
+        if(size == 2){
+            return (double)(mergeArray[0] + mergeArray[1])/2;
+        }
+        
+        
+        if(size % 2 == 0){
+            int temp = mergeArray[size/2];
+            int temp1 = mergeArray[(size/2)-1];
+            return (double)(temp + temp1)/2;
+        }else{
+          return (double)mergeArray[size/2];  
+        } 
+            
+}
+
+//optimal solution using binary search
+public double findMedianSortedArrays(int[] num1, int[] num2) {
+        
+    //we are partition on smaller array if array 1 is smaller in size then move forward
+    if (num1.length > num2.length) {
+        return findMedianSortedArrays(num2, num1);
+    }
+    int x = num1.length;
+    int y = num2.length;
+
+    //putting low as first index and high as last index of smaller index
+    int low = 0;
+    int high = x;
+    
+    //until we left with one element
+    while (low <= high) {
+        
+    //if we need to make the partition in middle we have to do make @7 if total size 14;
+        
+        //partition on x array in middle of num1
+        int partitionX = (low + high)/2;
+        
+        //and add remaining element of 7 in x and rest part are in partition y
+        int partitionY = (x + y + 1)/2 - partitionX;
+
+        //we made the partition in num1 array as left part x1 and right part as x2
+        int x1  = (partitionX == 0) ? Integer.MIN_VALUE : num1[partitionX - 1];
+        int x2  = (partitionX == x) ? Integer.MAX_VALUE : num1[partitionX];
+        
+        //same with the num2 array, left part of num2 partition y1 and right y2 
+        int y1  = (partitionY == 0) ? Integer.MIN_VALUE : num2[partitionY - 1];
+        int y2  = (partitionY == y) ? Integer.MAX_VALUE : num2[partitionY];
+
+        //how we can say this element that we pick are in sorted in nature and middle element
+        //this is codition to check previous element < curr < next element
+        if (x1 <= y2 && x2 >= y1) {
+            
+            // if its even element then return the avg of Max left part patition and min of right
+            if ((x + y) % 2 == 0) {
+                return ((double)Math.max(x1, y1) + Math.min(x2, y2))/2;
+            } else {
+                return (double)Math.max(x1, y1);
+            }
+        //if followting is the case the partion is not in right way, we are too far of right side
+        } else if (x1 > y2) {
+            high = partitionX - 1;
+        } else { 
+            low = partitionX + 1;
+        }
+    }
+    return 0;
+}

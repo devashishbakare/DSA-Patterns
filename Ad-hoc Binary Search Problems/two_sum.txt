@@ -1,0 +1,120 @@
+problem : https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/
+
+Linear Search - >θ (N * N)
+
+public int[] twoSum(int[] numbers, int target) { 
+int n = numbers.length;
+        int ans[] = new int[2];
+        int ind1 = -1, ind2= -1;
+        for(int i = 0; i < n-1; i++){
+            
+            ind1 = i;
+            
+            for(int j = i+1; j < n; j++){
+                ind2 = j;
+                
+                if(target == numbers[i] + numbers[j]){
+                    ans[0] = ind1+1;
+                    ans[1] = ind2+1;
+                    break;
+                }                 
+            }
+        }
+return ans;
+}
+
+Binary Search O(N * logN)
+
+ public int binarySearch(int arr[], int low, int high, int x){
+        
+        while(low <= high){
+            
+            int mid = low + (high -low)/2;
+            
+            if(arr[mid] == x) return mid;
+            else if(arr[mid] > x) high = mid-1;
+            else low = mid+1;
+        }
+        
+        return -1;    
+    }
+    
+    public int[] twoSum(int[] numbers, int target) {
+     
+        int n = numbers.length;
+        int ans[] = new int[2];
+        
+        for(int i = 0; i < n-1; i++){
+            int find = target - numbers[i];
+            int ind = binarySearch(numbers, i+1, n-1, find);
+            if(ind != -1){
+                ans[0] = i+1;
+                ans[1] = ind+1;
+            }
+        }
+       return ans;
+    }
+HashSet and BinarySearch O(N) + log(N)
+
+public int binarySearch(int arr[], int low, int high, int x){
+        
+        while(low <= high){
+            
+            int mid = low + (high -low)/2;
+            
+            if(arr[mid] == x) return mid;
+            else if(arr[mid] > x) high = mid-1;
+            else low = mid+1;
+        }
+        
+        return -1;    
+ }
+    
+    public int[] twoSum(int[] numbers, int target) {
+     
+       int n = numbers.length;
+       int ans[] = new int[2];
+       int ind = -1;
+           
+       HashSet<Integer> set = new HashSet<>();
+       for(int i=1; i<n; i++){
+           set.add(numbers[i]);
+       } 
+       
+       for(int j = 0; j < n; j++){
+           int find = target - numbers[j];
+           if(set.contains(find)){
+               ans[0] = j+1;
+               ans[1] = binarySearch(numbers, j+1, n-1, find)+1;
+               return ans;
+           }
+       }          
+        
+       return ans;
+    }
+Simple Logic : O(N)
+
+public int[] twoSum(int[] numbers, int target) {
+     
+    int n = numbers.length;
+    int ans[] = new int[2];
+    
+    int low = 0;
+    int high = numbers.length-1;
+    int sum = 0;
+    while(low <= high){
+        
+        sum = numbers[low] + numbers[high];
+        if(sum == target){
+            ans[0] = low+1;
+            ans[1] = high +1;
+            return ans;
+        }
+        else if(sum > target) {
+            high--;
+        }else{
+            low++;
+        }
+    }
+    return ans;
+}
