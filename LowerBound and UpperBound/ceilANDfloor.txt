@@ -1,0 +1,80 @@
+problem : https://www.geeksforgeeks.org/ceiling-in-a-sorted-array/
+
+public class floor_ceiling {
+
+	public static void main(String args[]) {
+		
+		int arr[] = {1, 2, 8, 10, 10, 12, 19};
+	  
+        int x = 20;
+        int index = ceilSearch(arr, x);
+        int ind = floorSearch(arr, x);
+        
+        if(index == -1)
+          System.out.println("Ceiling of "+x+" doesn't exist in array");
+        else
+         System.out.println("ceiling of "+x+" is @ index "+ index);
+        
+        if(ind == -1) {
+        	System.out.println("floaring of "+x+" doesn't exist in array");
+        }else {
+        	System.out.println("floring of "+x+" is @ index " +ind);
+        }
+		
+	}
+	
+	public static int ceilSearch(int arr[], int key) {
+		
+		
+		int low = 0;
+		int high = arr.length-1;
+		if( key > arr[high]) return -1;
+		int N = arr.length;
+		
+		while(low < high && low != N) {
+			
+			int mid = low + (high - low)/2;
+			
+			if(arr[mid] <= key) {
+				low = mid + 1;
+			}else {
+				high = mid;
+			}
+			
+		}
+		
+		if( low == N) return -1;
+		if(arr[low-1] == key) return low-1;
+		
+		return low;
+		
+	}
+	
+	
+	public static int floorSearch(int arr[], int key) {
+		
+		if(arr[0] > key) return -1;
+		int low = 0;
+		int high = arr.length-1;
+		
+		if(key >arr[high]) return high;
+		
+		while(low < high) {
+			int mid = low + (high - low)/2;
+			
+			if(arr[mid] >= key) {
+				high = mid;
+			}else {
+				low = mid +1;
+			}
+					
+		}
+		
+		if(arr[low] != key) return low-1;
+		return low;
+		
+	}
+	
+	
+}
+
