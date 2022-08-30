@@ -1,0 +1,25 @@
+problem : https://leetcode.com/problems/h-index-ii/submissions/
+//problem is not the straight forward so go and check out this link
+link : https://www.youtube.com/watch?v=CjKJDloMnwE
+
+ public int hIndex(int[] citation) {
+     
+        int n = citation.length;
+        int low = 0;
+        int high = n-1;
+        
+        while(low <= high){
+            
+            int mid = low + (high - low)/2;
+             
+            if(citation[mid] == n-mid){
+                return citation[mid];
+            }else if(citation[mid] > n-mid){
+                high = mid-1;
+            }else {
+                low = mid +1;
+            }
+            
+        }
+        return n-low;
+    }
