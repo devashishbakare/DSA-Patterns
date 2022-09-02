@@ -1,0 +1,28 @@
+problem : https://leetcode.com/problems/search-a-2d-matrix-ii/
+
+Learning : tree like structure in matrix from that we can esily cut down unessecery row and col
+check this out : https://assets.leetcode.com/static_assets/discuss/uploads/files/1488858512318-monosnap-2017-03-06-22-48-17.jpg
+
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int x) {
+        
+        int rowLength = matrix.length;
+        int colLength = matrix[0].length;
+        
+        if(matrix == null || rowLength < 1 || colLength < 1) return false;
+        
+        int row = 0;
+        int col = colLength-1;
+        
+        while( row < rowLength && col >= 0 ){
+                
+            if(matrix[row][col] == x) return true;
+            else if( x > matrix[row][col]) row++;
+            else col--;
+            
+        }
+        
+        return false;
+       
+    }
+}
