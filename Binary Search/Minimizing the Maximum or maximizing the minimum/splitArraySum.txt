@@ -1,0 +1,55 @@
+problem : https://leetcode.com/problems/split-array-largest-sum/submissions/
+
+Note : we are solving the binary search pattern program and yet we have seen a lot of problem where array need to sort.
+       this the best example where the array is not sorted, we just got the range(low, high) and we applied binary search on the sum of array elements
+
+imp Key word :  non-empty continuous subarrays.
+
+ public int splitArray(int[] nums, int m) {
+        
+        int low = 0;
+        int high = 0;
+        int ans = 0;
+        
+        for(int val : nums){
+            low = Math.max(val, low);
+            high += val;
+        }
+        
+        if(nums.length == m) return low;
+        
+        while(low <= high ){
+            
+            int mid = low + (high -low)/2;
+            
+            if(isPossible(nums, m, mid) == true){
+                ans = mid;
+                high = mid-1;
+            }else{
+                low = mid+1;
+            }
+            
+        }
+    
+        return ans;         
+    
+    }
+    public boolean isPossible(int arr[],int m, int range){
+        
+        int subArrCount = 1;
+        int sum = 0;
+        
+        for(int val : arr){
+            
+            sum += val;
+            
+            if(sum > range){
+                subArrCount += 1;
+                sum = val;
+            }
+        }
+        
+        return subArrCount <= m;
+    }
+}
+     

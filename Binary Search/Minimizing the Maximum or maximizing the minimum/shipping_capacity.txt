@@ -1,0 +1,51 @@
+problem : https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/
+
+checkout approtch : https://www.youtube.com/watch?v=4lK5pdSXhCk
+
+important key to understand in problem : in the order given by weights(contiguous)
+ public int shipWithinDays(int[] weights, int days) {
+            
+        //this kind of problem we have given a range in which we have possible ans from a           //low and possible high, so will search in in this space
+        
+        int low = 0;
+        int high = 0;
+        int ans = 0;      
+     
+        for(int wt : weights){
+            low =  Math.max(low, wt);
+            high += wt;
+        }
+
+        if(weights.length == days) return low;
+        
+        while(low <= high){
+            
+            int mid = low + (high-low)/2;
+            
+            if(isPossible(weights, days, mid)== true){
+                ans = mid;
+                high = mid-1;
+            }else{
+                low = mid+1;
+            }            
+        }        
+        return ans;        
+    }
+    
+  public boolean isPossible(int wts[], int requireDays, int cap){
+      
+      int day = 1;
+      int totalWeight = 0;
+      
+      for(int wt : wts){
+          totalWeight += wt;
+          
+          if(totalWeight > cap){
+              day += 1;
+              totalWeight = wt;
+          }          
+      }
+      
+      return day <= requireDays;
+      
+  }

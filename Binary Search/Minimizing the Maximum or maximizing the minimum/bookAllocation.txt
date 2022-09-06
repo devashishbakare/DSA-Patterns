@@ -1,0 +1,57 @@
+problem : -	https://practice.geeksforgeeks.org/problems/allocate-minimum-number-of-pages0937/1/ 
+
+important words : You have to allocate contiguous books 
+watch this : https://www.youtube.com/watch?v=gYmWHvRHu-s
+
+ public static int findPages(int[] arr,int N,int M)
+    {
+       int res = -1;
+       
+       if(M > N) return res;
+       
+       int n = arr.length;
+       int low = arr[n-1];
+       int high = 0;
+       
+       for(int i = 0; i < n ; i++){
+           high += arr[i];
+       }
+       
+       while(low <= high){
+           
+           int mid = (low + high)/2;
+           
+           if(isPossible(arr, mid, M)){
+               res = mid;
+               high = mid-1;
+           }else{
+               low = mid+1;
+           }
+       }
+       
+       return res;
+    }
+    
+    public static boolean isPossible(int arr[], int limit, int k){
+        
+        int student = 1; 
+        int page = 0;
+        
+        for( int i = 0; i < arr.length; i++){
+            
+            if(arr[i] > limit) return false;
+            
+            if(page + arr[i] > limit){
+                student++;
+                page = arr[i];
+                
+            }else{
+                page += arr[i];
+            }
+            
+        }
+        
+        
+        if( student > k) return false;
+        else return true;
+    }

@@ -1,0 +1,46 @@
+Problem : https://www.codingninjas.com/codestudio/problems/aggressive-cows_1082559?leftPanelTab=0
+imp : we need to find out possible low and possible high and once we get the search space then we have to apply the binary search
+key Note in problem : minimum distance between any to cow is as large as possible 
+
+clear concept here : https://www.youtube.com/watch?v=wSOfYesTBRk&t=639s
+
+public static int aggressiveCows(ArrayList<Integer> stalls, int k) 
+    {
+        int n = stalls.size();
+        Collections.sort(stalls);
+        //possible range
+        int low = 0;
+        int high = 1000000000;
+        int ans = 0;
+        
+        while(low <= high){
+            int mid = low + (high -low)/2;
+            
+            if(isPossible(stalls, k, mid)== true){
+                ans = mid;
+                low = mid+1;
+            }else{
+                high = mid-1;
+            }
+        }
+        return ans;
+    }
+    
+    public static boolean isPossible(ArrayList<Integer> stalls, int cows, int distance){
+        
+        int co_ordinate = stalls.get(0);
+        int placeCowCount = 1;
+        
+        for(int i = 0; i < stalls.size(); i++){
+            
+            if(stalls.get(i) - co_ordinate >= distance){
+                placeCowCount++;
+                co_ordinate = stalls.get(i);
+            }
+            
+            if(placeCowCount == cows) return true;
+            
+        }
+        return false;       
+        
+    }
