@@ -1,0 +1,41 @@
+problem : https://leetcode.com/problems/koko-eating-bananas/submissions/
+
+keyWords : Return the minimum integer k such that she can eat all the bananas within h hours.
+
+soultion : 
+public int minEatingSpeed(int[] piles, int h) {
+        
+        int low = 1;
+        int high = 0;
+        int ans = 0;
+    
+        for(int i : piles){
+           high = Math.max(high, i);
+        }
+
+        while(low < high){
+            int mid = low + (high-low)/2;
+            
+            if(isPossible(piles, h, mid)){
+                high = mid;
+            }else{
+                low = mid+1;
+            }
+        }
+        return low;
+    }
+    
+    public boolean isPossible(int arr[],int hours, int k){
+        
+        int countHours =0;
+        
+        for(int pile : arr){
+            
+            countHours += pile/k;
+            if(pile % k != 0) countHours++;
+            
+        }
+        
+        return countHours <= hours;
+        
+    }
