@@ -1,0 +1,89 @@
+Problem : https://www.codingninjas.com/codestudio/problems/maximum-sum-of-non-adjacent-elements_843261
+
+why its dp? : so we need to return the maximum possible adjusent sum to do that we need to explore the all possible option so that I get to know the maximum one so we tends to use the recurstion in this case so there is overlapping subproblems
+
+In this problem understand the pick and not pick technique 
+
+Memoization
+Time Complexity : O(N) 
+Space Complexity : O(N) dp array + O(N) call stack;
+
+public class Solution {
+	public static int maximumNonAdjacentSum(ArrayList<Integer> nums) {
+		
+        int n =  nums.size();
+        int memo[] = new int[n];
+        
+        Arrays.fill(memo, -1);
+        return getMaxSum(n-1, nums, memo);
+        
+	}
+    public static int getMaxSum(int ind, ArrayList<Integer> nums, int memo[]){
+        
+        if(ind == 0 )return nums.get(0);
+        if(ind < 0 )return 0;
+        
+        if(memo[ind] != -1){
+            return memo[ind];
+        }
+        int pick = nums.get(ind) + getMaxSum(ind-2, nums, memo) ;
+        int notPick = 0 + getMaxSum(ind-1, nums, memo);
+        
+        return memo[ind] = Math.max(pick, notPick);  
+    }  
+}
+
+Tabulation :
+Time Complexity : O(N) 
+Space Complexity : O(N) dp array
+
+  public static int maximumNonAdjacentSum(ArrayList<Integer> nums) {
+        
+        int n =  nums.size();
+        int dp[] = new int[n];
+        
+        dp[0] = nums.get(0);
+        
+        for(int ind = 1; ind < n; ind++){
+            
+            int pick = nums.get(ind);
+            if(ind > 1){
+                pick = pick + dp[ind-2];
+            }
+            
+            int notPick = 0 + dp[ind-1];
+        
+            dp[ind] = Math.max(pick, notPick);  
+        }
+       return dp[n-1];
+        
+    }
+
+space Optimization :
+Tc : O(N)
+Sc : 0
+
+ public static int maximumNonAdjacentSum(ArrayList<Integer> nums) {
+        
+        int n =  nums.size();
+       
+        int prev1 = nums.get(0);
+        int prev2 = 0;
+        
+        for(int ind = 1; ind < n; ind++){
+            
+            int pick = nums.get(ind);
+            if(ind > 1){
+                pick = pick + prev2;
+            }
+            
+            int notPick = 0 + prev1;
+        
+            int curr = Math.max(pick, notPick);  
+            prev2 = prev1;
+            prev1 = curr;
+        }
+       return prev1;
+        
+    }
+   

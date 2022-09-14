@@ -1,0 +1,118 @@
+problem : https://atcoder.jp/contests/dp/tasks/dp_b
+
+Why its dp? : frog can jump 1, 2, 3 .....k so need to explore the all possiblle option then we have to return the min one
+
+Recursion :
+Time Complexity : O(2^K)
+space Complexity : O(N*K)
+
+import java.util.Scanner;
+public class FrogKJump {
+
+	
+	public static int getEfforts(int arr[], int ind, int k) {
+		
+		
+		if(ind == 0) return 0;
+		
+		int kthJump = Integer.MAX_VALUE;
+		
+		for(int i = 1; i <= k; i++) {
+			
+			if(ind-i >=0 ) {
+			  int jump = getEfforts(arr, ind-i, k) + Math.abs(arr[ind] - arr[ind-i]);
+			  kthJump = Math.min(jump, kthJump);
+			}
+			
+		}
+		return kthJump;		
+		
+	}
+	
+	public static int frogMininumEfforts(int arr[], int n, int k) {
+		
+		return getEfforts(arr, n-1, k);
+	}
+	
+	public static void main(String args[]) {
+		
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int k = sc.nextInt();
+		int arr[] = new int[n];
+		
+		for(int i = 0; i< n; i++) {
+			arr[i]= sc.nextInt();
+		}
+		
+		int ans = frogMininumEfforts(arr, n, k);
+		
+		System.out.println("Frog minimum efforts "+ans);
+	
+	}	
+	
+}
+
+Memoization :
+Time Complexity : O(N*K);
+Space Complexity : O(N) for dp array + O(N*K) stack calls
+
+import java.util.Arrays;
+import java.util.Scanner;
+public class FrogKJump {
+
+	
+	public static int getEfforts(int arr[], int ind, int k, int dp[]) {
+		
+		
+		if(ind == 0) return 0;
+		
+		if(dp[ind] != -1) return dp[ind];
+		
+		int kthJump = Integer.MAX_VALUE;
+		
+		for(int i = 1; i <= k; i++) {
+			
+			if(ind-i >=0 ) {
+			  int jump = getEfforts(arr, ind-i, k, dp) + Math.abs(arr[ind] - arr[ind-i]);
+			  kthJump = Math.min(jump, kthJump);
+			}
+			
+		}
+		return dp[ind] = kthJump;		
+		
+	}
+	
+	public static int frogMininumEfforts(int arr[], int n, int k) {
+		
+		int dp[] = new int[n+1];
+		Arrays.fill(dp, -1);
+		
+		return getEfforts(arr, n-1, k, dp);
+	}
+
+Tabulation
+Time Complexity : O(N*K);
+Space Complexity : O(N) for dp array
+
+public static int frogMininumEfforts(int arr[], int n, int k) {
+		
+		int dp[] = new int[n];
+		
+		dp[0] = 0;
+		
+		for(int j = 1; j < n; j++) {
+			int kthJump = Integer.MAX_VALUE;
+			for(int i = 1; i <= k; i++) {
+				
+				if(j-i >=0 ) {
+				  int jump = dp[j-i] + Math.abs(arr[j] - arr[j-i]);
+				  kthJump = Math.min(jump, kthJump);
+				}
+				
+			}
+			dp[j] = kthJump;
+		}
+		return dp[n-1];
+			
+	}

@@ -1,0 +1,64 @@
+Problem : https://practice.geeksforgeeks.org/problems/count-ways-to-reach-the-nth-stair-1587115620/1
+
+How its dp : count the number of ways, so we need to explore all ways, while doint it we encounter overlappint subproblems
+Recursion : Tc : O( 2^N ) Sc : 0
+
+Memoization:
+Time Complexity : O(N) 
+Space Complexity : O(N) for dp array + O(N) for call stack
+
+    class Solution
+    {
+        public static int mod =(int)Math.pow(10,9)+7;
+        //Function to count number of ways to reach the nth stair.
+        int countWays(int n)
+        {
+            int memo[] = new int[n+1];
+            Arrays.fill(memo, -1);
+            return allWays(n, memo);
+        }
+        
+        public static int allWays(int ind, int dp[]){
+            
+            if(ind == 0) return 1;
+            
+            if(ind == 1) return 1;
+            
+            if(dp[ind] != -1){
+                return dp[ind];
+            }
+            
+            int oneStair = allWays(ind-1, dp);
+            int twoStair = allWays(ind-2, dp);
+            
+            return dp[ind] = (oneStair + twoStair)%mod;
+        }
+        
+    }
+
+Tabulation :
+Time Complexity : O(N) 
+Space Complexity : O(N) for dp array
+
+    class Solution
+    {
+        public static int mod =(int)Math.pow(10,9)+7;
+        //Function to count number of ways to reach the nth stair.
+        int countWays(int n)
+        {
+            int dp[] = new int[n+1];
+            dp[0] = 1;
+            dp[1] = 1;
+            
+            for(int ind = 2; ind <= n; ind++){
+                int oneStair = dp[ind-1];
+                int twoStair = dp[ind-2];
+            
+                dp[ind] = (oneStair + twoStair)%mod;
+            }
+            
+            return dp[n];
+            
+        }
+
+    }

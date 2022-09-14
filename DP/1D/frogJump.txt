@@ -1,0 +1,67 @@
+problem : https://www.codingninjas.com/codestudio/problems/frog-jump_3621012
+
+how its dp? 
+In problem statement we can clearly seen that, you have to return the minimum possible efforts so we need explore all possible effort so that we can tell which one is minimum one
+
+Recursion : O(2^N)
+
+Memoization
+Time Complexity : O(N) 
+Space Complexity : O(N) for dp array + O(N) for call stack
+
+    import java.util.Arrays;
+    public class Solution {
+        
+        public static int frogJump(int n, int h[]) {
+        
+            int memo[] = new int[n+1];
+            Arrays.fill(memo, -1);
+            
+            return function(n-1, h, memo);
+            
+        }
+
+        public static int function(int ind, int h[], int memo[])
+        {
+            if(ind == 0)
+                return 0;
+            
+            if(memo[ind] != -1)
+            {
+                return memo[ind];
+            }
+            int first = function(ind-1, h, memo) + Math.abs(h[ind] - h[ind-1]);
+            
+            int sec = Integer.MAX_VALUE;
+            
+            if(ind > 1)
+                sec = function(ind-2, h, memo) + Math.abs(h[ind] - h[ind-2]);
+            
+            return memo[ind] = Math.min(first, sec);
+            
+        }
+        
+    }
+
+Tabulation :
+Time Complexity : O(N) 
+Space Complexity : O(N) for dp array 
+
+    public static int frogJump(int n, int h[]) {  
+        int dp[] = new int[n];
+        //converting base case
+        dp[0] = 0;
+        for(int ind = 1; ind <n; ind++){
+            
+            int first = dp[ind-1] + Math.abs(h[ind] - h[ind-1]);
+        
+            int sec = Integer.MAX_VALUE;
+
+            if(ind > 1)
+                sec = dp[ind-2] + Math.abs(h[ind] - h[ind-2]);
+
+            dp[ind] = Math.min(first, sec);
+        }
+        
+        return dp[n-1];
+    }

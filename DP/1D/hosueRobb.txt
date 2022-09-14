@@ -1,0 +1,51 @@
+problem : https://www.codingninjas.com/codestudio/problems/house-robber_839733
+
+how's its dp? : here we need to rob the every adjacent house which is starting from the first and compare with the starting from the secound we tends to use the recursion here so there is overlapping subproblems
+
+Solution:
+
+public class Solution {
+    
+    private static int getMaxProfit(int arr[]){
+        
+        int n = arr.length;
+        int dp[] = new int[n];
+        
+        dp[0] = arr[0];
+        
+        for(int i = 1; i < n; i++){
+            
+            int notRobb = 0 + dp[i-1];
+            int rob = arr[i];
+            if(i > 1) rob += dp[i-2];
+            
+            dp[i] = Math.max(notRobb, rob);
+        }
+        
+        return dp[n-1];
+    }
+    
+	public static long houseRobber(int[] valueInHouse) {
+	
+        int n = valueInHouse.length;
+        if(n == 1) return valueInHouse[0];
+        
+        int exceptFirst[] = new int[n-1];
+        int exceptLast[] = new int[n-1];
+        
+        for(int i = 0 ; i < n; i++){
+            
+            if(i != 0 ){
+                exceptFirst[i-1] = valueInHouse[i] ;
+            }
+            if(i != n-1){
+                exceptLast[i] = valueInHouse[i] ;
+            }
+        }
+        
+        long temp1 = getMaxProfit(exceptFirst);
+        long temp2 = getMaxProfit(exceptLast);
+        
+        return Math.max(temp1, temp2);
+	}	
+}
