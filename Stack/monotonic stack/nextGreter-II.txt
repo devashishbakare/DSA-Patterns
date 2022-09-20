@@ -1,0 +1,38 @@
+problem : https://leetcode.com/problems/next-greater-element-ii/submissions/
+
+//some problem may be swisted a for this pattern but the pattern will be use but need to figrure out where to change
+// read problem statement first then jump to this problem 
+
+class Solution {
+    //there is problem for how to get the last element greater 
+    //observation : the last element greater is lies definetely from the 0 - n-1;
+    
+     public int[] nextGreaterElements(int[] nums) {
+        int n = nums.length;
+        int[] result = new int[n];
+    
+        //we will put the all indexes in stack like smaller index will come on top
+        Stack<Integer> stack = new Stack<>();
+        for (int i = n - 1; i >= 0; i--) {
+            stack.push(i);
+        }
+         
+        //what will happend when if smaller index willc come on top??
+        // we can use the same logic/pattern to solve the problem, and then? 
+        // we then our last element will find out his next greater element from the 
+        // Oth index so we achive our circuller array next greater
+        
+        for (int i = n - 1; i >= 0; i--) {
+            result[i] = -1;
+            while (!stack.isEmpty() && nums[stack.peek()] <= nums[i]) {
+                stack.pop();
+            }
+            if (!stack.isEmpty()){
+                result[i] = nums[stack.peek()];
+            }
+            stack.add(i);
+        }
+        
+        return result;
+    }
+}

@@ -1,0 +1,28 @@
+Article : https://www.geeksforgeeks.org/previous-greater-element/
+arr : { 20, 40 , 6, 34, 2, 56}
+
+to find the previous greater element we can use two loop and traverse current-1 to index >= 0 and we will get the ans
+but this took O(n^2) time in worst case 
+
+we can do it using one traversal and some with some constant in while loop as this pattern suggest monotonic stack
+
+Note : here we traverse the array 0 -> n
+public int[] previousGreater(int arr[]){
+
+    Stack<Integer> stack = new Stack();
+    int ans[] = new int[arr.length];
+
+    stack.push(arr[0]);
+    ans[0] = -1;
+
+    for(int i = 0; i < n ; i++){
+
+        while(stack.size() > 0 && stack.peek() <= arr[i]){
+            stack.pop();
+        }
+        if(stack.size() > 0) ans[i] = stack.peek();
+        else ans[i] = -1;
+        stack.push(arr[i]);
+    }
+    return ans;
+}
