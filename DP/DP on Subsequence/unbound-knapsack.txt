@@ -1,0 +1,2 @@
+this is one of the common ask question
+Article : https://takeuforward.org/data-structure/unbounded-knapsack-dp-23/
