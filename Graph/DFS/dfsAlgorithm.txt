@@ -1,0 +1,36 @@
+Ariticle : https://www.geeksforgeeks.org/depth-first-search-or-dfs-for-a-graph/ 
+problem Link :https://practice.geeksforgeeks.org/problems/depth-first-traversal-for-a-graph/1
+code :
+
+class Solution {
+    // Function to return a list containing the DFS traversal of the graph.
+    public ArrayList<Integer> dfsOfGraph(int v, ArrayList<ArrayList<Integer>> adj) {
+      
+      
+        boolean visited[] = new boolean[v];
+        ArrayList<Integer> ans = new ArrayList<>();
+        
+        for(int vertex = 0 ; vertex < v ; vertex++){
+            if(visited[vertex] == false)
+                dfs(adj, visited, vertex, ans);
+        }
+     
+     return ans;
+    }
+    
+    
+    private void dfs(ArrayList<ArrayList<Integer>> adj, boolean visited[], int src, ArrayList<Integer> ans){
+        
+        visited[src] = true;
+        ans.add(src);
+        
+        ArrayList<Integer> list = adj.get(src);
+        
+        for(int nbr : list){
+            if(visited[nbr] == false)
+                dfs(adj, visited, nbr, ans);
+        }
+        
+    }
+    
+}

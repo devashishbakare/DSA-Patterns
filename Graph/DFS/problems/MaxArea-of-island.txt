@@ -1,0 +1,155 @@
+This is problem is good exmaple fo how dfs actually works, but dfs solution is not the efficient one
+
+problem link : https://leetcode.com/problems/max-area-of-island/
+code : using dfs
+Time Complexity : O(V*E)
+class Solution {
+    public static int dir[] = {0, 1, 0, -1, 0};
+    public static int count;
+    public int maxAreaOfIsland(int[][] grid) {
+        
+        
+        int ans = 0;
+        int n = grid.length;
+        int m = grid[0].length;
+        
+        for(int row = 0; row < n; row++){
+            for(int col = 0; col < m; col++){
+                if(grid[row][col] == 1){
+                    count = 0;
+                    dfs(grid, row, col);
+                    ans = Math.max(ans, count);
+                }
+            }
+        }
+        return ans;
+    }
+    
+    public void dfs(int grid[][], int row, int col){
+        
+        if(row < 0 || col < 0 || row >= grid.length || col >= grid[0].length || grid[row][col] == 0) return;
+        
+        grid[row][col] = 0;
+        count++;
+        
+        for(int i = 0; i < 4; i++){
+            int newRow = row + dir[i];
+            int newCol = col + dir[i+1];
+            dfs(grid, newRow, newCol);
+        }
+        
+    }
+  
+}
+
+code : using union find 
+
+class Solution {
+    
+    public static int dir[][] ={{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    public int maxAreaOfIsland(int[][] grid) {
+        
+        int n = grid.length;
+        int m = grid[0].length;
+        
+        HashMap<String, Integer> hm = new HashMap<>();
+        int ind = 0;
+        for( int i = 0; i < n; i++){
+            for( int j = 0 ; j < m ; j++){
+                String str = i+"_"+j;
+                hm.put(str, ind++);
+            }
+        }
+        boolean flag = true;
+        DSU dsu = new DSU(2502);
+        for( int i = 0; i < n; i++){
+            for( int j =0 ; j < m; j++){
+                if( grid[i][j] == 1){
+                    flag = false;     
+                    for(int side[] : dir){
+                        int row = i + side[0];
+                        int col = j + side[1];
+                        if( check(row, col, grid) == true){
+                            String key1 = i+"_"+j;
+                            String key2 = row+"_"+col;
+                            dsu.union(hm.get(key1), hm.get(key2));                            
+                        }
+                    }
+                }
+            }
+        }
+        
+        if( flag == true ) return 0;
+        else{
+            int ans = 0;
+            for( int size : dsu.size){
+                ans = Math.max(ans, size);
+            }
+            return ans;
+        }
+    
+    }
+    
+    
+    class DSU{
+        int n;
+        int rank[];
+        int size[];
+        int parent[];
+        
+        public DSU(int n){
+            this.n = n;
+            rank = new int[n];
+            size = new int[n];
+            parent = new int[n];
+            
+            for( int i = 0; i < n; i++){
+                rank[i] = 1;
+                size[i] = 1;
+                parent[i] = i;
+            }
+        }
+        
+        public int find( int x ){
+            if( parent[x] == x ) return x;
+            
+            int temp = find(parent[x]);
+            
+            return temp;
+        }
+        
+        public void union( int xx, int yy){
+            
+            
+            int x = find(xx);
+            int y = find(yy);
+            
+            
+            if( x == y) return;
+            
+            if( rank[x] < rank[y]){
+                parent[x] = parent[y];
+                size[y] += size[x];
+            }
+            else if( rank[x] > rank[y]){
+                parent[y] = parent[x];
+                size[x] += size[y];
+            }else{
+                parent[y] = parent[x];
+                size[x] += size[y];
+                rank[x]++;
+            }
+            
+        }
+        
+        
+    }
+    
+    public boolean check( int row, int col, int grid[][]){
+        
+        if( row >= 0 && col >= 0 && row < grid.length && col < grid[0].length && grid[row][col] == 1)
+            return true;
+        else return false;
+    }
+    
+}

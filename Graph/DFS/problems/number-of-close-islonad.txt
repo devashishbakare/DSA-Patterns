@@ -1,0 +1,46 @@
+Note : here see how we can use the boolean variable effectively
+problem link : https://leetcode.com/problems/number-of-closed-islands/
+code : 
+
+class Solution {
+   public static int dir[] = {0, 1, 0, -1, 0};
+   public int closedIsland(int[][] grid) {
+        int ans = 0;
+        for(int i = 1;i<grid.length - 1;i++){
+            for(int j = 1;j<grid[0].length - 1;j++){
+                
+                if(grid[i][j] == 0){
+                    if(isClosedIsland(grid,i,j))
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
+    
+    private boolean isClosedIsland(int[][] grid, int row, int col)
+    {  
+        //this condition signifies that if grid[row][col] == 0 and they mate the boundary of gird then its can't be the close island
+        if(row == 0 || col == 0 || row == grid.length-1 || col == grid[0].length-1) return false;
+             
+        //marking 0(land) as visited
+        grid[row][col] = 2;
+        
+        //this will use for : If any component of island have false then all component is not close island
+        boolean isClosed = true;
+        
+        for(int side = 0; side < 4; side++)
+        {
+            int newRow = row + dir[side];
+            int newCol = col + dir[side+1];
+            
+            //if any component is return false out of all edge/directions then whole compoant is not a close island hence we storing ans in isClose = function && isClose
+            if(grid[newRow][newCol] == 0)
+                isClosed = isClosedIsland(grid, newRow, newCol) && isClosed; 
+            
+        }
+        return isClosed;
+    }
+    
+
+}

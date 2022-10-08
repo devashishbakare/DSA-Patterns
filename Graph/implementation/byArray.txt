@@ -1,0 +1,46 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+public class BuildGraphByArray {
+
+    public static void main(String args[]){
+
+        Scanner sc = new Scanner(System.in);
+
+        //vertices count
+        int n = 5;
+
+        //declaring a graph
+        ArrayList<int[]> graph = new ArrayList<>();
+
+        //assigning the space and our array holding only limited value/vertices
+        // we use more this type of graph in terms of the program where we know how much space out adjacent array will require
+        //example we have to store source and destination and it wieght of a edge
+
+        for(int i = 0; i < n; i++){
+            int arr[] = new int[3];
+            for(int j = 0; j < 3; j++){
+                arr[j] = sc.nextInt();
+            }
+            graph.add(arr);
+        }
+
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < 3; j++) {
+                System.out.print(graph.get(i)[j]);
+            }
+            System.out.print("\n");
+        }
+
+    }
+
+}
+//1 2 10
+//2 3 20
+//3 4 30
+//4 5 13
+//5 0 16
+//1210
+//2320
+//3430
+//4513
+//5016

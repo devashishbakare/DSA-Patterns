@@ -1,0 +1,47 @@
+problem link : https://leetcode.com/problems/coloring-a-border/
+
+code : 
+class Solution {
+    public static int dir[] = {0, 1, 0, -1, 0};
+    public int[][] colorBorder(int[][] grid, int row, int col, int color) {
+        
+        //we have to color the boundary of the companant not the boundary of the grid
+        
+        dfs(grid,row,col,grid[row][col]); 
+            
+            for(int i=0;i<grid.length;i++)
+            {
+                for(int j=0;j<grid[0].length;j++)
+                {
+                    if(grid[i][j]<0)
+                        grid[i][j]=color;
+                }
+            }
+            return grid;   
+    }
+    
+    void dfs(int[][] grid,int row,int col,int prevColor)
+    {
+        int n = grid.length;
+        int m = grid[0].length;
+        grid[row][col]= -prevColor;
+        
+        int count=0; // count to check if there are 4 adjacent cells with same color or not.
+        
+        for(int i = 0; i < 4; i++){
+            
+            int newRow = row + dir[i];
+            int newCol = col + dir[i+1];
+            
+            if(newRow >= 0 && newCol >= 0 && newRow < n && newCol < m && Math.abs(grid[newRow][newCol])==prevColor){
+                count++;
+                if(grid[newRow][newCol] == prevColor){
+                    dfs(grid, newRow, newCol, prevColor);
+                }
+            }
+        }
+        if(count==4)
+            grid[row][col]=prevColor;
+    }
+    
+}
