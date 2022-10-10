@@ -1,0 +1,44 @@
+problem link : https://leetcode.com/problems/edit-distance/
+code : 
+class Solution {
+    public int minDistance(String word1, String word2) {
+        
+        int n = word1.length();
+        int m = word2.length();
+        int dp[][] = new int[n+1][m+1];
+        // for(int row[] : dp) Arrays.fill(row, -1);
+        // return getMinDistance(n-1, m-1, word1, word2, dp);
+        
+        //we need to convert this into the tabulation
+        //converting base case we need to do, shifting of index because we dont have have -1 index or < 0 index
+        //changing parameter will be
+        for(int i = 0; i <= n; i++){
+            dp[i][0] = j;
+        }
+        
+    
+        
+    }
+    
+    public int getMinDistance(int ind1, int ind2, String s1, String s2, int dp[][]){
+        
+    
+        //base case:important if string1 end thing string2 remaining we have to remove/add
+        if(ind1 < 0 ) return ind2+1;
+        if(ind2 < 0 ) return ind1+1;
+        
+        if(dp[ind1][ind2] != -1) return dp[ind1][ind2];
+        
+        //we need to compare the element of same index, if they match then we have do nothing
+        if(s1.charAt(ind1) == s2.charAt(ind2)){
+            return dp[ind1][ind2] = 0 + getMinDistance(ind1-1, ind2-1, s1, s2, dp);
+        }else{
+            //insert, delete, replace
+            
+            int insert = 1 + getMinDistance(ind1, ind2-1, s1, s2, dp);
+            int delete = 1 + getMinDistance(ind1-1, ind2, s1, s2, dp);
+            int replace = 1 + getMinDistance(ind1-1, ind2-1, s1, s2, dp);
+            return dp[ind1][ind2] = Math.min(insert, Math.min(delete, replace));
+        }
+    }
+}

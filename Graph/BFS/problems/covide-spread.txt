@@ -1,0 +1,67 @@
+problem : https://practice.geeksforgeeks.org/batch/must-do-1/track/md-graph/problem/269f61832b146dd5e6d89b4ca18cbd2a2654ebbe
+code :
+
+class Solution{
+    
+    class pair{
+        int row;
+        int col;
+        
+        public pair(int row, int col){
+            this.row = row;
+            this.col = col;
+        }
+    }
+        
+     public int helpaterp(int[][] hospital) {
+        
+        int dir[][] = {{1,0},{-1, 0},{0, -1},{0, 1}};
+        int level = 0;
+        int rowLength = hospital.length;
+        int colLength = hospital[0].length;
+        int total_patient = 0;
+        int impacted_patient = 0;
+        
+        Queue<pair> qu = new LinkedList<>();
+        
+        for(int row = 0; row < rowLength; row++){
+            for(int col = 0; col < colLength; col++){
+                if(hospital[row][col] == 2){
+                    qu.offer(new pair(row, col));
+                }
+                if(hospital[row][col] != 0) total_patient++;
+                
+            }
+        }
+        
+        
+        while(qu.size() > 0 ){
+            
+            int size = qu.size();
+            impacted_patient += size;
+            while(size-- > 0 ){
+                
+                pair ward = qu.poll();
+                
+                for(int side[] : dir ){
+                    int row = ward.row + side[0];
+                    int col = ward.col + side[1];
+                    
+                    if(check(hospital, row, col) == true){
+                        hospital[row][col] = 2;
+                        qu.offer(new pair(row, col));
+                    }
+                }
+            }
+             if(!qu.isEmpty()) level++;
+        }
+        if( impacted_patient != total_patient) return -1;
+        return level;
+    }
+    
+    public boolean check( int hospital[][], int row , int col ){
+        if(row >= 0 && col >=0 && row < hospital.length && col < hospital[0].length && hospital[row][col] == 1) return true;
+        return false;
+    }
+    
+}

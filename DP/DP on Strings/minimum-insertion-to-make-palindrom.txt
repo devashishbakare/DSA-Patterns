@@ -1,0 +1,51 @@
+problem Link : https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/
+
+Note : 
+It we could tell how much charater are there that we don't need to change to make the palindrom we can use them to make the palidrome.
+now, if there is 5 charater and we have 3 already so we need 2 to insert 
+hence : return n - lsc();
+
+code : 
+class Solution {
+    public int minInsertions(String str) {
+        
+        int n = str.length();
+        StringBuilder sb = new StringBuilder(str);
+        sb.reverse();
+
+        String str1 = sb.toString();
+        
+        return (n - getLCS(str, str1));
+    }
+     public int getLCS(String str1, String str2){
+        
+        int n = str1.length();
+        int m = str2.length();
+        
+        int dp[][] = new int[n+1][m+1];
+        
+        //for shifting of index
+        
+        for(int i = 0 ; i <= n; i++) dp[i][0] = 0;
+        for(int j = 0 ; j<= m; j++) dp[0][j] = 0;
+        
+        for(int ind1 = 1; ind1 <= n;  ind1++){
+            for(int ind2 = 1; ind2 <= m; ind2++){
+                
+                if(str1.charAt(ind1-1) == str2.charAt(ind2-1)){
+                    dp[ind1][ind2] = 1 + dp[ind1-1][ind2-1];
+                }else{
+                    int shiftS1Left = dp[ind1-1][ind2];
+                    int shiftS2Left = dp[ind1][ind2-1];
+                    
+                    dp[ind1][ind2] = Math.max(shiftS1Left, shiftS2Left);   
+                }
+                
+            }
+        }
+        
+        return dp[n][m];
+        
+    }
+    
+}

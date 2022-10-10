@@ -1,0 +1,97 @@
+problem link : https://leetcode.com/problems/sliding-puzzle/
+    
+        //intuation
+        //we are give 2d array we need to convert this into something given values
+        //and we having the way to swap it in 4 directions
+        //we need to tell how mnay levels of swappint does it required.
+            
+        //first of all we need to explore all the possible combination of swapint and then we 
+        //we have to tell this is the one and it required a this level of swappig
+        
+        //logic : 
+        // we can make the swapping by the converting this array value into the string 
+        // we can swap the character in stirng and check whether we got the expected combination
+        //in order to do that, we need to generate all possible swappint with index who has the 0 value 
+        //for stroring the combination we use the set so we could not generate the same combination again
+        //there are some fixed observation where, if value 0 can move to possible 6 index (0---5) then we can know the possition of the swapings.
+        // we will do the swap and check whether this is exact that we want 
+
+        Code :
+        //Note this is simillar the two while loop patterns
+class Solution {
+    
+    public int slidingPuzzle(int[][] board) {
+        
+        int level = 0;
+        String target = "123450";
+        StringBuilder str = new StringBuilder();
+        int n = board.length;
+        int m = board[0].length;
+        
+        for(int i = 0 ; i < board.length; i++){
+            for(int j = 0 ; j < board[0].length; j++){
+                str.append(board[i][j]);
+            }
+        }
+        
+        String given = str.toString();
+        
+        //we are doing the BFS traversal coz we need to return the level
+        Queue<String> qu = new LinkedList<>();
+        
+        //we need to maintain the hashset so we shouldn't be processing the reapatative combination
+        HashSet<String>set = new HashSet<>();
+        
+        qu.add(given);
+        set.add(given);
+        
+        // there are limited possible swappint we could do so, lets put them into place so we can access it easy 
+        
+        int dir[][] = {{1, 3},{0, 2, 4},{1, 5},{0, 4},{1,3,5},{2, 4}};
+        
+        
+        while(qu.size() > 0 ){
+            int size = qu.size();
+            while(size-- > 0 ){
+                
+                String combinationString = qu.poll();
+                
+                //if its match then return the level 
+                if(combinationString.equals(target) == true) return level;
+            
+                //if not match then we have to do the swapping, but we need to know the possition in which index currenly stainding in
+                int ind = -1;
+                for(int i = 0; i < 6; i++){
+                    if(combinationString.charAt(i) == '0'){
+                        ind = i;   
+                        break;
+                    }
+                }
+                //now we got the index now we have to swap
+                int swapWith[] = dir[ind];
+                
+                for(int j =0 ; j < swapWith.length; j++){
+                    String afterSwap = doSwapping(combinationString, ind, swapWith[j]);
+             
+                    if(set.contains(afterSwap)) continue;
+
+                    set.add(afterSwap);
+                    qu.add(afterSwap);
+                }   
+            }
+            level++;
+        }
+        
+        return -1;
+    }
+    
+    public String doSwapping(String str, int ind1, int ind2){
+        
+        StringBuilder afterSwap = new StringBuilder(str);
+        afterSwap.setCharAt(ind1, str.charAt(ind2));
+        afterSwap.setCharAt(ind2, str.charAt(ind1));
+        return afterSwap.toString();
+        
+    }
+    
+}

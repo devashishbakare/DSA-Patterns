@@ -1,0 +1,33 @@
+problem link : https://leetcode.com/problems/longest-palindromic-subsequence/
+Note :
+//In order to get the longest common subsequence we need to understand what is palidrome first.
+//a string which is read from reverse also sound like same
+//why not make the string reverse and then find out the common subsequnce
+
+Code : 
+ public int longestPalindromeSubseq(String s) {
+        
+        String str1 = s;
+        String str2 = new StringBuilder(s).reverse().toString();
+        return lcs(str1, str2);
+    }
+    
+    public int lcs(String str1, String str2){
+        
+        int n = str1.length();
+        
+        int dp[][] = new int[n+1][n+1];
+        
+        for(int ind1 = 1; ind1 <= n; ind1++){
+            for(int ind2 = 1; ind2 <= n ; ind2++){
+                
+                if(str1.charAt(ind1-1) == str2.charAt(ind2-1)){
+                    dp[ind1][ind2] = 1 + dp[ind1-1][ind2-1];
+                }else{
+                    dp[ind1][ind2] = Math.max(dp[ind1-1][ind2], dp[ind1][ind2-1]);
+                }
+                
+            }
+        }
+        return dp[n][n];
+    }

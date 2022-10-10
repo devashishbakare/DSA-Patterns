@@ -1,0 +1,33 @@
+problem link : https://practice.geeksforgeeks.org/batch/must-do-1/track/md-graph/problem/bfs-traversal-of-graph
+code :
+ public ArrayList<Integer> bfsOfGraph(int V, ArrayList<ArrayList<Integer>> adj) {
+        
+        ArrayList<Integer> ans = new ArrayList<>();
+        Queue<Integer> queue = new LinkedList<>();
+        boolean visited[] = new boolean[V];
+        
+        queue.add(0);
+    
+        
+        while(queue.size() > 0 ){
+            
+            int remove = queue.remove();
+            
+            if(visited[remove] == true) continue;
+            
+            visited[remove] = true;
+            ans.add(remove);
+            
+            ArrayList<Integer> nbr = adj.get(remove);
+            
+            for(Integer vertex : nbr){
+                
+                if(visited[vertex] == false){
+                    queue.add(vertex);
+                    
+                }
+            }
+            
+        }
+        return ans;
+    }

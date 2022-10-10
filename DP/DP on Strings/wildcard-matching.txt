@@ -1,0 +1,57 @@
+problem link : https://leetcode.com/problems/wildcard-matching/
+Note : base case are really instrsting here 
+
+code :
+
+class Solution {
+    public boolean isMatch(String s, String p) {
+        
+        //in this case out p string can be have ? * right?
+        
+        int n = s.length();
+        int m = p.length();
+        int dp[][] = new int[n][m];
+        for(int row[] : dp) Arrays.fill(row, -1);
+        return isPossible(n-1, m-1, s, p, dp);
+        
+    }
+    
+    public boolean isPossible(int ind1, int ind2, String s1, String s2, int dp[][]){
+        
+        //base case
+        //if both are at ind<0 then then all matching is done, hence return true;
+        if(ind1 < 0 && ind2 < 0 ) return true;
+        //if ind2<0 then nothing to match so return false;
+        if(ind1 >= 0 && ind2 < 0 ) return false;
+        //if ind1 is end but ind2 is still left to compare if * then we can consider this as empty string so we return true
+        //if * is not there and there is another charter except * then return false, there is not str1 ind to match hence false;
+        if(ind2 >= 0 && ind1 < 0 ){
+            
+        for (int j = 0; j <= ind2; j++) {
+              if (s2.charAt(j) != '*') return false;
+            }
+            return true;
+        }
+        
+        if(dp[ind1][ind2] != -1){
+            boolean ans = (dp[ind1][ind2] == 1) ? true:false;
+            return ans;
+        }
+        //how we should make the call
+        //one possibility is we have out ind on both the string are matchins or we have ? in s2 so we can match ana move forward
+        
+        if((s1.charAt(ind1) == s2.charAt(ind2)) || s2.charAt(ind2) == '?'){
+            boolean check = isPossible(ind1-1, ind2-1, s1, s2, dp);
+            dp[ind1][ind2] = (check == true)?1:0;
+            return check;
+        }else if(s2.charAt(ind2) == '*'){
+            boolean check = (isPossible(ind1, ind2-1, s1, s2, dp) || isPossible(ind1-1, ind2, s1, s2, dp));
+            dp[ind1][ind2] = (check == true)?1:0;
+            return check;
+        }else{
+            dp[ind1][ind2] = 0;
+            return false;
+        }
+    }
+    
+}

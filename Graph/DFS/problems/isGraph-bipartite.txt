@@ -1,0 +1,117 @@
+problem link : https://leetcode.com/problems/is-graph-bipartite/
+Note : 
+what is bipartite?
+    if you have can make two sets every set  
+    1) dont have common vetext 
+    2) they are not connected with same set vertices
+    
+    
+    Observation
+    Any acyclic graph always Bipartite
+    
+    1-2, 1-3, 2-4, 4-5
+    
+    A set - 1 hence 2 is in B set
+    A set - 1 hence 3 is in B set
+    B set have 2 hence A set has 4
+    A set - 4 hence 5 should be in B set
+    
+    at end 
+     A - 1, 4
+     B - 2, 3, 5
+     
+     
+     Observation say- even cylic graph is BP but it should be even
+     
+     1-2, 2-3, 3-1
+     
+     A set - 1 then 2, 3, should be in B set
+     if 2 is in B set then their adjecent should 1,3 In A but 3 is both the set
+     hence odd cycle is not allowed
+     
+    now question boils down to how many vertices they have and is there any odd cycle
+    now to detet they cycle we will use BFS
+     
+
+    Important Note : if even cycle then point in which we get to know this is cycle is traverse equal edges/vertices from the left and right 
+    example : hexagon and pentagon
+
+Code :
+class Solution
+{
+    //need to maintain a pair to know on which level this vertex got added
+    static class pair
+    {
+        int ver;
+        int level;
+        
+        pair(int ver, int level)
+        {
+            this.ver = ver;
+            this.level = level;
+        }
+        
+
+    }
+    
+     public boolean isBipartite(int[][] graph)
+    {
+        int V = graph.length;
+        if(V <= 0)
+        return false;
+        
+         //visited array holding two meaning
+         //1) check whether is visisted or not
+         //2) on which level
+        int visited[] = new int[V];
+        Arrays.fill(visited, -1);
+        
+         //if there is multiple component, so making sure that every vertex has to bee checked
+        for(int i = 0 ; i < V ; i++)
+        {
+            if(visited[i] == -1)
+            {
+                if(check(graph, visited, i) == false)
+                return false;
+            }
+        }
+        return true;
+    
+    }
+    
+    public static boolean check(int graph[][], int visited[], int src)
+    {
+        Queue<pair> qu = new LinkedList<>();
+        qu.offer(new pair(src, 0));
+          
+        while(!qu.isEmpty())
+        {
+            pair p = qu.poll();
+            
+            //if its visited then check which level got this visited
+            if(visited[p.ver] != -1)
+            {
+               if(p.level != visited[p.ver])//if diffrent then return false
+               return false;
+            }else{
+                //if its not visited and its first time we are processing this then mark him visited and tell on this level you got visited
+                visited[p.ver] = p.level;    
+            }
+            int arr[] = graph[p.ver];
+            
+            for(int x : arr)
+            {
+                if(visited[x] == -1)
+                {
+                    qu.offer(new pair(x, p.level + 1));
+                }
+            }
+            
+        }
+        
+        return true;
+    }
+    
+    
+    
+}

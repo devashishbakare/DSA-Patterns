@@ -1,0 +1,65 @@
+problem link : https://leetcode.com/problems/01-matrix/
+code :
+// Intuation 
+
+// we need to find out the nearest 0, and one thing you have notice, nearest to to cell who has 0 is itself
+// Insted of looking for the nearest zero, why not we start looking nearest 1
+
+class pair{  
+    int row;
+    int col;
+    
+    public pair(int row, int col)
+    {
+        this.row = row;
+        this.col = col;
+    }
+}
+
+class Solution {
+    
+    public int[][] updateMatrix(int[][] mat) {
+        
+        int dx[] = {-1, 1, 0, 0};
+        int dy[] = {0, 0, -1, 1};
+        
+        int n = mat.length;
+        int m = mat[0].length;
+        
+        Queue<pair> qu = new LinkedList<>();
+        
+        for(int i = 0 ; i < n ; i++)
+        {
+            for(int j = 0 ; j < m ; j++)
+            {
+                if( mat[i][j] == 0)
+                {
+                    qu.offer(new pair(i, j));
+                }
+                else
+                {
+                    mat[i][j] = -1;
+                }
+            }
+        }
+        
+        while(!qu.isEmpty())
+        {
+            pair p = qu.poll();
+            
+            for(int i = 0; i < 4; i++)
+            {
+                int newRow = p.row + dx[i];
+                int newCol = p.col + dy[i];
+                
+                if(newRow >= 0 && newCol >=0 && newRow < n && newCol < m && mat[newRow][newCol] < 0)
+                {
+                    mat[newRow][newCol] = mat[p.row][p.col] + 1;
+                    qu.offer(new pair(newRow, newCol));
+                }
+            }
+        }
+        
+        return mat;
+    }
+}
