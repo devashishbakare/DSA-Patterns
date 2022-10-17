@@ -1,0 +1,27 @@
+problem link : https://leetcode.com/problems/reverse-linked-list/
+code: 
+class Solution {
+    public ListNode reverseList(ListNode head) {
+     
+//         head -> 100->200-> 300
+//                 100 <- 200 <- 300 <- head
+//         //hence our linked list is reverse
+            
+//         //one thing is clear
+//         //every node is having
+//         //data, address
+//         //I need to track the prevNode(prev) currIndex(curr) nextIndex(Next)
+            
+        ListNode prev = null;
+        ListNode curr = head;
+        
+        while(curr != null){
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+}
+

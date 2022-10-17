@@ -1,0 +1,37 @@
+problem link : https://leetcode.com/problems/add-two-numbers/
+
+Note : when we do like  ListNode ans = new ListNode(); it initialise with 0 in leetcode, while returning we do head.next, coz head holding 0 value
+
+code :
+public ListNode addTwoNumbers(ListNode first, ListNode sec) {
+        
+        ListNode ans = new ListNode();
+        ListNode head = ans;
+        int carry = 0;
+        int rem = 0;
+        
+        while(first != null || sec != null || carry == 1){
+            
+            int data = 0;
+            
+            if(first != null){
+                data = first.val;
+                first = first.next;
+            } 
+            if(sec != null) {
+                data += sec.val;
+                sec = sec.next;
+            }
+            
+            data += carry;
+            
+            carry = data/10;
+            rem = data % 10;
+            
+            ListNode newNode = new ListNode(rem);
+            ans.next = newNode;
+            ans = ans.next;
+            
+        }
+        return head.next;
+    }

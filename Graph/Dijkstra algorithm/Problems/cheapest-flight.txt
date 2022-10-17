@@ -1,0 +1,81 @@
+Problem link : https://practice.geeksforgeeks.org/problems/cheapest-flights-within-k-stops/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=cheapest-flights-within-k-stops
+code:
+class Pair{
+    int dest;
+    int costOfFlight;
+    
+    public Pair(int dest, int costOfFlight){
+        this.dest = dest;
+        this.costOfFlight = costOfFlight;
+    }
+}
+
+class Node{
+    int stop;
+    int src;
+    int cost;
+    
+    public Node(int stop, int src, int cost){
+        this.stop = stop;
+        this.src = src;
+        this.cost = cost;
+    }
+}
+class Solution {
+    
+    public int CheapestFLight(int n,int flights[][],int s,int dst,int k) {
+        
+        //creating a graph
+        ArrayList<ArrayList<Pair>> graph = new ArrayList<>();
+        for(int i = 0; i < n; i++){
+            graph.add(new ArrayList<Pair>());
+        }
+        for(int arr[] : flights){
+            graph.get(arr[0]).add(new Pair(arr[1], arr[2]));
+        }
+    
+        //why we are not talking the priorityQueue?
+        //coz we have to calculate the minimum price to reach, but
+        //we are adding the vertex, having always, shorted number of stop always.
+        //coz we adding stop from every vertex. so stop for adj vertex will be increament by one
+        //why we need to take the over head of logN for removing element from the pq;
+     
+        //you have to create queue, which can hold -> stop, vertex, cost;
+        Queue<Node> qu = new LinkedList<>();
+        int distance[] = new int[n];
+        Arrays.fill(distance, (int)1e8);
+        //adding source
+        qu.add(new Node(s, 0, 0));
+        //marking source
+        distance[0] = 0;
+        
+        while(qu.size() > 0 ){
+            
+            Node node = qu.remove();
+            
+            int currStop = node.stop;
+            int cost = node.cost;
+            int src = node.src;
+            
+            if(currStop > k) continue;
+            ArrayList<Pair> adj = graph.get(src);
+            
+            for(Pair info : adj){
+                int dest = info.dest;
+                int flightCost = info.costOfFlight;
+                
+                if(flightCost + cost < distance[dest] && currStop <= k){
+                    distance[dest] = flightCost + cost;
+                    qu.add(new Node(currStop + 1, dest, distance[dest]));
+                }
+                
+            }
+        }
+        
+        int toCheck = (int)1e8;
+        
+        if(distance[dst] == toCheck) return -1;
+        else return distance[dst];
+      
+    }
+}

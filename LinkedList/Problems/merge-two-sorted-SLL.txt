@@ -1,0 +1,44 @@
+problem link : https://leetcode.com/problems/merge-two-sorted-lists/
+code : you can use extra space, but inplace also good option
+Note : understand the edge case
+
+public ListNode mergeTwoLists(ListNode first, ListNode sec) {
+        
+        ListNode res = null;
+        ListNode temp = null;
+        
+        //edge case
+        if( first == null)
+            return sec;
+        if( sec == null)
+            return first;
+        
+        //keeping first as minimum, coz we are merging in first  
+        if( first.val > sec.val)
+        {
+            temp = first;
+            first = sec;
+            sec = temp;
+        }
+       
+        res = first;
+        ListNode pointer = null;   
+        while( first != null && sec != null )
+        {
+             pointer = null;
+            // move toward right until first val is lesser
+            while( first != null && first.val <= sec.val)
+            {
+                pointer = first;
+                first = first.next;
+            }
+            pointer.next = sec;
+            
+            ListNode swap = first; 
+            first = sec;    
+            sec = swap;
+        }
+        return res;
+    
+        
+    }

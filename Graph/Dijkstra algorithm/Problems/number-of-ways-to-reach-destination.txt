@@ -1,0 +1,94 @@
+problem link : https://practice.geeksforgeeks.org/problems/number-of-ways-to-arrive-at-destination/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=/number-of-ways-to-arrive-at-destination
+
+code:
+class Node{
+    public int dest;
+    public int cost;
+    
+    public Node(int dest, int cost){
+        this.dest = dest;
+        this.cost = cost;
+    }
+}
+
+class Pair implements Comparable<Pair>{
+    
+    public int src;
+    public int costTillThisVertex;
+    
+    public Pair(int src, int wt){
+        this.src = src;
+        costTillThisVertex = wt;
+    }
+    public int compareTo(Pair pair){
+            return this.costTillThisVertex - pair.costTillThisVertex;
+    }
+}
+
+class Solution {
+
+    static int countPaths(int n, List<List<Integer>> roads) {
+     
+     int numberOfEdges = roads.size();
+     
+     //creatting graph
+     ArrayList<ArrayList<Node>> graph = new ArrayList<>();
+     
+     for(int i = 0; i < n; i++)graph.add(new ArrayList<>());
+     
+     for(int edge = 0; edge < numberOfEdges; edge++){
+         
+        //  List<Integer> list = graph.get(roads.get(edge));
+         
+         graph.get(roads.get(edge).get(0)).add(new Node(roads.get(edge).get(1), roads.get(edge).get(2)));
+         graph.get(roads.get(edge).get(1)).add(new Node(roads.get(edge).get(0), roads.get(edge).get(2)));
+         
+     }
+         int mod = (int)(1e9 + 7);
+         PriorityQueue<Pair> qu = new PriorityQueue<>();
+         
+         //to maintain the shortest distance
+         int distance[] = new int[n];
+         Arrays.fill(distance, (int)1e8);
+         
+         // to maintain the count for every vertex to tell how many ways I can reach to this current vertex
+         int ways[] = new int[n];
+         
+         qu.add(new Pair(0, 0));
+         distance[0] = 0;
+         ways[0] = 1;
+         
+         //getting the vertex and travelling through it adjecent vertex;
+     
+        while(qu.size() > 0){
+            
+            Pair pair = qu.remove();
+            int src = pair.src;
+            int cost = pair.costTillThisVertex;
+          
+            ArrayList<Node> list = graph.get(src);
+            
+            for(Node node : list){
+                
+                int dest = node.dest;
+                int currentCost = node.cost;
+                
+                if(currentCost + cost < distance[dest]){
+                    distance[dest] = currentCost + cost;
+                    qu.add(new Pair(dest, distance[dest]));
+                    ways[dest] = ways[src];
+                }
+                else if(currentCost + cost == distance[dest]){
+                    ways[dest] = (ways[dest] + ways[src])%mod;
+                }
+                
+            }
+        }
+      
+      int maxValue = (int)1e8;
+      
+      if(distance[n-1] == maxValue) return 0;
+      else return ways[n-1];
+     
+    }
+}

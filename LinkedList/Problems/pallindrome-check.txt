@@ -1,0 +1,80 @@
+problem link : https://leetcode.com/problems/palindrome-linked-list/
+code : 
+
+Naive solution : convert element in stirng/array and then check is palindrome or not
+public boolean isPalindrome(ListNode head) {
+        //creating a string and checking whther is pallindrom or not
+        
+        StringBuilder sb = new StringBuilder();
+        
+        while(head != null){
+            sb.append(head.val);
+            head = head.next;
+        }
+        
+        return isPallindrome(sb);
+    }
+    
+    public boolean isPallindrome(StringBuilder str){
+        int start = 0;
+        int end = str.length()-1;
+        
+        while(start <= end){
+            if(str.charAt(start) != str.charAt(end)) return false;
+            start++;
+            end--;
+        }
+        return true;
+    }
+    
+//Better solution 
+
+code : 
+
+public boolean isPalindrome(ListNode head) {
+        //edge case : if there he no element and if there is only one element
+        if(head == null || head.next == null) return true;
+        ListNode slow = head;
+        ListNode fast = head;
+      
+        // Note : fast will never go out of bound using this contion in while
+        while(fast.next != null && fast.next.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        
+        // In even size : slow will stand in middle-1
+        // In odd size : slow will stand in middle, as in odd palindrom middle will stay as it is
+        slow.next = reverseLL(slow.next);
+        slow = slow.next;
+        
+        while(slow != null){
+            if(head.val != slow.val) return false;
+            head = head.next;
+            slow = slow.next;
+        }
+        return true;
+    }
+    
+    public ListNode reverseLL(ListNode head){
+        
+        //understanding the reverse better way:
+        
+        //making previous null : coz first element will have the null after reverse
+        //hence while filling the first.next will be null;
+        ListNode prev = null;
+        ListNode curr = head;
+        // current will not hold the next address, now it will hold previous address
+        
+        while(curr != null){
+            //keeping track of next of current
+            ListNode next = curr.next;
+            //updating curr to hold previous address
+            curr.next = prev;
+            //moving froward
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+    

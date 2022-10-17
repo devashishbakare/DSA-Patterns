@@ -1,0 +1,8 @@
+problem link: https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
+
+Note : here we have to use the preorder as ask, so important to note here is,
+How we made the call, and how can we use the extra node to come up with the ans
+
+Code :
+
+https://leetcode.com/problems/flatten-binary-tree-to-linked-list/discuss/2714285/Java-with-intuition-greater-O(N)

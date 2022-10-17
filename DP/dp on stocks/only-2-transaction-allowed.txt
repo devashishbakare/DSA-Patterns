@@ -1,0 +1,87 @@
+problem link : https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/
+
+code : memoization -> O( N * 2 * 3 )
+//we need to create 3d dp, changing state as, [ind][status][capasity];
+class Solution {
+    public int maxProfit(int[] prices) {
+     
+        int n = prices.length;
+        
+        int dp[][][] = new int[n][2][3];
+        for(int row[][] : dp){
+            for(int r[] : row)
+                Arrays.fill(r, -1);
+        } 
+        return getMaxProfit(0, 0, 2, prices, dp);
+    }
+    public int getMaxProfit(int ind, int status, int capasity, int prices[], int dp[][][]){
+        
+        //base case
+        if(ind == prices.length || capasity == 0){
+            return 0;
+        }
+        
+        if(dp[ind][status][capasity] != -1) return dp[ind][status][capasity];
+        
+        int profit = 0;
+        
+        //status for buying
+        if(status == 0){
+            
+           int notBuy = 0 + getMaxProfit(ind+1, 0, capasity, prices, dp);
+           int buy = -prices[ind] + getMaxProfit(ind+1, 1, capasity, prices, dp);
+           profit = Math.max(notBuy, buy);
+        
+        }else{
+            
+            int notSelling = 0 + getMaxProfit(ind+1, 1, capasity, prices, dp);
+            int sell = prices[ind] + getMaxProfit(ind+1, 0, capasity-1, prices, dp);
+            profit += Math.max(notSelling, sell);
+        }
+        return dp[ind][status][capasity] = profit;   
+    }   
+}
+
+Tabulation : 
+
+class Solution {
+    public int maxProfit(int[] prices) {
+     
+        int n = prices.length;
+        
+        int dp[][][] = new int[n+1][2][3];
+        
+        //what will be the base case covertsoin look like
+        //now our ind == n or our capsity == 0 then we have to reutrn 0;
+        
+        for(int i = 0; i < 2; i++){
+            dp[n][i][i] = 0;
+        }
+       
+        for(int ind = n-1; ind >= 0; ind--){
+            for(int status = 0; status < 2; status++){
+                for(int capasity = 1; capasity <= 2; capasity++){
+                     
+                    int profit = 0;
+        
+                    //status for buying
+                    if(status == 0){
+
+                       int notBuy = 0 + dp[ind+1][0][capasity];
+                       int buy = -prices[ind] + dp[ind+1][1][capasity];
+                       profit = Math.max(notBuy, buy);
+
+                    }else{
+
+                        int notSelling = 0 + dp[ind+1][1][capasity];
+                        int sell = prices[ind] + dp[ind+1][0][capasity-1];
+                        profit += Math.max(notSelling, sell);
+                    }
+                   dp[ind][status][capasity] = profit;   
+                }
+            }
+            
+        }
+        return dp[0][0][2];
+    }
+}

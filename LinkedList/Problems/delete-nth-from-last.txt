@@ -1,0 +1,44 @@
+problem link : https://leetcode.com/problems/remove-nth-node-from-end-of-list/
+
+code : 
+
+public ListNode removeNthFromEnd(ListNode head, int n) {
+        
+       //edge case : if there is only one element and n == 1;
+        if(head.next == null) return null;
+        
+        //marking prev = null coz if there is need to delete the head
+        //but what't the logic?
+        // if n == 2 and element is 2 so, we need to delete the head, right?
+        // now we move our pointer to 2 step ahead, and pointer is at end
+        // then we cant move forward if pointer at null due to while condition
+        //if we can't enter to the while condition then prev will remain the null
+        // so we can say that its head to be remove
+        
+        ListNode prev = null;
+        ListNode curr = head;
+        ListNode fast = head;
+        
+        //why there is n-1?
+        //coz if we move farward the with 3 node then we have to do curr.next 2 only
+        for( int i=1; i< n ; ++i )
+        {
+            fast = fast.next;
+        }
+        
+        while(fast.next != null){
+            prev = curr;
+            curr = curr.next;
+            fast = fast.next;
+        }
+        
+        //if we didn't get into while loop means its head that we need to delete
+        if(prev == null){
+            head = curr.next;
+            return head;
+        }
+        //if not then delete the element
+        prev.next = curr.next;
+        return head;
+        
+    }

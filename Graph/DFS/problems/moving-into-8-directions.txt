@@ -1,0 +1,65 @@
+problem link : https://leetcode.com/problems/shortest-path-in-binary-matrix/
+
+//moving into 8 directions 
+int dir[] = {1, 0, -1, 0, 1, -1, -1, 1, 1};
+
+code :
+class Pair{
+    
+    int row;
+    int col;
+    int cost;
+    
+    public Pair(int row, int col, int cost){
+        this.row = row;
+        this.col = col;
+        this.cost = cost;
+    }
+    
+}
+class Solution {
+    public int shortestPathBinaryMatrix(int[][] grid) {
+     
+        int n = grid.length;
+        //edge case-1
+        if(grid[0][0] == 1 || grid[n-1][n-1] == 1) return -1;
+        
+        //edge case-II
+        if(n == 1 && grid[0][0] == 0) return 1;
+        int dir[] = {1, 0, -1, 0, 1, -1, -1, 1, 1};
+        Queue<Pair> qu = new LinkedList<>();
+        
+        qu.add(new Pair(0, 0, 1));
+        
+        while(qu.size() > 0 ){
+            
+            Pair node = qu.remove();
+            int row = node.row;
+            int col = node.col;
+            int cost = node.cost;
+            for(int i = 0; i < 8; i++){
+                int newRow = row + dir[i];
+                int newCol = col + dir[i+1];
+                
+                if(check(newRow, newCol, grid) == true){
+                    if(newRow == n-1 && newCol == n-1) return cost+1;
+                    qu.add(new Pair(newRow, newCol, cost + 1));
+                    grid[newRow][newCol] = 1;
+                }
+            }
+        }
+        
+        return -1;
+    }
+    
+    public boolean check(int row, int col, int grid[][]){
+        
+        int n = grid.length;
+        
+        if(row >= 0 && col >= 0 && row < n && col < n && grid[row][col] == 0)
+            return true;
+        
+        return false;
+    }
+    
+}

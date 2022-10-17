@@ -1,0 +1,21 @@
+problem link : https://leetcode.com/problems/middle-of-the-linked-list/
+code :
+ //Note : this is one the pattern to solve this problem so, keep in mind slow always first;
+public ListNode middleNode(ListNode head) {
+     
+        // we will move slow as 1 step and fast as 2 step
+        ListNode slow = head;
+        ListNode fast = head;
+        
+        //if we move fast as 2 step then there is 2 possibility
+        // 1) it will go out of range so -> fast will be null
+        // 2) it will end up at last node -> fast.next == null
+        
+        //we can move forward with only if -> fast != null && fast.next != null
+        
+        while(fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }

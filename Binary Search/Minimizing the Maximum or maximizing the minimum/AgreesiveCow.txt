@@ -15,10 +15,11 @@ public static int aggressiveCows(ArrayList<Integer> stalls, int k)
         
         while(low <= high){
             int mid = low + (high -low)/2;
-            
+           
             if(isPossible(stalls, k, mid)== true){
                 ans = mid;
                 low = mid+1;
+                //Note : here condition will chagne according the requirement
             }else{
                 high = mid-1;
             }

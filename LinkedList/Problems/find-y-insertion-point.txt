@@ -1,0 +1,49 @@
+problem link : https://leetcode.com/problems/intersection-of-two-linked-lists/
+
+Code :
+Naive Solution
+//Note : using hashset to check whether we have any element with same address
+
+ public ListNode getIntersectionNode(ListNode head, ListNode headA) {
+        
+        //EDGE CASE :
+        if(head == null || headA == null) return null;
+        
+        
+        HashSet<ListNode> set = new HashSet<>();
+        
+        while(head != null){
+            set.add(head);
+            head = head.next;
+        }
+        
+        while(headA != null){
+            if(set.contains(headA)) return headA;
+            headA = headA.next;
+        }
+        return null;
+    }
+
+//lopping over the list1 if pointer end up at null then start with the list2, vise versa
+
+public ListNode getIntersectionNode(ListNode list1, ListNode list2) {
+        
+        //EDGE CASE :
+        if(list1 == null || list2 == null) return null;
+        
+        ListNode pointer1 = list1;
+        ListNode pointer2 = list2;
+        
+        while(pointer1 != pointer2){
+            
+            pointer1 = pointer1.next;
+            pointer2 = pointer2.next;
+            //this is important, if both are the same then break
+            if(pointer1 == pointer2) break;
+            if(pointer1 == null) pointer1 = list2;
+            if(pointer2 == null) pointer2 = list1;
+            
+        }
+        // Very Important : this will end when both pointer1 == null and pointer2 == null 
+        return pointer1;
+    }
