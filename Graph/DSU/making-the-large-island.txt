@@ -1,0 +1,151 @@
+problem link : https://leetcode.com/problems/making-a-large-island/
+
+this is the classic use of the union and find algorithm
+
+code : 
+
+class DSU{
+    
+    public int height[];
+    public int size[];
+    public int parent[];
+    
+    public DSU(int n){
+        height = new int[n];
+        size = new int[n];
+        parent = new int[n];
+        
+        Arrays.fill(height, 1);
+        Arrays.fill(size, 1);
+        Arrays.fill(parent, -1);
+    }
+    
+    public int find(int node){
+        if(parent[node] == -1){
+            return node;
+        }
+        
+        int temp = find(parent[node]);
+        return parent[node] = temp;
+    }
+    
+    
+    public int union(int node1, int node2){
+        
+        int ra = find(node1);
+        int rb = find(node2);
+        if(ra != rb)
+        {
+            if(height[ra] < height[rb])
+            {
+                parent[ra] = rb;
+                size[rb] += size[ra];
+                return size[rb];
+            }
+            else if(height[rb] < height[ra])
+            {
+                parent[rb] = ra;
+                size[ra] += size[rb];
+                return size[ra];
+            }
+            else
+            {
+                parent[rb] = ra;
+                height[ra]++;
+                size[ra] += size[rb];
+                return size[ra];
+            }
+        }
+        return -1;
+
+    }
+    
+    
+}
+
+
+class Solution {
+    public static int dir[] = {1, 0, -1, 0, 1};
+    public int largestIsland(int[][] grid) {
+        //we need to make the dsu as per the 1 and store there size
+        //then traverse through the adj of every 0 and make the count 
+        //store the max count;
+        
+        int n = grid.length;
+        DSU dsu = new DSU(n*n);
+        int count1 = 0;
+       
+        boolean vis[][] = new boolean[n][n];
+        
+        
+        for(int row = 0; row < n; row++){
+            for(int col = 0; col < n; col++){
+                if(grid[row][col] == 1 && vis[row][col] == false){
+                   
+                    dfs(grid, vis, row, col, dsu);
+                }        
+                if(grid[row][col] == 1) count1++;      
+            }
+        }
+        
+        int ans = 0;
+        
+        for(int row = 0; row < n ; row++){
+            for(int col = 0; col < n; col++){
+                
+                if(grid[row][col] == 0){
+                    
+                    HashSet<Integer> set = new HashSet<>();
+                    
+                    for(int i = 0; i < 4; i++){
+                        
+                        int newRow = row + dir[i];
+                        int newCol = col + dir[i+1];
+                        if(newRow >= 0 && newCol >= 0 && newRow < n && newCol < n && grid[newRow][newCol] == 1){
+                            set.add(dsu.find(newRow * n + newCol));
+                        }
+                        
+                    }
+                    
+                    int maxArea = 1;
+                    for(int root : set) maxArea += dsu.size[root];
+                    
+                    ans = Math.max(ans, maxArea);
+                    
+                }
+                
+            }
+        }
+        if(count1 == n*n) return count1;
+        return ans;
+        
+    }
+    
+    
+    public void dfs(int grid[][], boolean vis[][], int row, int col, DSU dsu){
+        
+        vis[row][col] = true;
+        
+        for(int i = 0; i < 4; i++){
+            int newRow = row + dir[i];
+            int newCol = col + dir[i+1];
+            
+            if(check(newRow, newCol, grid, vis) == true){
+                dsu.union(row * grid.length + col, newRow * grid.length + newCol);
+                dfs(grid, vis, newRow, newCol, dsu);
+            }
+        }
+        
+        
+    }
+    
+    public boolean check( int row, int col, int grid[][], boolean vis[][]){
+        int n = grid.length;
+        
+        if(row >= 0 && row < n && col >= 0 && col < n && grid[row][col] == 1 && vis[row][col] == false) return true;
+   
+        return false;
+    }
+    
+    
+}

@@ -1,0 +1,52 @@
+problem link : https://leetcode.com/problems/minimum-genetic-mutation/
+Note : same pattern we have used here, just insted of trying form a-z we tried from give input
+
+code :
+class Solution {
+    public int minMutation(String start, String end, String[] bank) {
+        
+        HashSet<String> checkBank = new HashSet<>();
+        
+        char gene[] = {'A', 'C', 'G', 'T'};
+        
+        for(String i : bank) checkBank.add(i);
+        
+        HashSet<String> vis = new HashSet<>();
+        
+        Queue<String> qu = new LinkedList<>();
+        
+        qu.add(start);
+        vis.add(start);
+        int level = 0;
+        while(qu.size() > 0 ){
+            int size = qu.size();
+            while(size-- > 0){
+                
+                String str = qu.remove();
+                if(str.equals(end)) return level;
+                
+                char arr[] = str.toCharArray();
+                
+                for(int i = 0; i < str.length(); i++){
+                    char old = arr[i];
+                    
+                    for(char ch : gene){
+                        
+                        arr[i] = ch;
+                        String mutation = new String(arr);
+                        if(vis.contains(mutation) == false && checkBank.contains(mutation)) {
+                            qu.add(mutation);
+                            vis.add(mutation);
+                        }
+                            
+                    
+                    }
+                    arr[i] = old;
+                }
+            }
+            level++;
+        }
+        
+        return -1;
+    }
+}

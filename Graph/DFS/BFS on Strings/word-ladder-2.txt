@@ -1,0 +1,73 @@
+problem link : https://practice.geeksforgeeks.org/problems/word-ladder-ii/1?
+
+Note : Intresting thing to note here that, 
+we put ArrayList into the queue and use last element of every list and do processing on every level
+see how we can use the efficiently use of level/another while loop
+
+watch this for explantion : https://www.youtube.com/watch?v=DREutrv2XD0&list=PLgUwDviBIf0oE3gA41TKO2H5bHpPd7fzn&index=30
+code :
+
+class Solution
+{
+    public ArrayList<ArrayList<String>> findSequences(String startWord, String targetWord, String[] wordList)
+    {
+        ArrayList<ArrayList<String>> ans = new ArrayList<>();
+        
+        HashSet<String> set = new HashSet<>();
+        for(String word : wordList)set.add(word);
+        
+        Queue<ArrayList<String>> qu = new LinkedList<>();
+        ArrayList<String> start = new ArrayList<>();
+        start.add(startWord);
+        qu.add(start);
+        set.remove(startWord);
+        ArrayList<String> processed = new ArrayList<>();
+        while(qu.size() > 0){
+            int size = qu.size();
+        
+            while(size-- > 0){
+                
+                ArrayList<String> curr = qu.remove();
+                
+                String lastWord = curr.get(curr.size()-1);
+                
+                if(lastWord.equals(targetWord)){
+                    if(ans.size() == 0 ) ans.add(curr);
+                    else if(ans.get(0).size() == curr.size()) ans.add(curr);
+                }
+                
+                //now we have to check the this word combination and then we have to add to the list and then remove process string from set
+                
+                char arr[] = lastWord.toCharArray();
+                
+                for(int i = 0; i < arr.length; i++){
+                    
+                    char original = arr[i];
+                    for(char ch = 'a'; ch <= 'z'; ch++){
+                        arr[i] = ch;
+                        String str = new String(arr);
+                        if(set.contains(str)== true){
+                            processed.add(str);
+                            ArrayList<String> temp = new ArrayList<>();
+                            temp.addAll(curr);
+                            temp.add(str);
+                            qu.add(temp);
+                        }
+                    }
+                    arr[i] = original;
+                    
+                }
+                
+                
+            }
+            
+            for(String word : processed) set.remove(word);
+            processed.clear();
+            
+        }
+        
+        return ans;
+        
+    }
+    
+}

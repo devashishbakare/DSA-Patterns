@@ -1,0 +1,47 @@
+Problem link : https://leetcode.com/problems/largest-divisible-subset/
+
+Note :
+same as the LIS but here we have to sort the array and then we have to figure it out 
+how many prev elements are there who are divisible by me and storing ans to path and tracking it down
+
+
+class Solution {
+    public List<Integer> largestDivisibleSubset(int[] nums) {
+        
+        
+        List<Integer> ans = new ArrayList<>();
+        int n = nums.length;
+        if(n==0) return ans;
+        if(n == 1){
+          ans.add(nums[0]); 
+          return ans;
+        } 
+        int path[] = new int[n];
+        int dp[] = new int[n];
+        Arrays.fill(dp, 1);
+        int max = 0;
+        int lastIndex = -1;
+        
+        Arrays.sort(nums);
+        
+        for(int ind = 1; ind < n; ind++){
+            path[ind] = ind;
+            for(int prev = 0; prev < ind; prev++){
+                if(nums[ind] % nums[prev] == 0 && dp[ind] < 1 + dp[prev]){
+                    dp[ind] = 1 + dp[prev];
+                    path[ind] = prev;
+                }
+            }
+            if(max < dp[ind]){
+                max = dp[ind];
+                lastIndex = ind;
+            }
+        }
+        ans.add(nums[lastIndex]);
+        while(path[lastIndex] != lastIndex){
+            lastIndex = path[lastIndex];
+            ans.add(nums[lastIndex]);
+        }
+        return ans;
+    }
+}

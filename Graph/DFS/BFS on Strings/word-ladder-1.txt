@@ -1,0 +1,74 @@
+problem link : https://practice.geeksforgeeks.org/problems/word-ladder/1?
+
+Note: 
+Below we are used the bfs to solve the string problem, just look at the way we processed the thing
+
+taking string out and changing every character from a - z and checking
+Time complexity varies according to the wordList/bank/dictironary 
+Number of String * 26 combination we tried.
+
+
+
+code :
+
+class Pair{
+
+    String str;
+    int step;
+    
+    public Pair(String str, int step){
+        this.str = str;
+        this.step = step;
+    }
+    
+}
+
+class Solution
+{
+    public int wordLadderLength(String startWord, String targetWord, String[] wordList)
+    {
+       char alpha[] = new char[26];
+       
+       for(int i= 0; i < 26; i++){
+           alpha[i] = (char)(i+(int)('a'));
+       }
+       
+       HashSet<String> vis = new HashSet<>();
+       HashSet<String> bank = new HashSet<>();
+       Queue<Pair> qu = new LinkedList<>();
+       
+       for(String str : wordList) bank.add(str);
+       
+       qu.add(new Pair(startWord, 1));
+       vis.add(startWord);
+       int level = 1;
+       while(qu.size() > 0){
+           
+           Pair pair = qu.remove();
+           String str = pair.str;
+           int step = pair.step;
+           
+           if(str.equals(targetWord)) return step;
+           
+           char charArray[] = str.toCharArray();
+           
+           for(int i = 0; i < charArray.length; i++){
+               
+               char old = charArray[i];
+               
+               for(int j = 0; j < 26; j++){
+                   charArray[i] = alpha[j];
+                   String updatedString = new String(charArray);
+                   if(vis.contains(updatedString) == false && bank.contains(updatedString)){
+                       qu.add(new Pair(updatedString, step + 1));
+                       vis.add(updatedString);
+                   }
+               }
+               charArray[i] = old;
+           }
+          
+       }
+       return 0;
+       
+    }
+}

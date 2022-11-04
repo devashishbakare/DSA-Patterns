@@ -1,0 +1,58 @@
+problem link : https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
+
+watch this first -> https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
+for understanding
+
+inorder ->   left root right
+PostOrder -> left right root
+
+keyPoints -
+1) End of the post order is always root
+2) we can find the root in Inorder
+3) what ever the Inorder root left node will be the left side, and right node will be right side
+4) and left node will be found in preorder array first part, and right node will be found from next to left part till the root
+
+Example -> 
+leftsideNodeCount = inorderRoot - inorderStart
+root left node found in -> postorder start(left part) + leftsideNodeCount - 1(due to zero base index)
+root right node found in -> PostOrderStart + leftsideNodeCount, postOrderend - 1(-1 due to last elememt is root)) 
+
+code : 
+
+class Solution {
+   public static HashMap<Integer,Integer> map;
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        
+        map = new HashMap<>();
+        int n = inorder.length;
+        
+        for(int i = 0; i < n; i++){
+            map.put(inorder[i], i);
+        }
+        
+        return getRootNode(0, n-1, inorder, 0, n-1, postorder);
+        
+    }
+    
+    public TreeNode getRootNode(int inStart, int inEnd, int[] inorder, int postStart, int postEnd, int[] postorder){
+        
+        if(inStart > inEnd || postStart > postEnd) return null;
+        
+        //root will be the postorder end always
+        int rootVal = postorder[postEnd];
+        TreeNode root = new TreeNode(rootVal);
+        
+        int inOrderRoot = map.get(rootVal);
+        
+        int leftSideNodeCount = inOrderRoot-inStart;
+        
+        root.left = getRootNode(inStart, inOrderRoot-1, inorder, postStart, postStart + leftSideNodeCount - 1, postorder);
+            
+        root.right = getRootNode(inOrderRoot+1, inEnd, inorder, postStart + leftSideNodeCount, postEnd-1, postorder);
+        
+        return root;
+       
+    }
+}
+
+

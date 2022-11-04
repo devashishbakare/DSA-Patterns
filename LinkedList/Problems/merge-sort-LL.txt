@@ -1,0 +1,45 @@
+problem link : https://practice.geeksforgeeks.org/batch/must-do-1/track/md-linkedlist/problem/sort-a-linked-list
+
+//what is marge sort ??
+// we pass the list, calulationg mid, and shrink the list and again we will do he same
+// until there is only single element left
+// and retuning the list with connecting some dots;
+
+code :
+
+static Node mergeSort(Node head)
+    {
+        //base case : if there only one element left at the last 
+        //the we have to return the same node 
+        if( head ==null || head.next == null) return head;
+        
+        Node slow = head;
+        Node fast = head;
+        
+        while( fast.next != null && fast.next.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        Node list2Start = slow.next;
+        slow.next = null;
+        Node left = mergeSort(head);
+        Node right = mergeSort(list2Start);
+        
+        return merge(left, right);
+    }
+    
+    public static Node merge(Node left, Node right){
+        
+        if(left == null) return right;
+        if(right == null) return left;
+        
+        if(left.data < right.data){
+            left.next = merge(left.next, right);
+            return left;
+        }else{
+            right.next = merge(right.next, left);
+            return right;
+        }
+        
+        
+    }

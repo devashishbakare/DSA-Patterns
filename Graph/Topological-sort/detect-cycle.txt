@@ -1,0 +1,48 @@
+problem link : https://practice.geeksforgeeks.org/problems/detect-cycle-in-a-directed-graph/1
+
+here we are using the topo sort (BFS), we can add the node to queue if we have the zero dependencies
+there will be case where one node have the more dependencies due to the cycle so that we can say there is a cycle
+
+Note: if we can't process the all element then there is a cycle, hence use the counter
+
+code :
+
+public boolean isCyclic(int V, ArrayList<ArrayList<Integer>> adj) {
+       
+        Queue<Integer> qu = new LinkedList<>();
+        int inDegree[] = new int[V];
+        
+        for(int i = 0; i< V; i++){
+           ArrayList<Integer> nbrs = adj.get(i);
+           for(int nbr : nbrs){
+               inDegree[nbr]++;
+           }
+        }
+        
+        for(int i = 0; i < V ; i++){
+            if(inDegree[i] == 0){
+                qu.add(i);
+            }
+        }
+        
+        int count = 0;
+        while(qu.size() > 0 ){
+            
+            int node = qu.remove();
+            
+            count++;
+            ArrayList<Integer> nbrs = adj.get(node);
+            
+            for(int nbr : nbrs){
+                if(--inDegree[nbr] == 0){
+                    qu.offer(nbr);
+                }
+            }
+            
+        }
+        
+        if(count == V) return false;
+        
+        return true;
+        
+    }

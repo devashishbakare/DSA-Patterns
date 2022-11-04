@@ -1,0 +1,46 @@
+problem link : https://practice.geeksforgeeks.org/problems/optimal-strategy-for-a-game-1587115620/1
+
+
+Note : you can pick the first one and last one at a one times
+1) if you pick the first(i) as first and opponant will be pick from (i+2, j) or (i+1, j-1)
+2) if you pick the last(j) as first and opponant will be pick from (i+1, j-1) or (i, j-2)
+
+the opposite will pick the best for him and worse for us
+
+so opponant will pick 
+1) first(i) -> so 
+2) last(j)
+
+code : 
+
+class solve
+{
+    //Function to find the maximum possible amount of money we can win.
+    static long countMaximum(int arr[], int n)
+    {
+      if(n == 0) return 0;
+      if(n ==1 )return (long)arr[0];
+      long dp[][] = new long[n][n];
+      for(long row[] : dp) Arrays.fill(row, -1);
+      return getMaxProfit(0, n-1, arr, dp);
+    }
+    
+    public static long getMaxProfit(int start, int end, int arr[], long dp[][]){
+        
+        //base case
+        if(start >= end){
+            if(start == end) return arr[start];
+            else return 0;
+        }
+        
+        if(dp[start][end] != -1) return dp[start][end];
+        // we have to pick the element
+        
+        long chooseFirst = arr[start] + Math.min(getMaxProfit(start+2, end, arr, dp), getMaxProfit(start+1, end-1, arr, dp));
+        long chooseLast = arr[end] + Math.min(getMaxProfit(start+1, end-1,arr, dp), getMaxProfit(start, end-2, arr, dp));
+        
+        return dp[start][end] =  Math.max(chooseFirst, chooseLast);
+        
+    }
+    
+}

@@ -1,6 +1,7 @@
 Problem : https://practice.geeksforgeeks.org/problems/next-larger-element-1587115620/1
 
-Note : we traverse array from n-2 to 0
+Note : we traverse array from n-2 to 0 and we pushing the array elements into the stack sometimes we need to pusht he index as well, so its depend on the scenario.
+
 public static long[] nextLargerElement(long[] arr, int n)
     { 
     

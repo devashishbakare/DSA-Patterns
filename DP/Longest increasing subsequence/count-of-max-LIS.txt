@@ -1,0 +1,36 @@
+problem link : https://leetcode.com/problems/number-of-longest-increasing-subsequence/
+
+Note : we have used the count array for making the count how many times, we have same count of LIS
+code :
+class Solution {
+    public int findNumberOfLIS(int[] nums) {
+        int n = nums.length;
+        int dp[] = new int[n];
+        int count[] = new int[n];
+        int max = 0;
+        if(n == 0) return 0;
+        if(n == 1) return 1;
+        
+       
+        for(int curr = 0; curr < n; curr++){
+            dp[curr] = 1;
+            count[curr] = 1;
+            for(int prev = 0; prev < curr; prev++){
+                if(nums[curr] > nums[prev] && dp[curr] < 1 + dp[prev]){
+                    dp[curr] = 1 + dp[prev];
+                    count[curr] = count[prev];
+                }else if( nums[curr] > nums[prev] && dp[curr] == 1 + dp[prev]){
+                    count[curr] += count[prev];
+                }
+            }
+            max = Math.max(dp[curr], max);            
+        }
+      
+        int ans = 0;
+        for(int i = 0; i < n; i++){
+            if(dp[i] == max) ans += count[i];
+        }
+        
+        return ans;
+    }
+}

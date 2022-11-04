@@ -1,0 +1,107 @@
+problem link : https://practice.geeksforgeeks.org/problems/egg-dropping-puzzle-1587115620/1?utm_source=gfg&utm_medium=article&utm_campaign=bottom_sticky_on_article
+
+Memoization : 
+
+class Solution 
+{
+    //Function to find minimum number of attempts needed in 
+    //order to find the critical floor.
+    static int eggDrop(int egg, int k) 
+	{
+	  int dp[][] = new int[egg+1][k+1];
+	  for(int row[] : dp) Arrays.fill(row, -1);
+	  
+	  return eggDropPuzzle(egg, k, dp);
+	    
+	}
+	
+	
+	static int eggDropPuzzle(int egg, int k, int dp[][]) 
+	{
+	    //baase case 
+	    //if there is only 0 flore then we can't do anything 
+	    //if there is only one floore then we have to try that one flore
+	    if(k == 0 || k == 1) return k;
+	    
+	    //if there is only one egg, the we have to exlore all the floores
+	    if(egg == 1 ) return k;
+	    
+	    //taking varibale for worst case
+	    int worstCase = 0;
+	    int ans = Integer.MAX_VALUE;
+	    
+	    if(dp[egg][k] != -1) return dp[egg][k];
+	    
+	    //Now we have to try all the flores
+	    for(int floor = 1; floor <= k ; floor++){
+	        //if egg berak then we have to try below flore again
+	        int eggBreak = eggDropPuzzle(egg-1, floor-1, dp);
+	        //if egg not break then we have to keep the same egg and try remaining floores
+	        int notBreak = eggDropPuzzle(egg, k-floor, dp);
+	        
+	        worstCase = Math.max(eggBreak, notBreak);
+	        
+	       //if worse case is min than we have then update the min
+	       if(worstCase < ans){
+	           ans = worstCase;
+	       }
+	        
+	    }
+	    return dp[egg][k] = 1 + ans;
+	    
+	}
+	
+	
+	
+}
+
+Tabulation :
+
+class Solution 
+{
+    //Function to find minimum number of attempts needed in 
+    //order to find the critical floor.
+    static int eggDrop(int negg, int nk) 
+	{
+    	  int dp[][] = new int[negg+1][nk+1];
+    	  
+          //lets convert this into the tabulation
+            
+            //base case
+            
+            for(int i = 1; i <= negg; i++){
+                dp[i][0] = 0;
+                dp[i][1] = 1;
+            }
+            
+            for(int i = 0 ; i <= nk ; i++){
+                dp[1][i] = i;
+            }
+            
+            for(int egg = 2; egg <= negg ; egg++){
+                for(int k = 2; k <= nk ; k++){
+                    int worstCase = 0;
+    	            int ans = Integer.MAX_VALUE;
+                    for(int floor = 1; floor <= k ; floor++){
+                        
+                        int eggBreak = dp[egg-1][floor-1];
+                    
+                        int notBreak = dp[egg][k-floor];
+    
+                        worstCase = Math.max(eggBreak, notBreak);
+    
+                       if(worstCase < ans){
+                           ans = worstCase;
+                       }
+    
+                    }
+                    dp[egg][k] = 1 + ans;
+                }
+            }
+    	 return dp[negg][nk];
+	    
+	}
+	
+	
+	
+}

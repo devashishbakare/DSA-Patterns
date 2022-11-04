@@ -1,0 +1,51 @@
+problem link : https://practice.geeksforgeeks.org/problems/eventual-safe-states/1?
+
+Note : Here we have reverese the graph and then we do the topo,
+while encontering the problem you could see the indegree and outdegree in statement then onece think in topo.
+and check whether reversing the graph could help or Note
+
+code :
+
+ List<Integer> eventualSafeNodes(int V, List<List<Integer>> adj) {
+
+        //first we need to reverse the graph and then we can do the topo sort 
+        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+        for(int i = 0 ; i < V; i++) graph.add(new ArrayList<>());
+        int indegree[] = new int[V];
+        for(int i = 0 ; i < V; i++){
+            List<Integer> nbrs = adj.get(i);
+            for(int nbr : nbrs){
+                graph.get(nbr).add(i);
+            }
+           
+        }
+        
+        for(int i = 0; i < V; i++){
+            for(int nbr : graph.get(i)){
+                indegree[nbr]++;
+            }
+        }
+        
+        
+        List<Integer> ans = new ArrayList<>();
+        Queue<Integer> qu = new LinkedList<>();
+        for(int i = 0; i < V; i++){
+            if(indegree[i] == 0) qu.add(i);
+        }
+        
+        while(qu.size() > 0 ){
+            
+            int node = qu.remove();
+            ans.add(node);
+        
+            ArrayList<Integer> nbrs = graph.get(node);
+            
+            for(int nbr : nbrs){
+                if(--indegree[nbr] == 0)qu.add(nbr);
+            }
+        }    
+        
+        Collections.sort(ans);
+        return ans;
+        
+    }

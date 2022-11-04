@@ -1,0 +1,47 @@
+problem link : https://leetcode.com/problems/longest-increasing-subsequence/
+
+Note :
+first we have to initialize the dp array by 1 : coz every element is itself in subsequence
+then comparing each element with the previous one update, if nums[ind] > nums[prev]
+
+//also in this code there is logic of printing the LIS with the help of path array
+
+Code :
+
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int n = nums.length;
+        int dp[] = new int[n];
+        Arrays.fill(dp, 1);
+        
+        int path[] = new int[n];
+    
+        int lastIndex = 0;
+        int maxLength = 1;
+        for(int ind = 0; ind < n; ind++){
+            path[ind] = ind;
+            for(int prev = 0; prev < ind; prev++){
+                
+                if(nums[ind] > nums[prev] && 1 + dp[prev] > dp[ind]){
+                    dp[ind] = 1 + dp[prev];
+                    path[ind] = prev;
+                }
+                
+            }
+            //maxLength = Math.max(dp[ind], maxLength);
+            if(maxLength < dp[ind]){
+                maxLength = dp[ind];
+                lastIndex = ind;
+            }
+        }
+        
+        
+        System.out.println(nums[lastIndex]);
+        while(lastIndex != path[lastIndex]){
+            lastIndex = path[lastIndex];
+            System.out.println(nums[lastIndex]);
+        }
+        
+        return maxLength;
+    }
+}

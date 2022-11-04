@@ -1,0 +1,41 @@
+problem link : https://practice.geeksforgeeks.org/problems/topological-sort/1
+
+Note : Here we are using the stack to keep the track of the order
+code :
+
+static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
+    {
+        Stack<Integer> stack = new Stack();
+        int ans[] = new int[V];
+        boolean vis[] = new boolean[V];
+        
+        for(int i = 0; i < V ; i++){
+            if(vis[i] == false) {
+                dfs(adj, stack, vis, i);
+            }
+        }
+        
+        int ind = 0;
+        while(stack.size() > 0 ){
+            ans[ind++] = stack.pop();
+        }
+        
+        return ans;
+    }
+    
+    public static void dfs(ArrayList<ArrayList<Integer>> adj, Stack<Integer> stack, boolean vis[], int src){
+        
+        vis[src] = true;
+        
+        ArrayList<Integer> nbrs = adj.get(src);
+        
+        for(int nbr : nbrs){
+            if(vis[nbr] == false){
+                dfs(adj, stack, vis, nbr);
+            }
+        }
+        
+        
+        stack.push(src);
+    }
+

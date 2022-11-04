@@ -1,0 +1,77 @@
+problem link : https://leetcode.com/problems/longest-palindrome-by-concatenating-two-letter-words/
+
+Using 2D matrix O(N)
+Note : 
+getting index count of any char from 0-25 using ch-'a';
+If same reverse of any string is avalable then we can make 4 length palindrome
+if reverse is not there then we can use the that element only once in middle
+class Solution {
+    public int longestPalindrome(String[] words) {
+     
+        int store[][] = new int[26][26];
+        int ans = 0;
+        for(int i = 0; i < words.length; i++){
+            int ind1 = words[i].charAt(0)-'a';
+            int ind2 = words[i].charAt(1)-'a';
+            
+            if(store[ind2][ind1] > 0){
+                ans += 4;
+                store[ind2][ind1]--;
+            }else{
+                store[ind1][ind2]++;
+            }
+        }
+        
+        for(int i = 0; i < 26; i++){
+            if(store[i][i] > 0){
+                ans += 2;
+                break;
+            }
+        }
+        return ans;
+    }
+}
+
+Using HashMap
+same logic but we are using the hashmap to store the count of repeating element
+
+
+class Solution {
+    public int longestPalindrome(String[] words) {
+     
+        HashMap<String, Integer> map = new HashMap<>();
+        int ans = 0;
+        int pairNotFound = 0;
+        for(String word : words){
+            //if we have the same char in word
+            if(map.containsKey(word) == false) map.put(word, 0);
+            if(word.charAt(0) == word.charAt(1)){
+                if(map.get(word) > 0){
+                    ans += 4;
+                    map.put(word, map.get(word)-1);
+                    pairNotFound--;   
+                }else{
+                    map.put(word, 1);
+                    pairNotFound++;
+                }
+            }else{
+                //we could use the stringBuilder as well
+                String reverse = Character.toString(word.charAt(1)) + Character.toString(word.charAt(0));
+                
+                if(map.containsKey(reverse) == true && map.get(reverse) > 0){
+                    ans += 4;
+                    map.put(reverse, map.get(reverse)-1);
+            
+                }else{
+                    map.put(word, map.get(word)+1);
+                    
+                }
+                
+            }
+                
+        }
+        if(pairNotFound > 0 ) ans += 2;
+        
+        return ans;
+    }
+}

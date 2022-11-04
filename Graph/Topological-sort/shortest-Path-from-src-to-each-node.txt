@@ -1,0 +1,85 @@
+problem link : https://practice.geeksforgeeks.org/problems/shortest-path-in-undirected-graph/1?
+
+Note :
+-Wherever we see there is shortest path we tend to think in way of dikstra algorithem
+-here we have calculated the shortest path but not just for one node to another
+-we can calulate shortest path from any vertex to all the other vertex
+-this is also called multi source/multi destination graph problem.
+
+code:
+
+class Pair{
+    int dest;
+    int wt;
+    
+    public Pair(int dest, int wt){
+        this.dest = dest;
+        this.wt = wt;
+    }
+}
+//User function Template for Java
+class Solution {
+
+	public int[] shortestPath(int N,int M, int[][] edges) {
+		//first we need to create the Arraylist of edges with the wt
+		// then we have to do the topo sort 
+		//then we have calculate the shortest path
+		
+		ArrayList<ArrayList<Pair>> graph = new ArrayList<>();
+		
+		for(int i = 0; i < N; i++){
+		    graph.add(new ArrayList<>());
+		}
+		
+		for(int i = 0; i < edges.length; i++){
+		    graph.get(edges[i][0]).add(new Pair(edges[i][1], edges[i][2]));
+		}
+		
+		int vis[] = new int[N];
+		Stack<Integer> stack = new Stack<>();
+		for(int i = 0; i < N ; i++){
+		    if(vis[i] == 0){
+		        topo(i, vis, stack, graph);
+		    }
+		}
+		
+		int distance[] = new int[N];
+		Arrays.fill(distance, (int)1e9);
+		distance[0] = 0;
+		while(stack.size() > 0 ){
+		    
+		    int node = stack.pop();
+		    ArrayList<Pair> nbrs = graph.get(node);
+		    
+		    for(Pair pair : nbrs){
+		        if(distance[node] + pair.wt < distance[pair.dest]){
+		            distance[pair.dest] = distance[node] + pair.wt;
+		        }
+		    }
+		 
+		}
+		for(int i = 0; i < N; i++){
+		    if(distance[i] == (int)(1e9)){
+		        distance[i] = -1;
+		    }
+		}
+		return distance;
+	}
+	public void topo(int src, int vis[], Stack<Integer> stack, ArrayList<ArrayList<Pair>> graph ){
+	    
+	    vis[src] = 1;
+	    
+	    ArrayList<Pair> nbrs = graph.get(src);
+	    
+	    for(Pair pair : nbrs){
+	        if(vis[pair.dest] == 0 ){
+	            topo(pair.dest, vis, stack, graph);
+	        }
+	    }
+	    
+	    stack.push(src);
+        	    
+	}
+	
+	
+}

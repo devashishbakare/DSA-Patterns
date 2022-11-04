@@ -1,0 +1,41 @@
+problem link : https://leetcode.com/problems/maximum-length-of-a-concatenated-string-with-unique-characters/
+
+Note : question is not that straight forward so try to think about edge case 
+1) No reapeated allowed even other strings
+code :
+class Solution {
+    public int maxLength(List<String> arr) {
+
+        List<String> res = new ArrayList<>();
+        //creating empty string first
+        res.add("");
+        //traversing through all stings
+        for (String str : arr) {
+            //check wheather this string has repeated elements or not
+            if (checkRepeatation(str,new HashSet<>()) == true) continue;
+            //create the list for curring sting combination with other possible ans
+            List<String> resList = new ArrayList<>();
+            //traversing from all the res list so that we can do the contatination and check whether is exist before or not, if not then add, if yes then continue
+            for (String candidate : res) {
+                String temp = candidate + str;
+                if (checkRepeatation(temp, new HashSet<>()) == false) resList.add(temp);
+            }
+            res.addAll(resList);
+        }
+        //returning a stirng that has the longest in length
+        //Note : all strings are unique in nature
+        int ans = 0;
+        for (String str : res) ans = Math.max(ans, str.length());
+        return ans;
+    }
+    
+    //cheacking string has repeating element or not
+    public boolean checkRepeatation(String str, HashSet<Character> set){
+        if(str.length() > 26) return true;
+        for(int i = 0; i < str.length(); i++){
+            if(set.contains(str.charAt(i))) return true;
+            else set.add(str.charAt(i));
+        }
+        return false;
+    }
+}

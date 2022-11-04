@@ -19,7 +19,7 @@ public static int aggressiveCows(ArrayList<Integer> stalls, int k)
             if(isPossible(stalls, k, mid)== true){
                 ans = mid;
                 low = mid+1;
-                //Note : here condition will chagne according the requirement
+                //Note : here condition will change according the requirement
             }else{
                 high = mid-1;
             }

@@ -1,0 +1,99 @@
+problem link : https://practice.geeksforgeeks.org/problems/alien-dictionary/1
+
+Note : Here we are creating a graph of int even though we have the char 
+how did we create it?
+a = 0, b = 0 ....... z = 25
+so to get the index of any alphabate, do following
+int ind = b - 'a';
+
+To get the char back do following
+
+char ch = (char)a + (int)('a');
+
+
+code :
+
+class Solution
+{
+    public String findOrder(String [] dict, int N, int K)
+    {
+       ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+        
+        for(int i = 0; i < K; i++){
+            graph.add(new ArrayList<>());
+        }
+        
+        for(int i = 0; i < dict.length-1; i++){
+            
+            String s1 = dict[i];
+            String s2 = dict[i+1];
+            compareAndCreate(s1, s2, graph);
+        }
+      
+        
+       int arr[] = getTopo(K, graph);
+       
+       StringBuilder sb = new StringBuilder();
+       
+       for(int i = 0; i < arr.length; i++){
+           char ch = (char)(arr[i]+(int)('a'));
+           sb.append(ch);
+       }
+       
+       return sb.toString();
+        
+    }
+    
+    public void compareAndCreate(String s1, String s2, ArrayList<ArrayList<Integer>> graph){
+        
+        int len = Math.min(s1.length(), s2.length());
+        
+        for(int i = 0; i < len; i++){
+            if(s1.charAt(i) != s2.charAt(i)){
+                graph.get(s1.charAt(i) - 'a').add(s2.charAt(i)-'a');
+                return;
+            }
+        }
+    }
+    
+    public int[] getTopo(int V, ArrayList<ArrayList<Integer>> adj){
+        
+        int ans[] = new int[V];
+        Queue<Integer> qu = new LinkedList<>();
+        int inDegree[] = new int[V];
+        
+        for(int i = 0; i< V; i++){
+           ArrayList<Integer> nbrs = adj.get(i);
+           for(int nbr : nbrs){
+               inDegree[nbr]++;
+           }
+        }
+        
+        for(int i = 0; i < V ; i++){
+            if(inDegree[i] == 0){
+                qu.add(i);
+            }
+        }
+        
+        int ind = 0;
+        while(qu.size() > 0 ){
+            
+            int node = qu.remove();
+            ans[ind++] = node;
+            
+            ArrayList<Integer> nbrs = adj.get(node);
+            
+            for(int nbr : nbrs){
+                if(--inDegree[nbr] == 0){
+                    qu.offer(nbr);
+                }
+            }
+            
+        }
+        
+        return ans;
+    }
+    
+    
+    
+}
