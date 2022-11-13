@@ -1,0 +1,42 @@
+This problem come in leetcode contest
+link : https://leetcode.com/contest/weekly-contest-318/problems/maximum-sum-of-distinct-subarrays-with-length-k/
+
+
+Note : this is also the variable size window problem, but here we are not playing with the indexes, so are playing with element
+//so this is little bit different than other, but core is the same
+
+Code :
+
+class Solution {
+    public long maximumSubarraySum(int[] nums, int k) {
+        
+        HashSet<Integer> set = new HashSet<>();
+        int size = nums.length;
+        long sum =0;
+        long max = 0;
+        int i = 0;
+        //j is right side and i is left side of the window
+        for(int j = 0; j < size; j++){
+            
+            //if the window size is greater than the k then remove element/sum and do(left++/i++) or move wodow to left;
+            while(i < j && (set.contains(nums[j])||set.size() >= k)){
+                sum -=nums[i];
+                set.remove(nums[i]);
+                i++;
+            }
+            
+            //push until the window size is < k
+            sum += nums[j];
+            set.add(nums[j]);
+            
+            //if window size == k then get the result that we need to expexted;
+            if(set.size() == k){
+                max = Math.max(max, sum);
+            }
+                
+            
+        }
+    return max;
+    
+    }
+}

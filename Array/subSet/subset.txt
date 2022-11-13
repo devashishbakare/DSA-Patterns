@@ -1,0 +1,34 @@
+import java.util.ArrayList;
+
+public class subSet {
+
+    public static void main(String args[]){
+
+        int arr[] = {1, 2, 3};
+        int n = arr.length;
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+        for (int i = 0; i < (1<<n); i++){
+            ArrayList<Integer> list = new ArrayList<>();
+            for (int j = 0; j < n; j++){
+                if ((i & (1 << j)) > 0){
+                    list.add(arr[j]);
+                }
+            }
+            ans.add(list);
+        }
+
+        print(ans);
+    }
+    public static void print(ArrayList<ArrayList<Integer>> store){
+
+        int size = store.size();
+
+        for(int i = 0; i <size; i++){
+            ArrayList<Integer>list = store.get(i);
+            for(int j : list){
+                System.out.print(j + " ");
+            }
+            System.out.println();
+        }
+    }
+}

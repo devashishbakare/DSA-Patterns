@@ -1,0 +1,31 @@
+problem link : https://leetcode.com/problems/substrings-of-size-three-with-distinct-characters/
+
+Pattern: fixed window size 
+code :
+
+class Solution {
+    public int countGoodSubstrings(String s) {
+        //we have the string and we have the size of pattern then you can search accordingly
+        
+        int size = s.length();
+        if(size == 0) return 0;
+        int count = 0;
+        for(int i = 0, j = 2; j < size; i++, j++){
+            if(search(i, j, s))count++;
+        }
+        
+        return count;
+    }
+    
+    public boolean search(int start, int end, String s){
+        
+        char a = s.charAt(start);
+        char b = s.charAt(start+1);
+        char c = s.charAt(end);
+        
+        if(a != b && b != c && a != c ) return true;
+        
+        return false;
+    }
+    
+}
