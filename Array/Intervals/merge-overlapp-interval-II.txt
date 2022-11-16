@@ -1,0 +1,31 @@
+problem link : https://leetcode.com/problems/merge-intervals/
+
+Logic : 
+-sort the array according to start
+-then check for overlap
+-if overlap then update the value
+
+Note : we have use LinkedList here and toArray() methods, it makes, task easy
+
+solution: 
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        
+        int size = intervals.length;
+        Arrays.sort(intervals, (a, b) -> a[0]-b[0]);
+        
+        LinkedList<int[]> store = new LinkedList<>();
+        
+        for(int interval[] : intervals){
+            
+            if(store.isEmpty() || store.getLast()[1] < interval[0]){
+                store.add(interval);
+            }else{
+                store.getLast()[1] = Math.max(store.getLast()[1], interval[1]);
+            }
+            
+        }
+        
+        return store.toArray(new int[store.size()][]);
+    }
+}

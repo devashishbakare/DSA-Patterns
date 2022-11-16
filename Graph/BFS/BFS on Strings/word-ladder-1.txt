@@ -41,7 +41,7 @@ class Solution
        
        qu.add(new Pair(startWord, 1));
        vis.add(startWord);
-       int level = 1;
+      
        while(qu.size() > 0){
            
            Pair pair = qu.remove();

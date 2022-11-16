@@ -1,0 +1,44 @@
+problem Link : https://leetcode.com/problems/count-complete-tree-nodes/
+
+Note : complete binary tree is tree that is perfect tree but accept last level
+
+To get the perfect tree : (2^HeightOftree-1) || (1<<h)-1;
+
+code : 
+
+class Solution {
+    public int countNodes(TreeNode root) {
+        
+        if(root == null) return 0;
+        
+        int leftHeight = getLH(root);
+        int rightHeight = getRH(root);
+        
+        if(leftHeight == rightHeight) return (1 << leftHeight)-1;
+        
+        int left = countNodes(root.left);
+        int right = countNodes(root.right);
+        return 1 + left + right;
+    }
+    
+    public int getLH(TreeNode root){
+        int count=0;
+        
+        while(root != null){
+            count++;
+            root = root.left;
+        }
+        return count;
+    }
+    
+    public int getRH(TreeNode root){
+        int count=0;
+        
+        while(root != null){
+            count++;
+            root = root.right;
+        }
+        return count;
+    }
+    
+}

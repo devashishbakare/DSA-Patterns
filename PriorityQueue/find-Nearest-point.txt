@@ -1,0 +1,97 @@
+problem link : https://leetcode.com/problems/k-closest-points-to-origin/
+
+Logic :
+
+-This is pattern of solving a k size closest/farthest problems.
+-Basically we have to keep the track of k smallest/largest;
+
+Note : 
+-see how we have use the disatnce method here, we make is static.
+-if you don't want to make that, then you have to make pair class inside solution class
+-we used comparble to sort on the basis of maximum distance, but to calculate that we are doing like,
+    public int compareTo(Pair p){
+        return Integer.compare(Pair.distance(p), Pair.distance(this));
+    }
+-
+
+
+Time complexity : O(NlogK)
+
+class Pair implements Comparable<Pair>{
+    public int x;
+    public int y;
+    
+    public Pair(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+    
+    public int compareTo(Pair p){
+        return Integer.compare(Pair.distance(p), Pair.distance(this));
+    }
+    
+    public static int distance(Pair p){
+        int xx = p.x;
+        int yy = p.y;
+        
+        return xx*xx + yy*yy;
+    }
+    
+}
+
+
+class Solution {
+    public int[][] kClosest(int[][] points, int k) {
+        
+        int size = points.length;
+        if(size == 0) return new int[][]{};
+        
+        PriorityQueue<Pair> pq = new PriorityQueue<>();
+        
+        for(int point[] : points){
+            
+            int x = point[0];
+            int y = point[1];
+            
+            Pair pair = new Pair(x, y);
+            if(pq.size() < k){
+             pq.add(pair);   
+            }
+            else{
+                
+                Pair pqtop = pq.peek();
+                if(Pair.distance(pqtop) >  Pair.distance(pair)){
+                    pq.remove();
+                    pq.add(pair);
+                }
+                
+            }
+        }
+        
+        int ans[][] = new int[pq.size()][2];
+        int i = 0;
+        while(pq.size() > 0){
+            
+            Pair pair = pq.remove();
+            int arr[] = {pair.x, pair.y};
+            ans[i++]= arr;
+            
+        }
+        
+        return ans;
+        
+        
+        
+    }
+}
+
+Time complexity : NlogN
+
+code :
+class Solution {
+    public int[][] kClosest(int[][] points, int k) {
+     
+        Arrays.sort(points, (a,b) -> a[0]*a[0] + a[1]*a[1] - b[0]*b[0] - b[1]*b[1]);
+        return Arrays.copyOfRange(points, 0, k);   
+    }
+}

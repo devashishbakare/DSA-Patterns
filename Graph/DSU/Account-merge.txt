@@ -1,0 +1,101 @@
+problem link : https://leetcode.com/problems/accounts-merge/
+
+Note : here we are dealling with index, what if you want to store the integer and string with together,
+we can use the array[] -> holding List<String> and index will work as integer
+ArrayList<String> store[] = new ArrayList[size];
+
+code :
+
+class DSU{
+    
+    public int parent[];
+    public int height[];
+    
+    public DSU(int n ){
+        parent = new int[n];
+        height = new int[n];
+        Arrays.fill(parent, -1);
+        Arrays.fill(height, 1);
+    }
+    
+    public int find(int node){
+        if(parent[node] == -1){
+            return node;
+        }
+        return parent[node] = find(parent[node]);
+    }
+    
+    public void union(int x, int y){
+        int node1 = find(x);
+        int node2 = find(y);
+        
+        if(node1 != node2){
+            
+            if(height[node1] > height[node2]){
+                parent[node2] = node1;
+            }else if(height[node1] < height[node2]){
+                parent[node1] = node2;
+            }else{
+                parent[node1] = node2;
+                height[node2]++;
+            }
+            
+        }
+        
+        return;
+    }
+    
+    
+}
+
+
+class Solution {
+    public List<List<String>> accountsMerge(List<List<String>> accounts) {
+        
+        HashMap<String, Integer> map = new HashMap<>();
+        List<List<String>> ans = new ArrayList<>();
+
+        int size = accounts.size();
+        DSU dsu = new DSU(size);        
+        for(int i = 0; i < size; i++){
+            List<String> list = accounts.get(i);
+            for(int j = 1 ; j < list.size(); j++){
+                String email = list.get(j);
+                if(map.containsKey(email) == false){
+                    map.put(email, i);
+                }else{
+                    dsu.union(i, map.get(email));
+                }
+            }
+        }
+        
+        ArrayList<String> store[] = new ArrayList[size];
+        for(int i = 0; i < size; i++) store[i] = new ArrayList<>();
+        
+        
+        for(Map.Entry<String, Integer> it : map.entrySet()){
+            
+            String email = it.getKey();
+            int parent = dsu.find(it.getValue());
+            
+            store[parent].add(email);
+            
+        }
+        
+        for(int i =0 ; i < size; i++){
+            
+            if(store[i].size() == 0) continue;
+            Collections.sort(store[i]);
+            ArrayList<String> list = new ArrayList<>();
+            
+            list.add(accounts.get(i).get(0));
+            for(String email : store[i]){
+                list.add(email);
+            }
+            ans.add(list);
+        }
+        
+        return ans;
+        
+    }
+}

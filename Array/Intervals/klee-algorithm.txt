@@ -1,0 +1,20 @@
+-Given starting and ending positions interval in line.
+-the task is to take the union of all given interval and find length covered by these interval.
+
+Interval[] = {{2, 5}, {4, 8}, {9, 12}}
+
+2-5-4-8 -> overlap so -> 2-8 are streight line.
+interval become :
+{2, 8}, {9,12}
+total distance = 9(6+3)
+6 = 8-2
+3 = 12-9
+
+
+Algorithm:
+
+- consider every element as indivisually start interval : false, end : true
+- sort in ascending order
+- take result if count > 0 : result ? arr[i]-arr[i-1];
+- decrement the count if found the ending point(true)
+- increment the count if found the starting point(false)

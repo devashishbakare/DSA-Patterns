@@ -1,0 +1,46 @@
+problem link : https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/
+
+
+Logic :
+-you need to find out overlap intervals min last point;
+minEnd = Math.min(minEnd, point[1]);
+
+-this logic we might used in this problem.
+but there are some problem where we need overllap inverval points
+
+below is the template/formula you can think of
+    - Merge Two Intervals I1 and I2 :
+
+        startOfMergedInterval = Math.min(start of I1 , start of I2); 
+        endOfMergedInterval = Math.max(end of I1 , end of I2l);
+
+    - To find out the intersection of an interval use the following formula
+
+        S1 = max(start of a , start of b)
+        S2=min(endofa ,endofb)
+        
+        if(s1 <= s2) then there is an interval from s1 to s2.
+
+Code :
+
+public int findMinArrowShots(int[][] points) {
+        
+        int size = points.length;
+        if(size == 0) return size;
+        
+        int minEnd = Integer.MAX_VALUE;
+        Arrays.sort(points, (a, b)-> a[0]-b[0]);
+        int count = 0;
+        for(int point[] : points){
+            
+            if(point[0] > minEnd){
+                count++;
+                minEnd = point[1];
+            }else{
+                minEnd = Math.min(minEnd, point[1]);
+            }
+            
+        }
+        return count +1;
+        
+    }

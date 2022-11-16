@@ -1,0 +1,44 @@
+problem link : https://leetcode.com/problems/insert-interval/
+
+Logic :
+
+1) if current interval in not overlapping with the newInterval then add in ans.
+2) if currint interval in overlapping with the newInterval then get the range(min, max)
+3) update the newInterval coz : we are comparing to the newInterval only
+4) if current inteval start is greater than the newInterval end then we have to add first newInterval and then current interval.
+
+
+
+code :
+
+class Solution {
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+    ¯
+        int size = intervals.length;
+        if(size == 0) return new int[][]{newInterval};
+       
+        List<int[]> store = new ArrayList<>();
+        
+        for(int interval[] : intervals){
+            
+            if(newInterval == null || interval[1] < newInterval[0]){
+                store.add(interval);
+            }
+            else if( interval[0] > newInterval[1]){
+                store.add(newInterval);
+                store.add(interval);
+                newInterval = null;
+            }else{
+                newInterval[0] = Math.min(interval[0], newInterval[0]);
+                newInterval[1] = Math.max(interval[1], newInterval[1]);
+            }
+            
+            
+        }
+        
+        if(newInterval != null) store.add(newInterval);
+        
+        
+        return store.toArray(new int[store.size()][2]);
+    }
+}

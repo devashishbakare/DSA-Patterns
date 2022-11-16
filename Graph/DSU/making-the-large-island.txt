@@ -24,9 +24,8 @@ class DSU{
         if(parent[node] == -1){
             return node;
         }
-        
-        int temp = find(parent[node]);
-        return parent[node] = temp;
+        //here we are doing the actual path compression
+        return (parent[node] = findRoot(parent[node]));
     }
     
     

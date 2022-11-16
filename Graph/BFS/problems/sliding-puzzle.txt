@@ -5,7 +5,7 @@ problem link : https://leetcode.com/problems/sliding-puzzle/
         //and we having the way to swap it in 4 directions
         //we need to tell how mnay levels of swappint does it required.
             
-        //first of all we need to explore all the possible combination of swapint and then we 
+        //first of all we need to explore all the possible combination of swaping and then we 
         //we have to tell this is the one and it required a this level of swappig
         
         //logic : 

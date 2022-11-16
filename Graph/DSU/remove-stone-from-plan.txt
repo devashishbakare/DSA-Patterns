@@ -1,0 +1,112 @@
+problem link : https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/
+
+Note : keep coutious while passing size to the DSU
+code :
+
+class DSU{
+    
+    public int height[];
+    public int parent[];
+    
+    public DSU(int n){
+        height = new int[n];
+       
+        parent = new int[n];
+        
+        Arrays.fill(height, 1);
+        Arrays.fill(parent, -1);
+    }
+    
+    public int find(int node){
+        if(parent[node] == -1){
+            return node;
+        }
+        
+        //path compression
+        return parent[node] = find(parent[node]);
+    }
+    
+    
+    public void union(int node1, int node2){
+        
+        int ra = find(node1);
+        int rb = find(node2);
+        if(ra != rb)
+        {
+            if(height[ra] < height[rb])
+            {
+                parent[ra] = rb; 
+            }
+            else if(height[rb] < height[ra])
+            {
+                parent[rb] = ra;
+            }
+            else
+            {
+                parent[rb] = ra;
+                height[ra]++;  
+            }
+        }
+        return;
+
+    }
+    
+    
+}
+
+class Solution {
+    public int removeStones(int[][] stones) {
+        
+        int n = stones.length;
+        int maxRow = 0;
+        int maxCol = 0;
+        for(int stone[] : stones){
+            maxRow = Math.max(maxRow, stone[0]);
+            maxCol = Math.max(maxCol, stone[1]);
+        }
+        
+        DSU dsu = new DSU(maxRow + maxCol+2);
+        Map<Integer, Integer> map = new HashMap<>();
+        
+        for(int stone[] : stones){
+            
+            int rowNode = stone[0];
+            int colNode = stone[1] + maxRow +1;
+            
+            dsu.union(rowNode, colNode);
+            map.put(rowNode, 1);
+            map.put(colNode, 1);
+                
+        }
+        //System.out.println(map);
+        int count= 0;
+        
+        for(Map.Entry<Integer, Integer> it : map.entrySet()){
+            
+            int key = it.getKey();
+            if(dsu.find(key) == key)count++;
+        }
+        
+        
+        return n - count;
+        
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
