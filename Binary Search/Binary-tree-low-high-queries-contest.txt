@@ -1,0 +1,67 @@
+problem link : https://leetcode.com/contest/weekly-contest-320/problems/closest-nodes-queries-in-a-binary-search-tree/
+
+Note : given a queries, you need to find out lower and higher value if key is not present.
+simply use the binary search in build method, but see the edge cases, those are important
+
+code : 
+
+class Solution {
+    public List<List<Integer>> closestNodes(TreeNode root, List<Integer> queries) {
+        
+        List<List<Integer>> ans = new ArrayList<>();
+        if(root == null) return ans;
+        
+        ArrayList<Integer> order = new ArrayList<>();
+        
+        in(root, order);
+        
+        int size = order.size();
+        int qsize = queries.size();
+      
+         for(int i = 0; i < qsize; i++){
+            
+             int val = queries.get(i);
+             int ind = Collections.binarySearch(order, val);
+             List<Integer> list = new ArrayList<>();
+             
+             if(ind >= 0){
+                 list.add(val);
+                 list.add(val);
+                 ans.add(list);
+                 continue;
+             }else{
+                 int index = Math.abs(ind)-1;
+                 if(index == 0){
+                     list.add(-1);
+                     list.add(order.get(0));
+                     ans.add(list);
+                     continue;
+                 }
+                 else if(index == size){
+                     list.add(order.get(index-1));
+                     list.add(-1);
+                     ans.add(list);
+                     continue;
+                 }else{
+                     list.add(order.get(index-1));
+                     list.add(order.get(index));
+                     ans.add(list);
+                     continue;
+                 }
+             }
+         }
+        return ans;
+    }
+    
+    public void in(TreeNode root, ArrayList<Integer> order){
+        
+        if(root == null) return;
+        
+        in(root.left, order);
+        order.add(root.val);
+        in(root.right, order);
+        return;
+    }
+    
+    
+}

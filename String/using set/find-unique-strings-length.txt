@@ -9,7 +9,7 @@ class Solution {
         List<String> res = new ArrayList<>();
         //creating empty string first
         res.add("");
-        //traversing through all stings
+        //traversing through all strings
         for (String str : arr) {
             //check wheather this string has repeated elements or not
             if (checkRepeatation(str,new HashSet<>()) == true) continue;

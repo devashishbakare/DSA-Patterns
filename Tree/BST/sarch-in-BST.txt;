@@ -1,0 +1,24 @@
+problem link : https://leetcode.com/problems/search-in-a-binary-search-tree/
+
+Note : if we found the key, returning its root is important, hence, every time making a call, important to write return statement.
+
+code:
+class Solution {
+    public TreeNode searchBST(TreeNode root, int key) {
+     
+        if(root == null) return null;
+        
+        //if key found then return root;
+        if(root.val == key) return root;
+        
+        //in bst we can move like
+        
+        if(root.val > key){
+            //we want to return the root, so when either you return null, or key root, hence writting return statement here is must
+            return searchBST(root.left, key);
+        }else{
+            return searchBST(root.right, key);
+        }
+        
+    }
+}

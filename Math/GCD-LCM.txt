@@ -1,0 +1,35 @@
+Problem link : https://leetcode.com/contest/weekly-contest-319/
+
+Note : 
+ LCM(a, b) * GCD(a, b) = a * b;
+ Now, to get lcm of two number
+    LCM -> a * b / gcd(a, b);
+
+ Code :
+
+ class Solution {
+    public int subarrayLCM(int[] arr, int k) {
+        
+        int size = arr.length;
+        int lcm = 0;
+        int count = 0;
+        
+        for(int i = 0; i < size; i++){
+            lcm = arr[i];
+            if(lcm == k) count++;
+            for(int j = i + 1; j < size; j++){
+                
+                int gcdVal = gcd(lcm, arr[j]);
+                
+                lcm = (lcm * arr[j])/gcdVal;
+                if(lcm > k) break;
+                if(lcm == k) count++;
+                
+            }
+        }
+        return count;
+    }
+    public int gcd(int a, int b){
+        return b == 0 ? a : gcd(b, a%b);
+    }
+}

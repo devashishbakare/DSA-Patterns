@@ -1,0 +1,50 @@
+problem link : https://leetcode.com/problems/increasing-order-search-tree/
+
+
+Note : 
+
+we can the bst in sorted order in we do inorder in it.
+now, question we have create a bst thats in increasing order
+
+logic : 
+
+-Do inorder traversal-> so we can get in sorted order. and we process first left then root and then right,
+-One thing is sure by seeing to the question.
+1) we have to make root.left null 
+2) connect next to root.right;
+We can go extream left by inorder first, then we mark this as our first node.
+we can make that node as prev, and current root as next.
+
+pattern
+
+Inorder traversal.
+We go extream left first, middle part in root, and then root.right
+root.left -> root -> root.right;
+
+inorderFun(root.left);
+root;
+inOrderFun(root.right);
+
+code : 
+
+class Solution {
+    TreeNode head = null;
+    TreeNode prev = null;
+    public TreeNode increasingBST(TreeNode root) {
+        
+        if(root == null) return null;
+        
+        increasingBST(root.left);
+        
+        if(prev != null){
+            root.left = null;
+            prev.right = root;
+        }
+        
+        if(head == null) head = root;
+        
+        prev = root;
+        increasingBST(root.right);
+        return head;
+    }
+}

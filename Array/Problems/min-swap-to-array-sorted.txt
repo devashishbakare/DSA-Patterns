@@ -1,0 +1,60 @@
+problem link : https://practice.geeksforgeeks.org/problems/minimum-swaps/1?utm_source=gfg&utm_medium=article&utm_campaign=bottom_sticky_on_article
+
+minimum number of swap requiered to make array sorted.
+
+class Solution
+{
+    class Pair implements Comparable<Pair>{
+        int ind;
+        int val;
+        
+        public Pair(int ind, int val){
+            this.ind = ind;
+            this.val = val;
+        }
+        
+        public int compareTo(Pair p){
+            return this.val - p.val;
+        }
+        
+    }
+    
+    
+    public int minSwaps(int nums[])
+    {
+        
+        int size = nums.length;
+        if(size == 0 || size == 1) return 0;
+        
+        
+        ArrayList<Pair> sortedArray = new ArrayList<>();
+        
+        for(int i = 0 ; i < size; i++) sortedArray.add(new Pair(i, nums[i]));
+        
+        Collections.sort(sortedArray);
+        int ans = 0;
+        boolean vis[] = new boolean[size];
+       
+        for(int i = 0; i < size; i++){
+            
+            if(vis[i] == true || sortedArray.get(i).ind == i) continue;
+            
+            int count = 0;
+            int j = i;
+            while(vis[j] == false){
+                
+                vis[j] = true;
+                j = sortedArray.get(j).ind;
+                count++;
+            }
+            
+            if(count > 0){
+                ans += count-1;
+            }
+            
+        }
+        
+        return ans;
+         
+    }
+}

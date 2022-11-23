@@ -1,7 +1,9 @@
 problem : https://leetcode.com/problems/next-greater-element-ii/submissions/
 
 //some problem may be swisted a for this pattern but the pattern will be use but need to figrure out where to change
-// read problem statement first then jump to this problem 
+//read problem statement first then jump to this problem 
+//array are the circular list, last elemet, will not have the -1 as ans, so we first add element in stack.
+
 
 class Solution {
     //there is problem for how to get the last element greater 

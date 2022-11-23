@@ -1,0 +1,45 @@
+problem link : https://leetcode.com/problems/perfect-squares/
+
+
+Note : (i*i) -> 0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, and so on, are all square numbers.
+code : 
+class Solution {
+    public int numSquares(int n) {
+      
+        Queue<Integer> qu = new LinkedList<>();
+        Set<Integer> vis = new HashSet<>();
+        
+        //pushing first perfect square
+        qu.add(0);
+        vis.add(0);
+        int count= 0;
+        
+        while( qu.size() > 0 ){
+            
+            int size = qu.size();
+            count++;
+            while(size-- > 0){
+                
+                int lastPerfectSquare = qu.remove();
+                
+                for(int i = 1; i*i <= n; i++){
+                    
+                    int nextPerfectSquare = lastPerfectSquare + (i*i);
+                    if(nextPerfectSquare == n) return count;
+                    
+                    if(nextPerfectSquare > n) break;
+                    
+                    if(vis.contains(nextPerfectSquare) == false){
+                        qu.add(nextPerfectSquare);
+                        vis.add(nextPerfectSquare);
+                    }
+                    
+                }
+                
+            }
+           
+        }
+        
+      return count;
+    }
+}

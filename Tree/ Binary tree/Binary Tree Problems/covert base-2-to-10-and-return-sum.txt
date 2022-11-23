@@ -1,0 +1,29 @@
+problem link : https://leetcode.com/problems/sum-of-root-to-leaf-binary-numbers/
+
+ Note : base 2 to base 10(recursive call)
+        val = val * 2 + root.val;
+
+
+class Solution {
+       public int sumRootToLeaf(TreeNode root) {
+        return dfs(root, 0);
+    }
+
+    public int dfs(TreeNode root, int val) {
+        if (root == null) 
+            return 0;
+        
+        //base 2 to base 10
+        val = val * 2 + root.val;
+        
+        //if leaf node then return val/sum;
+        if (root.left == null && root.right == null) 
+            return val ;
+        else {
+            //what ever sum you got from the root.left / root.right from leaf node return the sum
+            int left = dfs(root.left, val) ;
+            int right = dfs(root.right, val);
+            return left + right; 
+        }
+    }
+}

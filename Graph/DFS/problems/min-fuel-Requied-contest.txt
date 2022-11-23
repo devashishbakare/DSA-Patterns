@@ -1,0 +1,66 @@
+problem link : https://leetcode.com/contest/weekly-contest-320/problems/minimum-fuel-cost-to-report-to-the-capital/
+
+Learnig : 
+1) How we can calculate how many vertex are there after me/tatal how many peoople are connected to me
+2) Why we need dfs here, coz we have to go first leafnode/no child node, then we have to come back and do the calculation
+3) go through once, nice question.
+4) we haven't given a how many n are there, while creating a graph we assumed max vertex will be size of the road edges, as arraylist are dynamic in nature.
+
+Note : dfs go to last first then come to up-> recursion Know!!
+code :
+
+class Solution {
+    public long ans;
+    public long minimumFuelCost(int[][] roads, int seats) {
+        
+        List<List<Integer>> graph = new ArrayList<>();
+        
+        int size = roads.length;
+        if(size == 0 ) return 0;
+        
+       for(int i = 0; i <= size; i++){
+           graph.add(new ArrayList<>());
+       }
+        
+        for(int arr[] : roads){
+            int u = arr[0];
+            int v = arr[1];
+            graph.get(u).add(v);
+            graph.get(v).add(u);
+        }
+         
+        ans = 0;
+        
+        int vertexSize = graph.size();
+        boolean vis[] = new boolean[vertexSize];
+        
+        
+        dfs(graph, vis, 0, seats);
+        
+        return ans;
+        
+    }
+    
+    public long dfs(List<List<Integer>> graph, boolean vis[], int src, int vacancy){
+        
+        vis[src] = true;
+        
+        List<Integer> nbrs = graph.get(src);
+        long connectedVertex = 1;
+        for(int nbr : nbrs){
+            if(vis[nbr] == false){//collecting count of how many vertex are there after me
+                connectedVertex += dfs(graph, vis, nbr, vacancy);
+            }
+        }
+        
+        long fuelRequired = connectedVertex/vacancy;
+        
+        if(connectedVertex%vacancy > 0 ) fuelRequired++;
+        
+        if(src != 0) ans += fuelRequired;
+        
+        return connectedVertex;
+    }
+    
+    
+}

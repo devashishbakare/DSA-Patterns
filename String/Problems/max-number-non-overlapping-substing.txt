@@ -1,0 +1,103 @@
+problem link : https://leetcode.com/problems/maximum-number-of-non-overlapping-palindrome-substrings/
+
+code : Optimal, Naive are below;
+class Solution {
+    public int maxPalindromes(String s, int k) {
+        int ans = 0;
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = i; j < s.length(); j++) {
+                int len = (j - i) + 1;
+                if (len > k + 1) break; // this is the key 
+                if (len >= k && isPalindrome(s, i, j)) {
+                    ans++; i = j;  break;
+                }
+            }
+        }
+        return ans;
+    }
+
+    boolean isPalindrome(String s, int l, int r) {
+        while (l < r) {
+            if (s.charAt(l++) != s.charAt(r--))  return false;
+        }
+        return true;
+    }
+}
+
+Naive : 
+
+-create all substring which is >= k
+-check for pallindrom, if yes, then get there start and end index
+-now solve problem : return how many non overlapping interval are there
+
+class Solution {
+    
+    List<int[]> store = new ArrayList<>();
+    
+    public int maxPalindromes(String s, int k) {
+        
+        int size = s.length();
+        if(k == 0) return 0;
+        if(k == 1) return size;
+        
+        
+        for(int i = 0; i < size; i++){
+            for(int j = i; j < size; j++){
+                if(k+j <= size){
+                    String str = s.substring(i, k+j);
+                    checkPalindrome(str, i, k+j-1);
+                }
+            }
+        }
+        
+        int interval[][] = store.toArray(new int[store.size()][2]);
+        if(interval.length == 0) return 0;
+        Arrays.sort(interval, (a,b)-> a[0]-b[0]);
+        //for(int a[] : interval) System.out.println(a[0] +" " +a[1] );
+        
+        int count = 0;
+        
+        int i = 0; 
+        int j = 1;
+        int palsize = store.size();
+        while(j < palsize){
+            
+            int first[] = interval[i];
+            int sec[] = interval[j];
+            
+            if(first[1] < sec[0]){
+                i = j;
+                j++;
+            }else if(first[1] <= sec[1]){
+                count++;
+                j++;
+            }else if(first[1] > sec[1]){
+                i = j;
+                j++;
+                count++;
+            }
+            
+        }
+        return palsize-count;
+    }
+    
+    public void checkPalindrome(String s, int f, int sec){
+        
+        int i = 0;
+        int j = s.length()-1;
+        
+        while(i <= j){
+            
+            if(s.charAt(i) != s.charAt(j)){
+                return;
+            }else{
+                i++;
+                j--;
+            }
+        }
+        System.out.println(f + " "+ sec);
+        store.add(new int[]{f, sec});
+        return;
+    }
+    
+}
