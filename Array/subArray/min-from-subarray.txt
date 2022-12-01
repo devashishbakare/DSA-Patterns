@@ -1,0 +1,57 @@
+problem link : https://leetcode.com/problems/sum-of-subarray-minimums/
+
+Naive approtch :
+
+-get the range O(n^2)
+-get the min from that range O(range);
+i.e -> O(n^2)*O(range);
+
+code :
+    class Solution {
+        public static int sum = 0;
+        public int sumSubarrayMins(int[] arr) {
+            
+            int size = arr.length;
+            if(size == 1) return arr[0];
+            
+            for(int i = 0; i < size; i++){
+                for(int j = i; j < size; j++){
+                    sum += getMin(i, j, arr);   
+                }
+            }
+            return sum;
+        }
+        
+        public int getMin(int start, int end, int arr[]){
+            int min = Integer.MAX_VALUE;
+            for(int i = start; i <= end; i++){
+                min = Math.min(min, arr[i]);
+            }
+            return min;
+        }
+    }
+
+Better approtch :
+
+-If we know that an element is the smallest in a given range.
+-we can determine the number of subarrays in this range that contain this element.
+
+eg -> 
+ind-> 0, 1, 2, 3, 4, 5, 6, 7
+val-> 2, 9, 7, 8, 3, 4, 6, 1
+
+from index 1 to 6 -> 9, 7, 8, 3, 4, 6 -> we are having 3 as smallest
+so, there is no need to generate the all subaarray from 1-6 index.
+
+But, How to know the range ? 
+from index(4)-> val -> 3 
+we can go left until we have previous smallest element, 
+we can go right, until we found next smallest element.
+
+sound like, I have seen this question and its logic -> MONOTONOUS Stack bro...
+
+how to know there there are this much of subarray in this range?
+
+lets suppose, left side of val 3 is g1, and right side g2;
+total subarray will be-> (g1+1)*(g2+1); -> which is 12
+

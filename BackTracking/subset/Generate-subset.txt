@@ -1,0 +1,40 @@
+Dubblicate are allowed
+problem link : https://leetcode.com/problems/subsets/
+
+Note : subsequence maintain relative ordering of elements, subset may or may not.
+
+//here we are using 
+-pick
+-not pick condition
+
+code :
+class Solution {
+    public List<List<Integer>> ans;
+    public List<List<Integer>> subsets(int[] nums) {
+        
+        ans = new ArrayList<>();
+        
+        dfs(0, nums, new ArrayList<>());
+        return ans;
+    }
+    
+    public void dfs(int ind, int nums[], List<Integer> subset){
+        
+        //base case
+        if(ind == nums.length){
+            ans.add(new ArrayList<>(subset));
+            return;
+        }
+        
+        // not pick condtion here
+        dfs(ind+1, nums, subset);
+        
+        // pick condition
+        subset.add(nums[ind]);
+        dfs(ind+1, nums, subset);
+        subset.remove(subset.size()-1);
+        
+        return;
+    }
+    
+}

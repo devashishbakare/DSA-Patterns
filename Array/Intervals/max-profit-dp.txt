@@ -1,0 +1,8 @@
+Problem link : https://leetcode.com/problems/maximum-profit-in-job-scheduling/
+
+Note : In scheduling/interval problem we have to sort and then perfrom greedy, but here weight is involved,
+we tends to think in terms of dp
+
+Read this 2 :
+https://leetcode.com/problems/maximum-profit-in-job-scheduling/discuss/733167/Thinking-process-Top-down-DP-Bottom-up-DP
+https://leetcode.com/problems/maximum-profit-in-job-scheduling/discuss/409009/JavaC%2B%2BPython-DP-Solution

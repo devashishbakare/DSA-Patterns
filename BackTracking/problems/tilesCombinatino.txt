@@ -1,0 +1,43 @@
+problem link : https://leetcode.com/problems/letter-tile-possibilities/
+
+Note : we don't need all the comninations, we just need a count of int
+
+Logic/learning
+- get the frequnecy count 
+- then remove each frequncy, and make call again
+- why remove frequncy-> for each level of recursion call, our state should be change
+- pattern are the same,
+
+arr[i]-- remove from state 
+dfs(state) make the call
+arr[i]++ add to the state
+
+code : 
+class Solution {
+    public int numTilePossibilities(String tiles) {
+        
+        int count[] = new int[26];
+        for(char c : tiles.toCharArray()){
+            count[c-'A']++;
+        }
+        
+        return dfs(count);
+    }
+    
+    public int dfs(int arr[]){
+        
+        int sum = 0;
+        
+        for(int i = 0; i < 26; i++){
+            if(arr[i] == 0) continue;
+            sum++;
+            arr[i]--;
+            //dfs call returning the sum of the that perticular state;
+            sum += dfs(arr);
+            arr[i]++;
+        }
+        //returning each state sum
+        return sum;
+    }
+    
+}

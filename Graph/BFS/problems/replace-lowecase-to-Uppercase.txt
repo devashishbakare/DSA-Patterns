@@ -1,0 +1,43 @@
+problem link : https://leetcode.com/problems/letter-case-permutation/
+
+function been use:
+Character.isDigit();
+Character.toUpperCase();
+Character.toLowerCase();
+
+logic : 
+-go to each index
+-chage it to lowecase and put int Queue(same index)
+-chage it to uppercase and put int Queue(same index)
+-we are creating all the sequence by out self
+
+
+code:
+
+class Solution {
+    public List<String> letterCasePermutation(String s) {
+        
+        Queue<String> qu = new LinkedList<>();
+        qu.add(s);
+        
+        for(int i = 0; i < s.length(); i++){
+            
+            if(Character.isDigit(s.charAt(i))) continue;
+            int size = qu.size();
+            
+            while(size-- > 0){
+                
+                String curr = qu.remove();
+                
+                char charset[] = curr.toCharArray();
+                
+                charset[i] = Character.toUpperCase(charset[i]);
+                qu.add(new String(charset));
+               
+                charset[i] = Character.toLowerCase(charset[i]);
+                qu.add(new String(charset));
+            }   
+        }
+        return new LinkedList<>(qu);
+    }
+}

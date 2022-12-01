@@ -1,0 +1,35 @@
+Dubblicate not allowd
+problem link : https://leetcode.com/problems/subsets-ii/
+
+sort is must
+base case is not there, coz we need each elemet, or state
+important to note, we dont need Dublicate
+if( i > ind && nums[i] == nums[i - 1] ) continue;
+
+code :
+
+class Solution {
+    public List<List<Integer>> ans;
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        
+        ans = new ArrayList<>();
+        Arrays.sort(nums); 
+        
+        dfs(0, nums, new ArrayList<Integer>());
+        return ans;
+    }
+    public void dfs(int ind, int nums[], List<Integer> store) {
+        
+        ans.add(new ArrayList<Integer>(store));
+
+        for(int i = ind; i < nums.length; i++) {
+
+            if( i > ind && nums[i] == nums[i - 1] ) continue;
+
+            store.add(nums[i]);
+            dfs(i + 1, nums, store);
+            store.remove(store.size() - 1);
+        }
+        
+    }
+}

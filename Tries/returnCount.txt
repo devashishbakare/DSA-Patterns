@@ -1,0 +1,117 @@
+problem link : https://www.codingninjas.com/codestudio/problems/implement-trie_1387095
+
+1) insert into tries
+2) how many word are present(count);
+3) how many prefix are present(count)
+4) erase word : but we just --count, no need to node deletion 
+
+Time complexity : 0(N) n -> max length of the word
+
+code : 
+class Node{
+    
+    Node links[] = new Node[26];
+    int endCount;
+    int prefixCount;
+    
+    public Node(){
+        
+    }
+    
+    public boolean containsKey(char ch){
+        return (links[ch-'a'] != null);
+    }
+    
+    public void put(char ch, Node node){
+        links[ch-'a'] = node;
+    }
+    public Node get(char ch){
+        return links[ch-'a'];
+    }
+    public int getEndCount(){
+        return endCount;
+    }
+    
+    public int getPrefixCount(){
+        return prefixCount;
+    }
+    
+    public void incrementEndCount(){
+        endCount++;
+    }
+    public void decreaseEndCount(){
+        endCount--;
+    }
+    public void incrementPrefixCount(){
+        prefixCount++;
+    }
+    public void decreasePrefixCount(){
+        prefixCount--;
+    }
+
+    
+}
+public class Trie {
+    private static Node root;
+    public Trie() {
+        // Write your code here
+        root = new Node();
+    }
+
+    public void insert(String word) {
+        // Write your code here.
+        Node node = root;
+        for(int i = 0; i < word.length(); i++){
+            char ch = word.charAt(i);
+            if(node.containsKey(ch) == false){
+                node.put(ch, new Node());
+            }
+            node = node.get(ch);
+            node.incrementPrefixCount();
+        }
+        node.incrementEndCount();
+    }
+
+    public int countWordsEqualTo(String word) {
+        Node node = root;
+        
+        for(int i = 0; i < word.length(); i++){
+            char ch = word.charAt(i);
+            if(node.containsKey(ch)){
+                node = node.get(ch);
+            }else{
+                return 0;
+            }
+        }
+        return node.getEndCount();
+    }
+
+    public int countWordsStartingWith(String word) {
+       Node node = root;
+        
+        for(int i = 0; i < word.length(); i++){
+            char ch = word.charAt(i);
+            if(node.containsKey(ch)){
+                node = node.get(ch);
+            }else{
+                return 0;
+            }
+        }
+        return node.getPrefixCount();
+    }
+
+    public void erase(String word) {
+        Node node = root;
+        for(int i = 0; i < word.length(); i++){
+            char ch = word.charAt(i);
+            if(node.containsKey(ch)){
+                node = node.get(ch);
+                node.decreasePrefixCount();
+            }else{
+                return;
+            }
+        }
+        node.decreaseEndCount();
+    }
+
+}

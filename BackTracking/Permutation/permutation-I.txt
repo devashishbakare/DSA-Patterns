@@ -1,0 +1,41 @@
+problem link : https://leetcode.com/problems/permutations/
+
+Note : permutaion is nothing but changing possitions, hence swaping
+code :
+
+class Solution {
+    public List<List<Integer>> ans;
+    public List<List<Integer>> permute(int[] nums) {
+        
+        ans = new ArrayList<>();
+        
+        dfs(0, nums);
+        return ans;
+    }
+    
+    public void dfs(int ind, int nums[]){
+        
+        if(ind == nums.length){
+            List<Integer> store = new ArrayList<>();
+            for(int j : nums)store.add(j);
+            
+            ans.add(store);
+            return;
+        }
+        // i = ind coz, swap needed from this index, with himself, then others
+        for(int i = ind; i < nums.length; i++){
+            swap(ind, i, nums);
+            dfs(ind+1, nums);
+            swap(ind, i, nums);    
+        }
+        
+        return;
+    }
+    
+    public void swap(int a, int b, int arr[]){
+        int temp = arr[a];
+        arr[a] = arr[b];
+        arr[b] = temp;
+    }
+    
+}

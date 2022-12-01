@@ -1,0 +1,50 @@
+problem link : https://leetcode.com/problems/permutations-ii/
+
+Note : permutation means, order should be diffrent, but size should be same as original toCharArray
+
+Imp :
+
+In this problem we need to unique permutation so need to sort,
+due to sorting we are able to stop from generating same permutaion again
+condition -> if(ind > 0 && nums[ind] == nums[ind-1]) continue;
+
+code :
+
+class Solution {
+    public List<List<Integer>> ans;
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        
+        ans = new ArrayList<>();
+        Arrays.sort(nums);
+        //no need to pass ind=0 here
+        dfs(nums, new ArrayList<>(), new boolean[nums.length]);
+        return ans;
+        
+    }
+    
+    public void dfs(int nums[], List<Integer>storeState, boolean vis[]){
+        
+        //base case
+        if(storeState.size() == nums.length){
+            ans.add(new ArrayList<>(storeState));
+            return;
+        }
+        
+        for(int ind = 0; ind < nums.length; ind++){
+            
+            
+            if(vis[ind] == true) continue;
+            
+            if(ind > 0 && nums[ind] == nums[ind-1] && vis[ind-1] == false) continue;
+            // common pattern
+            vis[ind] = true;
+            storeState.add(nums[ind]);
+            dfs(nums, storeState, vis);
+            storeState.remove(storeState.size()-1);
+            vis[ind] = false;
+            
+        }
+        return;
+    }
+    
+}
