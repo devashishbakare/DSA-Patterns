@@ -1,0 +1,69 @@
+This sorting techinqu use when there is limited set of data
+
+What we are doing in this?
+
+each index of the array representing something
+for eg :
+
+we need to store the frequncy of the character so,
+1) we will create the same size of array of string + 1, (Array are 0 base)
+2) each index are representing frequency/count of perticular character
+
+List<Character> bucket[] = new ArrayList[size+1];
+String S = aaabbbccd
+
+index -> 
+0 -> null
+1 -> d
+2 -> c 
+3 -> a, b
+
+Now we can easily get the character to pertucular frequency.
+
+Go through this problem once.
+https://leetcode.com/problems/sort-characters-by-frequency/
+
+code : 
+
+class Solution {
+    public String frequencySort(String s) {
+        
+        int size = s.length();
+        List<Character> bucket[] = new ArrayList[size+1];
+        
+        Map<Character, Integer> map = new HashMap<>();
+        
+        for(int i = 0; i < size; i++){
+            char ch = s.charAt(i);
+            map.put(ch, map.getOrDefault(ch, 0)+1);
+        }
+    
+        //Now my index represent the frequency and we have those item
+        for(char key : map.keySet()){
+            
+            int freqOfThisChar = map.get(key);
+            
+            if(bucket[freqOfThisChar] == null)
+                bucket[freqOfThisChar] = new ArrayList<>();
+               
+            bucket[freqOfThisChar].add(key);
+            
+        }
+        
+        //we have to return the String which is highest freq first
+        StringBuilder sb = new StringBuilder();
+        for(int i = bucket.length-1; i >= 0; i--){
+            
+            if(bucket[i] != null){
+                List<Character> listOnIndex = bucket[i];
+                for(Character ch : listOnIndex){
+                    for(int j = 0; j < i; j++){
+                        sb.append(ch);
+                    }
+                }
+            }
+                
+        }
+        return sb.toString();
+    }
+}
