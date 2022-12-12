@@ -1,4 +1,9 @@
 Problem link : https://practice.geeksforgeeks.org/problems/cheapest-flights-within-k-stops/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=cheapest-flights-within-k-stops
+
+Imp : if(flightCost + cost < distance[dest] && currStop <= k)
+currStop <= k : 
+-who ever has stop left, add there adj and increase the stop
+-or if any vertex is having its last flight then also update dist[] if smaller 
 code:
 class Pair{
     int dest;

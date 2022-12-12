@@ -1,0 +1,52 @@
+problem link : https://leetcode.com/contest/weekly-contest-282/problems/minimum-time-to-complete-trips/
+
+we have use the binary seach on the ans, so that we reduced the time complexity to N^2 to NlogN
+Binary Search on T(explore all T option then make t-- if possible, if not i++)
+class Solution {
+    public long minimumTime(int[] time, int tt) {
+        
+        int size = time.length;
+       
+        long low = 0;
+        long high = (long)1e14;
+        long ans = 0;
+        while(low <= high){
+            long mid = low + (high-low)/2;
+            if(check(time, mid) >= tt){
+                high = mid-1;
+                  ans = mid;
+            }else{
+                low = mid+1;
+              
+            }
+        }
+        return ans;
+    }
+    
+    public long check(int time[], long mid){
+        long count = 0;
+        for(int val : time){
+            count += mid/val;
+        }
+        return count;
+    }
+    
+}
+
+brute force
+As, you can see, we have to do for every T-> we are loopin over all the element hence we are using the Binary Search on the T
+class solution{
+    public long minimumTime(int time[], int tt){
+
+        int i = 1; 
+        while(true){
+            int count = 0;
+            for(int j : time){
+                count += t/j;
+                if(count == tt) return i;
+            }
+            i++;
+        }
+
+    }   
+}

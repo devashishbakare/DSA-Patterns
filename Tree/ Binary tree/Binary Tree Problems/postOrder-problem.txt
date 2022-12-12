@@ -1,0 +1,23 @@
+problme link : https://leetcode.com/problems/binary-tree-maximum-path-sum/description/
+
+code : 
+class Solution {
+    public int max = (int)-1e9;
+    public int maxPathSum(TreeNode root) {
+        postOrder(root);
+     return max;
+    }
+
+    public int postOrder(TreeNode root){
+        if(root == null) return 0;
+        
+        int left = Math.max(0, postOrder(root.left));
+        int right = Math.max(0, postOrder(root.right));
+
+        max = Math.max(max, root.val+left+right);
+        //we are doint the post order so this part may be left side ro right of someone, so return the maxi what we got(left, right) with the val, coz he has to path is also having some parent
+        return root.val + Math.max(left, right);
+
+    }
+   
+}

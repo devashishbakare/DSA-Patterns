@@ -1,0 +1,98 @@
+problem link : https://leetcode.com/contest/weekly-contest-284/problems/minimum-weighted-subgraph-with-the-required-paths/
+
+Logic :
+Tejas comming from his home to reach at khandgao
+Dev coming from home to reach at khandgao
+now we have to return the min common destination point where, we can meet
+Min path will be at vertex -> tejasDis[i] + dev[i] + commonDist[i];
+
+we use 3 dijkstra to get above 3 distance
+-How can tejas know and dev know which is common path?
+-we revesrse the graph and calculate distance from destination to both src;
+-who ever vertex is having smallest distance, that our ans
+
+code :
+
+class Node implements Comparable<Node>{
+    public int dest;
+    public int cost;
+    
+    public Node(int dest, int cost){
+        this.dest = dest;
+        this.cost = cost;
+    }
+    public int compareTo(Node node){
+        return this.cost - node.cost;
+    }
+}
+
+class Pair{
+    public int dest;
+    public int cost;
+    
+    public Pair(int dest, int cost){
+        this.dest = dest;
+        this.cost = cost;
+    }
+}
+class Solution {
+    
+    public long minimumWeight(int n, int[][] edges, int src1, int src2, int dest) {
+        
+        System.out.println(n+" this is n");
+        List<List<Pair>> graph = new ArrayList<>();
+        List<List<Pair>> reverseGraph = new ArrayList<>();
+        
+        for(int i = 0; i < n; i++){
+            graph.add(new ArrayList<>());
+            reverseGraph.add(new ArrayList<>());
+        }
+        
+        for(int edge[] : edges){
+            graph.get(edge[0]).add(new Pair(edge[1], edge[2]));
+            reverseGraph.get(edge[1]).add(new Pair(edge[0], edge[2]));
+        }
+        
+        int d1[] = new int[n];
+        int d2[] = new int[n];
+        int d3[] = new int[n];
+        int max = (int)1e9;
+        for(int i = 0; i < n; i++){
+            d1[i] = max;
+            d2[i] = max;
+            d3[i] = max;
+        }
+        
+        dijkstra(graph, src1, d1);
+        dijkstra(graph, src2, d2);
+        dijkstra(reverseGraph, dest, d3);
+       
+        long ans = max;
+        for(int i = 0; i < n; i++){
+            if(d1[i] == max || d2[i] == max || d3[i] == max) continue;
+            ans = Math.min(ans, d1[i]+d2[i]+d3[i]);
+        }
+        if(ans != max) return ans;
+        else return -1;
+        
+    }
+    
+    public void dijkstra(List<List<Pair>> graph, int src, int distance[]){
+        
+        PriorityQueue<Node> qu = new PriorityQueue<>();
+        qu.add(new Node(src, 0));
+        distance[src] = 0;
+        while(qu.size() > 0){
+            Node node = qu.remove();
+            List<Pair> nbrs = graph.get(node.dest);
+            
+            for(Pair nbr : nbrs){
+                if(node.cost + nbr.cost < distance[nbr.dest]){
+                    distance[nbr.dest] = node.cost + nbr.cost;
+                    qu.add(new Node(nbr.dest, distance[nbr.dest]));
+                }
+            }
+        }
+    }
+    
+}
