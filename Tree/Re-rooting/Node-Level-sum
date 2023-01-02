@@ -1,0 +1,85 @@
+problem link : https://leetcode.com/problems/sum-of-distances-in-tree/description/
+
+Note : 
+1)
+	how can we get the level?? 
+	Total number of node on that subtree + total number of node expect root
+	ans[node] += ans[child] + count[child];
+
+2) How many node are in subtree we have use postOrder dfs to calculate, 
+   first(we need to initialise each node count as 1);
+   
+brute force -> O(N^2);
+
+code :
+class Solution {
+    public Map<Integer, List<Integer>> graph = new HashMap<>();
+    public int sum;
+    public int[] sumOfDistancesInTree(int n, int[][] edges) {
+        
+        for(int edge[] : edges){
+            graph.computeIfAbsent(edge[0], v-> new ArrayList<>()).add(edge[1]);
+            graph.computeIfAbsent(edge[1], v-> new ArrayList<>()).add(edge[0]);
+        }
+        int ans[] = new int[n];
+        for(int i = 0; i < n; i++){
+            boolean vis[] = new boolean[n];
+            sum = 0;
+            dfs(i, vis, graph, 1);
+            ans[i] = sum;
+        }
+        return ans;
+    }
+    public void dfs(int src, boolean vis[], Map<Integer, List<Integer>> graph, int level){
+        vis[src] = true;
+        if(graph.containsKey(src)== false) return;
+        List<Integer> nbrs = graph.get(src);
+        for(int nbr : nbrs){
+            if(vis[nbr] == false){
+                sum += level * 1;
+                dfs(nbr, vis, graph, level+1);
+            }
+        }
+    }
+}
+
+Efficient solution:
+class Solution {
+    int[] ans, count;
+    List<Set<Integer>> graph;
+    int N;
+    public int[] sumOfDistancesInTree(int N, int[][] edges) {
+        this.N = N;
+        graph = new ArrayList<Set<Integer>>();
+        ans = new int[N];
+        count = new int[N];
+        Arrays.fill(count, 1);
+
+        for (int i = 0; i < N; ++i)
+            graph.add(new HashSet<Integer>());
+        for (int[] edge: edges) {
+            graph.get(edge[0]).add(edge[1]);
+            graph.get(edge[1]).add(edge[0]);
+        }
+        dfs(0, -1);
+        dfs2(0, -1);
+        return ans;
+    }
+
+    public void dfs(int node, int parent) {
+        for (int child: graph.get(node))
+            if (child != parent) {
+                dfs(child, node);
+                count[node] += count[child];
+                ans[node] += ans[child] + count[child];
+            }
+    }
+
+    public void dfs2(int node, int parent) {
+        for (int child: graph.get(node))
+            if (child != parent) {
+                ans[child] = ans[node] - count[child] + N - count[child];
+                dfs2(child, node);
+            }
+    }
+}

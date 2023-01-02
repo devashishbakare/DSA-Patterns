@@ -1,0 +1,53 @@
+problem link : https://leetcode.com/problems/possible-bipartition/description/
+
+Note : No two color should be adjecent to each other 
+
+-To flip the colors, we can use the formula 1 - color. 
+-If we are at a RED node, then 1 - color = 1 - 0 = 1 = BLUE. 
+-If we are at a BLUE node, then 1 - color = 1 - 1 = 0 = RED.
+
+code :
+
+class Solution {
+    Map<Integer, List<Integer>> graph = new HashMap<>();
+    public boolean possibleBipartition(int n, int[][] dislikes) {
+        
+        for(int dis[] : dislikes){
+            int u = dis[0], v = dis[1];
+            graph.computeIfAbsent(u, a-> new ArrayList<>()).add(v);
+            graph.computeIfAbsent(v, a-> new ArrayList<>()).add(u);
+        }
+        int color[] = new int[n+1];
+        Arrays.fill(color, -1);
+        for(int i = 1; i <= n; i++){
+            if(color[i] == -1){
+                if(bfs(i, graph, color)==false) return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean bfs(int src, Map<Integer, List<Integer>> graph, int color[]){
+        
+        Queue<Integer> qu = new LinkedList<>();
+        color[src] = 0;
+        qu.add(src);
+
+        while(qu.size() > 0){
+            int node = qu.remove();
+
+            if(graph.containsKey(node)==false)continue;
+            
+            List<Integer> nbrs = graph.get(node);
+
+            for(int nbr : nbrs){
+                if(color[nbr] == color[node]) return false;
+                if(color[nbr] == -1){
+                    color[nbr] = 1 - color[node];
+                    qu.add(nbr);
+                }
+            }
+        }
+        return true;
+    }
+}

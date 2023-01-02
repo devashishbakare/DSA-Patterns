@@ -1,0 +1,72 @@
+problem link : https://leetcode.com/problems/partition-array-for-maximum-sum/description/
+
+Note : see how, recurance has made,
+
+1) we have to partition the array into atmost k
+2) means we can partition into k, k-1, k-2....0;
+3) there are number of partition possible, and we need best ans out of them
+4) Logic
+	- I can take this element, make the partition, Hence making the next call OR
+	- Im making two call, or all possible call, hence using the loop
+5) biggest take away is for loop with recursion calls.
+
+code :
+rec + memo, tabulation in below
+
+class Solution {
+    public int maxSumAfterPartitioning(int[] arr, int k) {
+        int dp[] = new int[arr.length];
+        Arrays.fill(dp, -1);
+        return getMaxSum(0, k, arr, dp);
+    }
+    public int getMaxSum(int ind, int k, int arr[], int dp[]){
+
+        //base case;
+        if(ind == arr.length) return 0;
+        if(dp[ind] != -1) return dp[ind];
+        int len = 0;
+        int max = Integer.MIN_VALUE;
+        int sum = 0;
+        int ans = Integer.MIN_VALUE;
+        int n = arr.length;
+        for(int i = ind; i < Math.min(ind+k, n); i++){
+            len++;
+            max = Math.max(max, arr[i]);
+            sum = (len * max) + getMaxSum(i+1, k , arr, dp);
+            ans = Math.max(sum, ans);
+        }
+        return dp[ind] = ans;
+    }
+}
+
+Tabulation : 
+
+class Solution {
+    public int maxSumAfterPartitioning(int[] arr, int k) {
+        //converting the base case
+        //now as in dp array we don'have the last index, so we shift one index, 
+        //also while making next call, i+1, we need one extra space in dp
+        //hence
+        int n = arr.length;
+        int dp[] = new int[n+1];
+
+        //as tabulation is reverse of the memoization we have to reverse the call
+        for(int ind = n -1; ind >= 0; ind--){
+            int len = 0;
+            int max = Integer.MIN_VALUE;
+            int sum = 0;
+            int ans = Integer.MIN_VALUE;
+            //now we have to copy the recurance
+            for(int i = ind; i < Math.min(ind+k, n); i++){
+                len++;
+                max = Math.max(max, arr[i]);
+                sum = (len * max) + dp[i+1];
+                ans = Math.max(sum, ans);
+            }
+            dp[ind] = ans;
+        }
+        //we will returnig where we have started in memoization
+        return dp[0];
+    }
+
+}

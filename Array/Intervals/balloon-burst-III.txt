@@ -23,24 +23,32 @@ below is the template/formula you can think of
 
 Code :
 
-public int findMinArrowShots(int[][] points) {
+class Solution {
+    public int findMinArrowShots(int[][] points) {
         
-        int size = points.length;
-        if(size == 0) return size;
+        if (points == null || points.length == 0) return 0;
+        int count = 0;     
         
+        //tracking the inteval min range
         int minEnd = Integer.MAX_VALUE;
-        Arrays.sort(points, (a, b)-> a[0]-b[0]);
-        int count = 0;
-        for(int point[] : points){
-            
-            if(point[0] > minEnd){
+
+        //sort on the basis of start time so that all bollon comes in range to make collection at one place, and then we shoot the arrow
+        Arrays.sort(points, (a,b) -> (a[0] - b[0]));   
+        
+        //keeping first interval, and taking first inteval end to get the range
+        //if next interval not in range -> in[0] > minEnd;then we have to shoot arrow
+        //why taking min range? : we dont know intevel end is in common range for pre inteval 
+        for (int[] in : points) {
+          
+            if (in[0] > minEnd) {
                 count++;
-                minEnd = point[1];
-            }else{
-                minEnd = Math.min(minEnd, point[1]);
+                minEnd = in[1];
+            } else {
+                minEnd = Math.min(minEnd, in[1]);
             }
-            
         }
-        return count +1;
+        
+        return count+1;
         
     }
+}

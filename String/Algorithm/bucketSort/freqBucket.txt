@@ -1,0 +1,42 @@
+problem link : https://leetcode.com/problems/top-k-frequent-elements/description/
+
+Note : whenever there is frequency involved, you have to think about the bucket sort, O(N) solution
+code : 
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        int size = nums.length;
+        List<Integer> freq[] = new ArrayList[size+1];
+
+        Map<Integer, Integer> map = new HashMap<>();
+        
+        for(int i : nums)map.put(i, map.getOrDefault(i, 0)+1);
+    
+        for(int key : map.keySet()){
+            int keyFreq = map.get(key);
+            if(freq[keyFreq] == null){
+                freq[keyFreq] = new ArrayList<>();
+            }
+            freq[keyFreq].add(key);
+        }
+
+        int ind = freq.length-1;
+        List<Integer> store = new ArrayList<>();
+        int ktime = k;
+        //for(int pos = size; pos >=0 && store. ; pos--)
+        while(ktime > 0 && ind >= 0){
+            if(freq[ind] != null){
+                ktime--;
+                store.addAll(freq[ind]);
+            }  
+            ind--;
+        }
+
+        int ans[] = new int[k];
+        int ptr = 0;
+        for(int j = 0; j < store.size(); j++){
+            if(j == k)break;
+            ans[j] = store.get(j);
+        }        
+        return ans;
+    }
+}

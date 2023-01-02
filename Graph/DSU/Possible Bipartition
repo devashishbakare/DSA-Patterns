@@ -1,0 +1,68 @@
+problem link : https://leetcode.com/problems/possible-bipartition/description/
+
+Note : Here we have created a union of first element as root
+Code :
+
+class DSU{
+    
+    public int parent[];
+    public int height[];
+    int size;
+    public DSU(int size){
+        this.size = size;
+        parent = new int[size];
+        height = new int[size];
+        Arrays.fill(parent, -1);
+        Arrays.fill(height, 1);
+    }
+
+    public int find(int node){
+        if(parent[node] == -1) return node;
+        return parent[node] = find(parent[node]);
+    }
+    public void union(int node1, int node2){
+        
+        int node1Parent = find(node1);
+        int node2Parent = find(node2);
+
+        if(node1Parent != node2Parent){
+            if(height[node1Parent] > height[node2Parent]){
+                parent[node2Parent] = node1Parent;
+            }else if(height[node1Parent] < height[node2Parent]){
+                parent[node1Parent] = node2Parent;
+            }else{
+                parent[node1Parent] = node2Parent;
+                height[node2Parent]++;
+            }
+        }
+
+    }
+
+
+}
+
+class Solution {
+    Map<Integer, List<Integer>> graph = new HashMap<>();
+    public boolean possibleBipartition(int n, int[][] dislikes) {
+        
+        for(int dis[] : dislikes){
+            int u = dis[0], v = dis[1];
+            graph.computeIfAbsent(u, a-> new ArrayList<>()).add(v);
+            graph.computeIfAbsent(v, a-> new ArrayList<>()).add(u);
+        }
+        DSU dsu = new DSU(n+1);
+        for(int i = 1; i <= n; i++){
+
+            if(graph.containsKey(i)==false) continue;
+            
+            List<Integer> nbrs = graph.get(i);
+            for(int nbr : nbrs){
+                if(dsu.find(i) == dsu.find(nbr))return false;
+                dsu.union(nbrs.get(0), nbr);
+            }
+        }
+        return true;
+    }
+
+    
+}

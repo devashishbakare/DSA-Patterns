@@ -3,7 +3,7 @@ problem link : https://leetcode.com/problems/insert-interval/
 Logic :
 
 1) if current interval in not overlapping with the newInterval then add in ans.
-2) if currint interval in overlapping with the newInterval then get the range(min, max)
+2) if current interval in overlapping with the newInterval then get the range(min, max)
 3) update the newInterval coz : we are comparing to the newInterval only
 4) if current inteval start is greater than the newInterval end then we have to add first newInterval and then current interval.
 
@@ -21,23 +21,32 @@ class Solution {
         
         for(int interval[] : intervals){
             
+            //those who are lesser than him, you have to add them
+            
             if(newInterval == null || interval[1] < newInterval[0]){
                 store.add(interval);
             }
+            
+            //we need interval sorted by start, if start is greater then put new interval 
+            first and then add current interval
+            
             else if( interval[0] > newInterval[1]){
                 store.add(newInterval);
                 store.add(interval);
                 newInterval = null;
             }else{
+                
+                //we got to know that okay, this is the interval who has some overlapping now, its really much possible, we would overlap with the next interval as well, so dont add, wait for next interval as well.
+                
                 newInterval[0] = Math.min(interval[0], newInterval[0]);
                 newInterval[1] = Math.max(interval[1], newInterval[1]);
+
             }
-            
-            
         }
         
-        if(newInterval != null) store.add(newInterval);
+        //if null is not there means its new interval is start high than existing interval
         
+        if(newInterval != null) store.add(newInterval);
         
         return store.toArray(new int[store.size()][2]);
     }

@@ -1,0 +1,29 @@
+problem link : https://leetcode.com/problems/smallest-value-after-replacing-with-sum-of-prime-factors/description/
+
+code :
+class Solution {
+    public int smallestValue(int n) {
+        int ans = 0;
+        while(true){
+            int sum = getSumOfFactors(n);
+            if(n == sum) break;
+            n = sum;
+        }
+        return n;
+    }
+
+    public int getSumOfFactors(int n){
+        int div = 2;
+        int sum = 0;
+
+        while(n > 1){
+            if(n % div == 0){
+                sum += div;
+                n = n/div;
+            }else{
+                div++;
+            }
+        }
+        return sum;
+    }
+}

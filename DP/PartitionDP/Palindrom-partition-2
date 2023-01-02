@@ -1,0 +1,75 @@
+problem link: https://leetcode.com/problems/palindrome-partitioning-ii/description/
+
+code :
+Note : while return ans , you have to do -1, coz function try to make partition even if string end 
+Carefull : return dp[0]-1;
+
+rec + memo
+
+class Solution {
+    public int minCut(String s) {
+      
+      int n = s.length();
+      int dp[] = new int[n];
+      Arrays.fill(dp, -1);
+      return getMinCutCount(0, s.length(), s, dp)-1;   
+    }
+    public int getMinCutCount(int ind, int n, String str, int dp[]){
+        //base case
+        if(ind == n) return 0;
+        if(dp[ind] != -1) return dp[ind];
+        int ans = (int)1e9;
+        int cost = 0;
+        for(int i = ind; i < n; i++){
+            if(isPollindrome(ind, i, str)){
+                cost = 1 + getMinCutCount(i+1, n, str, dp);
+                ans = Math.min(cost, ans);
+            }
+        }
+        return dp[ind] = ans;
+    }
+    public boolean isPollindrome(int i, int j, String str){
+        
+        while(i < j){
+            if(str.charAt(i) != str.charAt(j)) return false;
+            i++;
+            j--;
+        }
+        return true;
+    }
+}
+
+
+Tabulation : 
+
+class Solution {
+    public int minCut(String s) {
+      
+      int n = s.length();
+      int dp[] = new int[n+1];
+        
+        for(int ind = n-1; ind >= 0; ind--){
+            int ans = (int)1e9;
+            int cost = 0;
+            for(int i = ind; i < n; i++){
+                if(isPollindrome(ind, i, s)){
+                    cost = 1 + dp[i+1];
+                    ans = Math.min(cost, ans);
+                }
+            }
+            dp[ind] = ans;
+        }
+      
+      return dp[0]-1;
+    }
+    
+    public boolean isPollindrome(int i, int j, String str){
+        
+        while(i < j){
+            if(str.charAt(i) != str.charAt(j)) return false;
+            i++;
+            j--;
+        }
+        return true;
+    }
+}

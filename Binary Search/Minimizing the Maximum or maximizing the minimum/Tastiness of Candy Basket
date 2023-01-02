@@ -1,0 +1,48 @@
+problem link : https://leetcode.com/contest/weekly-contest-325/problems/maximum-tastiness-of-candy-basket/
+
+Question : need to take strickly k candi, you have to tell the maximum testiness.
+How testiness calculateed, Min(abs diff of two candi);
+
+Note : I need to check x testiness, is it possible to have a x testiness
+	 : if candi are there are lesster than k which having x testiness, then return false
+	 Ref : if(candi < k ) return false;
+           else return true;
+
+code :
+
+class Solution {
+    public int maximumTastiness(int[] price, int k) {
+    
+        Arrays.sort(price);
+        int low = 0;
+        int high = price[price.length-1] - price[0];
+        int ans = 0;
+        
+        while(low <= high){
+            int mid = low + (high-low)/2;
+            
+            if(isPossible(price, mid, k)){
+                ans = mid;
+                low = mid+1;
+            }else{
+                high = mid-1;
+            }
+        }
+        return ans;
+    }
+    public boolean isPossible(int arr[], int mid, int k){
+        int candi = 1;
+        int last = arr[0];
+        
+        for(int i = 0; i < arr.length; i++){
+            if(arr[i] - last >= mid){
+                candi++;
+                last = arr[i];
+            }
+        }
+        
+        if(candi < k ) return false;
+        else return true;
+        
+    }
+}
