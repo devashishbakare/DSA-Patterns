@@ -1,0 +1,28 @@
+its usage the kaden algo
+Problem link : https://practice.geeksforgeeks.org/batch/must-do-1/track/md-arrays/problem/max-circular-subarray-sum-1587115620
+
+code :
+
+static int circularSubarraySum(int a[], int n) {
+        
+    int maxPossibleSum = a[0];
+    int minPossibleSum = a[0];
+    int pSum = 0;
+    int nSum = 0;
+    int totalSum = 0;
+    for(int i = 0; i < n; i++){
+        
+        pSum = Math.max(a[i], a[i] + pSum);
+        maxPossibleSum = Math.max(maxPossibleSum, pSum);
+        
+        nSum = Math.min(0, a[i] + nSum);
+        minPossibleSum = Math.min(nSum, minPossibleSum);
+        
+        totalSum += a[i];
+        
+    }
+    if(totalSum == minPossibleSum) return maxPossibleSum;
+    
+    return Math.max(maxPossibleSum, totalSum-minPossibleSum);
+}
+    

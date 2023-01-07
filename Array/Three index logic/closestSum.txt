@@ -1,0 +1,48 @@
+problem link: https://practice.geeksforgeeks.org/batch/must-do-1/track/md-arrays/problem/three-sum-closest
+
+Note : we are taking 3 index
+See how we have increament and decreament the index 
+i = first index
+low = sec index
+high = third index
+Imp :
+
+if(currSum > target) {
+    --high;
+}
+else {
+    ++low;
+}
+
+class Solution 
+{ 
+    static int threeSumClosest(int[] array, int target)  
+	{ 
+	    int n = array.length, res = Integer.MIN_VALUE, closestDistance = Integer.MAX_VALUE;
+        Arrays.sort(array);
+        for(int i=0;i<n-2;++i) {
+            int low = i + 1, high = n - 1;
+            while(low < high) {
+                int currSum = array[i] + array[low] + array[high];
+                if(currSum == target) {
+                    return target;
+                }
+                int absoluteDiff = Math.abs(target - currSum);
+                if(absoluteDiff == closestDistance) {
+                    res = Math.max(currSum, res);
+                }
+                else if(absoluteDiff < closestDistance) {
+                    closestDistance = absoluteDiff;
+                    res = currSum;
+                }
+                if(currSum > target) {
+                    --high;
+                }
+                else {
+                    ++low;
+                }
+            }
+        }
+        return res;
+	} 
+} 

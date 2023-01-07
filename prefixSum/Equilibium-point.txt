@@ -1,0 +1,30 @@
+link : https://practice.geeksforgeeks.org/batch/must-do-1/track/md-arrays/problem/equilibrium-point-1587115620
+
+code :
+
+    class Solution {
+        public static int equilibriumPoint(long arr[], int n) {
+
+            
+            long pre[] = new long[n];
+            long end[] = new long[n];
+            
+            pre[0] = arr[0];
+            for(int i = 1; i < n; i++){
+                pre[i] += pre[i-1] + arr[i];
+            }
+            
+            end[n-1] = arr[n-1];
+            for(int j = n-2; j >= 0; j--){
+                end[j] += end[j+1] + arr[j];
+            }
+            
+        
+            int i = 0;
+            while(i < n){
+                if(pre[i] == end[i]) return i + 1;
+                i++;
+            }
+            return -1;
+        }
+    }

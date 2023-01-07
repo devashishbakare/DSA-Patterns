@@ -1,0 +1,59 @@
+problem link : https://practice.geeksforgeeks.org/batch/must-do-1/track/md-string/problem/smallest-window-in-a-string-containing-all-the-characters-of-another-string-1587115621
+
+Note : see how, we can use the frequecy array, 
+
+logic : 
+1) first add, all the charater of pattern frequency, and count the unique character, count++;
+2) then do -- (decreament) for oringinal string, count--
+3) if count == 0, means we got the window, 
+4) now update the window, if there is smaller, window logic is the same, (end-start+1)
+
+code : 
+
+ public static String smallestWindow(String s, String p)
+    {
+        int charSet[] = new int[256];
+        int startIndex = -1;
+        int start = 0;
+        int end = 0;
+        int count = 0;
+        int minWindow = s.length();
+        for(int i = 0; i < p.length(); i++){
+            char ch = p.charAt(i);
+            if(charSet[ch] == 0 ) count++;
+            charSet[ch]++;
+        }
+        
+        while(end < s.length()){
+            
+            char ch = s.charAt(end);
+            charSet[ch]--;
+            if(charSet[ch] == 0) count--;
+            
+            if(count == 0){
+                
+                while(count == 0){
+                    
+                    int window = end - start +1;
+                    if(minWindow > window){
+                        minWindow = window;
+                        startIndex = start;
+                    }
+                    
+                    char chs = s.charAt(start);
+                    
+                    charSet[chs]++;
+                    if(charSet[chs] > 0) count++;
+                    
+                    start++;
+                }
+                
+            }
+            end++;
+        }
+        if(startIndex == -1) return "-1";
+        
+        //start Index will not be always zero, hence we didn't add the 1 
+        return s.substring(startIndex, startIndex + minWindow);
+        
+    }

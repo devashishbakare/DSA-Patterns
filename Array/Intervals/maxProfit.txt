@@ -1,0 +1,63 @@
+problem link: https://practice.geeksforgeeks.org/problems/649205908e04ac00f303626fa845261318adfa8f/1
+
+Note : see how to use the treeMap in this question;
+Funtion used : 
+map.floorEntry(pass near value).getValue();
+map.lastEntry(Nothing to pass here).getValue();
+
+class Solution {
+    public static int maximum_profit(int n, int[][] intervals) {
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        
+        Arrays.sort(intervals, (a, b) -> a[1] - b[1]);
+        
+        map.put(0, 0);
+        
+        
+        for (int[] interval : intervals) {
+            
+            int prevProfit = map.floorEntry(interval[0]).getValue();
+            
+            int currProfit = prevProfit + interval[2];
+            
+            int lastMaxProfit = map.lastEntry().getValue();
+            
+            if (lastMaxProfit < currProfit) {
+                map.put(interval[1], currProfit);
+            }
+        }
+        
+        return map.lastEntry().getValue();
+    }
+}
+
+Same logic but with the help of binary seach :
+
+class Solution {
+    public static int maximum_profit(int n, int[][] jobs) {
+        
+        Arrays.sort(jobs, (a, b) -> a[1] - b[1]);
+        
+        int[] dp = new int[n + 1];
+        
+        for (int i = 0; i < n; i++) 
+        {
+            dp[i + 1] = Math.max(dp[i], dp[i + 1]);
+        
+            int low = 0, high = i;
+            
+            while(low < high-1) {
+            
+                int mid = low + (high - low)/ 2;
+            
+                if (jobs[mid][1] <= jobs[i][0]) {
+                    low = mid;
+                } else {
+                    high = mid;
+                }
+            }
+            dp[i + 1] = Math.max(dp[i + 1], ((jobs[low][1] <= jobs[i][0]) ? dp[low + 1] : 0) + jobs[i][2]);
+        }
+        return dp[n];
+    }
+}
