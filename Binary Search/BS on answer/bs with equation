@@ -1,0 +1,35 @@
+link : https://leetcode.com/contest/biweekly-contest-100/problems/minimum-time-to-repair-cars/
+
+See how we modifies the equation 
+
+ R * N^2 = X
+ N^2 = x/r
+ N = Math.sqrt(x/r);
+
+code :
+
+ public long repairCars(int[] ranks, int cars) {
+        
+        long ans = 0;
+        long high = (long)1e14;
+        long low = 0;
+        while(low <= high){
+         long mid = low + (high-low)/2;
+            if(isPossible(cars, ranks, mid)){
+                high = mid-1;
+                ans = mid;
+            }else{
+                low = mid+1;
+            }
+        }
+        return ans;
+    }
+    public boolean isPossible(int cars, int ranks[], long mid){
+        long carDone = 0;
+        for(int i : ranks){
+            long val = mid/i;
+            long c = (long)Math.sqrt(val);
+            carDone += c;
+        }
+        return (carDone >= cars);
+    }

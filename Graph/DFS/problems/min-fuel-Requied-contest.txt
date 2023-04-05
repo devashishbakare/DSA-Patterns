@@ -55,6 +55,8 @@ class Solution {
         
         long fuelRequired = connectedVertex/vacancy;
         
+        //if count is out for capsity, they required another car
+        
         if(connectedVertex%vacancy > 0 ) fuelRequired++;
         
         if(src != 0) ans += fuelRequired;

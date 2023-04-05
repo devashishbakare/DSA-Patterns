@@ -1,0 +1,27 @@
+Link : https://leetcode.com/problems/stone-game-iv/description/
+
+Note : we have using for loop means inside recursion call
+     : we have to consider worse case only
+     : if there is 10 calls possible if any 1 return false, we have to consider that only
+
+code :
+
+class Solution {
+    public boolean winnerSquareGame(int n) {
+    return helper(n, new Boolean[n+1]);
+}
+
+private boolean helper(int n, Boolean[] memo) {
+    if (n == 0) return false; 
+    if (memo[n] != null) return memo[n]; 
+    
+    for (int i = 1; i * i <= n; i++) {
+        if (!helper(n - i * i, memo)) {
+            memo[n] = true; // Alice wins if she can make a move that makes Bob lose
+            return true;
+        }
+    }
+    memo[n] = false; // Alice loses if no move results in Bob losing
+    return false;
+}
+}

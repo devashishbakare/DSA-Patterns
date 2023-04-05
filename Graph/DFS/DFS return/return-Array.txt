@@ -1,0 +1,59 @@
+problem link : https://leetcode.com/problems/number-of-nodes-in-the-sub-tree-with-the-same-label/description/
+
+Note : 
+see how, we have return the array, in dfs
+In this problem we need to return the some data from the subtree, now, if there is only one thing which we need to return then in one variable, but when its comes to multiple thing we have to return the info in the form of the array, see how efficiently we return info in the form of array.
+
+code :
+
+class Solution {
+    public Map<Integer, List<Integer>> graph = new HashMap<>();
+    public int ans[];
+    public int[] countSubTrees(int n, int[][] edges, String labels) {
+        for(int edge[] : edges){
+            int start = edge[0];
+            int end = edge[1];
+            graph.computeIfAbsent(start, v -> new ArrayList<>()).add(end);
+            graph.computeIfAbsent(end, v -> new ArrayList<>()).add(start);
+        }
+    
+        ans = new int[n];
+        boolean vis[] =  new boolean[n];
+        dfs(0, vis, labels);
+        return ans;
+    }
+
+    public int[] dfs(int node, boolean vis[], String str){
+
+        vis[node] = true;
+        char ch = str.charAt(node);
+        int set[] = new int[26];
+        set[ch-'a'] = 1;
+
+        if(graph.containsKey(node) == false) return set;
+
+        List<Integer> nbrs = graph.get(node);
+        
+        for(int child : nbrs){
+            if(vis[child] == false){
+                int childRes[] = dfs(child, vis, str);
+
+                for(int i = 0; i < 26; i++){
+                    set[i] += childRes[i];
+                }
+            }
+        }
+        ans[node] = set[ch-'a'];
+        return set;
+    }
+
+}
+
+
+
+
+
+
+
+
+

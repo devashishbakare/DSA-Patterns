@@ -1,0 +1,27 @@
+problem link : https://leetcode.com/problems/count-nodes-equal-to-average-of-subtree/description/
+
+code :
+
+class Solution {
+
+    public int ans;
+    public int averageOfSubtree(TreeNode root) {
+        ans = 0;
+        preOrder(root);
+        return ans; 
+    }
+    public int[] preOrder(TreeNode root){
+
+        if(root == null) return new int[]{0, 0};
+
+        int left[] = preOrder(root.left);
+        int right[] = preOrder(root.right);
+
+        int sum = left[0] + right[0] + root.val;
+        int childCount = left[1] + right[1] + 1;
+
+        if(sum / childCount == root.val ) ans++;
+        return new int[]{sum, childCount};
+
+    }
+}

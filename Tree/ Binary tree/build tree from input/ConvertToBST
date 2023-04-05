@@ -1,0 +1,79 @@
+link : https://leetcode.com/problems/convert-sorted-list-to-binary-search-tree/description/
+
+Note : pre.next = null, we have to terminate the list here, 
+	 : see how we have use the recurance calls, good to learn
+
+
+Code :
+
+Solution 1: 
+
+class Solution {
+
+    public TreeNode sortedListToBST(ListNode head) {
+        
+        if(head == null) return null;
+        if(head.next == null) return new TreeNode(head.val);
+        
+        ListNode slow = head, fast = head, pre = null;
+
+        while(fast != null && fast.next != null){
+            pre = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        //for next left half temination condition
+        pre.next = null;
+
+        TreeNode root = new TreeNode(slow.val);
+
+        root.left = sortedListToBST(head);
+        root.right = sortedListToBST(slow.next);
+
+        return root;
+
+    }
+}
+
+Solution 2 : 
+Note : first we calculated size, then use have use the merge sort like way
+	 : we go extream left which is our smallest value, come up creating each node
+	 : connected to left and right side of each call, keeping node++ each time
+	 
+private ListNode node;
+
+public TreeNode sortedListToBST(ListNode head) {
+	if(head == null){
+		return null;
+	}
+	
+	int size = 0;
+	ListNode runner = head;
+	node = head;
+	
+	while(runner != null){
+		runner = runner.next;
+		size ++;
+	}
+	
+	return inorderHelper(0, size - 1);
+}
+
+public TreeNode inorderHelper(int start, int end){
+	if(start > end){
+		return null;
+	}
+	
+	int mid = start + (end - start) / 2;
+	TreeNode left = inorderHelper(start, mid - 1);
+	
+	TreeNode treenode = new TreeNode(node.val);
+	treenode.left = left;
+	node = node.next;
+
+	TreeNode right = inorderHelper(mid + 1, end);
+	treenode.right = right;
+	
+	return treenode;
+}

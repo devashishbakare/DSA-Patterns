@@ -1,0 +1,52 @@
+Link: https://leetcode.com/problems/longest-cycle-in-a-graph/description/
+
+Logic : if we perform the TOPO sort/kahn algo for cycle detectoin, we know that
+	1) we only remove indegree to those who has no other dependencies
+	2) we have maintain the vis array so that, we know which edges don't have a cycle
+	3) Traverse to vis array and use while loop to traverse a cycle and count the size of cycle and, keep note we have to mark each vertex vis when using while loop 
+
+code : 
+
+class Solution {
+    public int longestCycle(int[] edges) {
+        int n = edges.length;
+         int inDegree[] = new int[n];
+        int vis[] = new int[n];
+        for(int edge : edges){
+            if(edge != -1){
+                inDegree[edge]++;
+            }
+        }
+        Queue<Integer> queue = new LinkedList<>();
+        for(int i = 0; i < n; i++){
+            if(inDegree[i] == 0){
+                queue.add(i);
+            }
+        }
+
+        while(queue.size() > 0){
+            int node = queue.remove();
+            vis[node] = 1;
+            int nbr = edges[node];
+            if(nbr != -1 && --inDegree[nbr] == 0) queue.add(nbr);
+        }
+        int ans = 0;
+        boolean flag = false;
+        for(int i = 0; i < n; i++){
+            int count = 0;
+            if(vis[i] == 0){
+                flag = true;
+                count++;
+                int nbr = edges[i];
+                while(nbr != i){
+                    vis[nbr] = 1;// important to mark this true
+                    count++;
+                    nbr = edges[nbr];
+                }
+            }
+            ans = Math.max(ans, count);
+        }
+        if(flag == true) return ans;
+        else return -1;
+    }
+}

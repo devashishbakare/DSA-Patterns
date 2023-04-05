@@ -1,0 +1,17 @@
+problem link : https://practice.geeksforgeeks.org/problems/e0059183c88ab680b2f73f7d809fb8056fe9dc43/1
+
+class Solution {
+    /*
+    to Agar ham har number ka modulo nikale or wo he modulo dusre number ka ho same than,
+    pair mil gaya or isko ham dictionary / hashmap me store kara lenge than n*(n-1)//2 pair honge we return this  */
+	static long countPairs(int n, int[] arr, int k) {
+	    int[] f = new int[k];
+		long ans=0;
+		for(int val : arr) {
+		    val%=k;
+		    ans+=(long)f[val];
+		    f[val]++;
+		}
+		return ans;
+	}
+}

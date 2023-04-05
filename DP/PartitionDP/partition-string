@@ -1,0 +1,57 @@
+problem link : https://leetcode.com/problems/restore-ip-addresses/description/
+
+code :
+
+class Solution {
+    public List<String> ans = new ArrayList<>();
+    private boolean valid(String s, int start, int length) {
+
+        if(length == 1) return true;
+        boolean flag = true;
+        if( s.charAt(start) == '0') flag = false;
+        String str = s.substring(start, start+length);
+        int val = Integer.parseInt(str);
+        if(str.length()>3) return false;
+        if(val > 255)flag = false;
+
+        return flag;
+    }
+    
+    private void helper(String s, int start, List<Integer> store) {
+        
+        final int remainingLength = s.length() - start;
+        final int remainingNumberOfIntegers = 4 - store.size();
+        
+        if (remainingLength > remainingNumberOfIntegers * 3 || 
+            remainingLength < remainingNumberOfIntegers) {
+            return;
+        }
+        
+        if (store.size() == 3) {
+            if (valid(s, start, remainingLength)) {
+                StringBuilder sb = new StringBuilder();
+                int last = 0;
+                for (Integer ind : store) {
+                    sb.append(s.substring(last, last + ind));
+                    last += ind;
+                    sb.append('.');
+                }
+                sb.append(s.substring(start));
+                ans.add(sb.toString());
+            }
+            return;
+        }
+        for (int i = 1; i <= 3 && i <= remainingLength; i++) {
+            store.add(i);
+            if (valid(s, start, i)) {
+                helper(s, start + i, store);
+            }
+            store.remove(store.size() - 1);
+        }
+    }
+    
+    public List<String> restoreIpAddresses(String s) {
+        helper(s, 0, new ArrayList<>());
+        return ans;   
+    }
+}

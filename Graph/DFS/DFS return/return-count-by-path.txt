@@ -1,0 +1,47 @@
+problem link : https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/description/
+
+In this kind of problmes, we need to return the count of edges/path so here we need only simple logic and rest of the thing is common template.
+
+There is same kind of problem we have face in constest where we have to return the no of person who will come from subtree to root node in car, and car can only has capasity of "k" members
+
+problem link : https://leetcode.com/contest/weekly-contest-320/problems/minimum-fuel-cost-to-report-to-the-capital/
+
+code :
+
+class Solution {
+    public Map<Integer, List<Integer>> graph = new HashMap<>(); 
+    public int minTime(int n, int[][] edges, List<Boolean> hasApple) {
+        
+        //creation of graph
+        for(int edge[] : edges){
+            int from = edge[0];
+            int to = edge[1];
+            graph.computeIfAbsent(from, v -> new ArrayList<>()).add(to);
+            graph.computeIfAbsent(to, v -> new ArrayList<>()).add(from);
+        }
+        
+        //we need to call dfs function 
+        boolean vis[] = new boolean[n];
+        return dfs(0, vis, 0, hasApple);
+    }
+
+    public int dfs(int src, boolean vis[], int time, List<Boolean> hasApple){
+
+        if(graph.containsKey(src) ==false) return 0;
+        int childTime = 0;
+        int totalTime = 0;
+        vis[src] = true;
+        List<Integer> nbrs = graph.get(src);
+        for(int nbr : nbrs){
+            if(vis[nbr] == false){
+                childTime = dfs(nbr, vis, time+1, hasApple);
+
+                if(childTime > 0 || hasApple.get(nbr) == true){
+                    totalTime += childTime + 2;
+                }
+            }
+        }
+        return totalTime;
+    }
+
+}

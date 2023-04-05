@@ -1,0 +1,29 @@
+problem link : https://leetcode.com/problems/count-vowel-strings-in-ranges/
+
+
+Note : we moved prefix sum index by 1
+Solution : 
+
+class Solution {
+    public int[] vowelStrings(String[] words, int[][] queries) {
+        
+        Set<Character> set = new HashSet<>(Arrays.asList('a', 'e', 'i', 'o', 'u'));
+        int n = words.length;
+        int prefix[] = new int[n+1];
+        int ans[] = new int[queries.length];
+        int k = 0;
+        for(String word : words){
+            int val = 0;
+            if(set.contains(word.charAt(0)) && set.contains(word.charAt(word.length()-1))) val = 1;
+            prefix[k+1] = prefix[k++] + val;
+        }
+        for(int i : prefix)
+            System.out.print(" *"+i);
+        
+        for(int i = 0; i < queries.length; i++){
+            int q[] = queries[i];
+            ans[i] = prefix[q[1] + 1] - prefix[q[0]];
+        }
+        return ans;
+    }
+}

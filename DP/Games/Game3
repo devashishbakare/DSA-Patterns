@@ -1,0 +1,44 @@
+Link : https://leetcode.com/problems/stone-game-iii/
+
+Note : 
+
+	Alice is taking first step, then dfs(i+1) will take by boy
+	out of which is the max one differece, that we need to return
+	we have to play on the side of alice only
+
+	for(int i = start ; i < Math.min(start+3, n); i++){
+            score += stone[i];
+            ans = Math.max(ans, score-dfs(stone, i+1, n, dp));
+     }
+
+
+Code :
+
+class Solution {
+   public String stoneGameIII(int[] stoneValue) {
+    int n = stoneValue.length;
+    int dp[] = new int[n];
+    Arrays.fill(dp, -1);
+    int score = dfs(stoneValue, 0, n, dp);
+    if (score > 0) {
+        return "Alice";
+    } else if (score < 0) {
+        return "Bob";
+    } else {
+        return "Tie";
+    }
+}
+    public int dfs(int stone[], int start, int n, int dp[]){
+        if(start == n) return 0;
+        if(dp[start] != -1) return dp[start];
+        int score = 0;
+        int ans = Integer.MIN_VALUE;
+        for(int i = start ; i < Math.min(start+3, n); i++){
+            score += stone[i];
+            ans = Math.max(ans, score-dfs(stone, i+1, n, dp));
+        }
+        dp[start] = ans;
+        return ans;
+    }
+
+}

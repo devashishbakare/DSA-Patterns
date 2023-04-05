@@ -1,0 +1,58 @@
+link : https://leetcode.com/problems/stone-game/description/class Solution {
+
+code : 
+
+Solution 1:
+
+class Solution {
+public boolean stoneGame(int[] piles) {
+
+ int n = piles.length;
+ int dp[][] = new int[n][n];   
+ int score = getMaxPiles(0, n-1, piles, dp);
+
+  if(score > 0) return true;
+  else return false;
+}
+
+  public int getMaxPiles(int start, int end, int piles[], int dp[][]){
+
+     if(start == piles.length || end < 0) return 0;
+
+     if(dp[start][end] > 0) return dp[start][end];
+	   int max = 0;
+	
+	   int first = piles[start] + getMaxPiles(start+1, end, piles, dp);
+	   int last = piles[end] + getMaxPiles(start, end-1, piles, dp);
+	
+	   max = Math.max(first, last);
+	   dp[start][end] = max;
+	  return max;
+	}
+}
+
+Solution 2 :
+
+class Solution {
+    public boolean stoneGame(int[] piles) {
+            int score = stoneGameHelper(piles, 0, piles.length - 1, 0, 0, true);
+            if(score > 0){
+                return true;
+            }
+            else return false;
+    }
+
+        private int stoneGameHelper(int[] piles, int start, int end, int aliceScore, int bobScore, boolean isAliceTurn) {
+            if (aliceScore > bobScore) {
+                return 1;
+            }
+            
+            if (isAliceTurn) {
+                return Math.max(stoneGameHelper(piles, start + 1, end, aliceScore + piles[start], bobScore, false) ,
+                    stoneGameHelper(piles, start, end - 1, aliceScore + piles[end], bobScore, false));
+            } else {
+                return Math.max(stoneGameHelper(piles, start + 1, end, aliceScore, bobScore + piles[start], true) ,
+                    stoneGameHelper(piles, start, end - 1, aliceScore, bobScore + piles[end], true));
+            }
+        }
+}

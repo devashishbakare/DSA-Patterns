@@ -7,6 +7,8 @@ Logic :
 2) merge will return merge list that assign to 2 
 3) call for 2, 3 
 
+Easy first approtch:
+
 class GfG
 {
     Node flatten(Node root){
@@ -17,12 +19,58 @@ class GfG
 	    
 	    while(nextHead != null){
 	        Node temp = nextHead.next;
-	        head.next = null;
-	        nextHead.next = null;
+	        
 	        head = merge(head, nextHead);
 	        nextHead = temp;
 	    }
+	    head.next = null;
+	    return head;
+    }
+    
+    Node merge(Node head1, Node head2){
+    
+        Node temp = new Node(0);
+        Node save = temp;
+        
+        while(head1 != null && head2 != null){
+            
+            if(head1.data < head2.data){
+                temp.bottom = head1;
+                temp = temp.bottom;
+                head1 = head1.bottom;
+                
+            }else{
+                temp.bottom = head2;
+                temp = temp.bottom;
+                head2 = head2.bottom;
+            }
+        
+        }
+
+        if(head1 != null) temp.bottom = head1;
+        else temp.bottom = head2;
+        
+        return save.bottom;
+    }
+}
+
+Approtch 2 :
+
+class GfG
+{
+    Node flatten(Node root){
+	    if(root == null || root.next == null) 
+	    return root;
 	    
+	    Node head = root, nextHead = root.next;
+	    
+	    while(nextHead != null){
+	        Node temp = nextHead.next;
+	        head = merge(head, nextHead);
+	        nextHead = temp;
+	    }
+        //we need to make the final list next as null -> coz there is not need to maintain next address,
+	    head.next = null;
 	    return head;
     }
     
