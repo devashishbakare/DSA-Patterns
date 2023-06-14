@@ -1,0 +1,34 @@
+link : https://leetcode.com/problems/minimum-absolute-difference-in-bst/
+
+Note : here see, how we have use prevNode
+
+code : 
+
+class Solution {
+    public int maxDiff = (int)1e9;
+    TreeNode prevNode = null;
+    public int getMinimumDifference(TreeNode root) {
+        
+        inOrder(root);
+        return maxDiff;
+    }
+    public void inOrder(TreeNode root){
+
+        if(root == null) return;
+        //as we know, if we tarverse in order to a bst then we have a sorted data;
+
+        inOrder(root.left);
+
+        if(prevNode != null){
+            maxDiff = Math.min(maxDiff, 
+            Math.abs(root.val-prevNode.val)
+            );
+        }
+
+        prevNode = root;
+
+        inOrder(root.right);
+
+
+    }
+}
