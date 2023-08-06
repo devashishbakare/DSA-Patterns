@@ -1,0 +1,52 @@
+Link : https://leetcode.com/problems/unique-binary-search-trees-ii/description/
+
+Editorial : https://www.youtube.com/watch?v=qOItdXuTZGo&t=1112s
+
+code : 
+class Solution {
+    
+    public List<TreeNode> generateTrees(int n) {
+
+        List<TreeNode> dp[][] = new ArrayList[n+1][n+1];
+        return getBST(1, n, dp);    
+    }
+
+    public List<TreeNode> getBST(int start, int end, List<TreeNode> dp[][]){
+
+        if(start > end){
+            List<TreeNode> list = new ArrayList<>();
+            list.add(null);
+            return list;
+        }
+        if(dp[start][end] != null) return dp[start][end];
+        List<TreeNode> ans = new ArrayList<>();
+        for(int root = start; root <= end; root++){
+            List<TreeNode> getLeft = getBST(start, root-1, dp);
+            List<TreeNode> getRight = getBST(root+1, end, dp);
+
+            for(TreeNode left : getLeft){
+                for(TreeNode right : getRight){
+                    TreeNode newNode = new TreeNode(root, left, right);
+                    ans.add(newNode);
+                }
+            }
+        }
+        return dp[start][end] = ans;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
