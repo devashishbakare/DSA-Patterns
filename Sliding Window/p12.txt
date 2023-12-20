@@ -1,0 +1,35 @@
+link : https://leetcode.com/problems/count-number-of-nice-subarrays/description/
+
+Till now we have solve problem with max / min length of the subarray, but this problem **we have to calculate the number of subarray with sum equal to k** 
+
+- Important : this solution only work for the positive values
+- if a length of y = x + k then we can calculate by x  =  y- k
+- so, we store the x value’s in map and then can get the count, see below
+
+
+class Solution {
+    public int numberOfSubarrays(int[] nums, int k) {
+        int size = nums.length;
+        int arr[] = new int[size];
+        int ind = 0;
+        for(int num :nums) arr[ind++] = num % 2 == 1 ? 1 : 0;
+
+        Map<Integer, Integer> map = new HashMap<>();
+        int ans = 0, sum = 0;
+        for(int right = 0; right < size; right++){
+            sum += arr[right];
+            // if you don't want to use this then put
+						// map.put(0, -1);
+						if(sum == k) ans++;
+						
+            int rem = sum - k;
+            if(map.containsKey(rem)){
+                ans += map.get(rem);
+            }
+            map.put(sum, map.getOrDefault(sum, 0)+1);
+        }
+        return ans;
+
+    }
+
+}

@@ -1,0 +1,40 @@
+problem : 
+
+Note :
+
+- first keep adding till K
+- then release until count > k
+- keep counting the answer
+
+https://leetcode.com/problems/maximize-the-confusion-of-an-exam/description/
+
+class Solution {
+    public int maxConsecutiveAnswers(String str, int k) {
+        Map<Character, Integer> map = new HashMap<>();
+        for(int i = 0; i < k; i++){
+            char ch = str.charAt(i);
+            map.put(ch, map.getOrDefault(ch, 0)+1);
+        }
+        int ans = k, left = 0;
+        for(int right = k; right < str.length(); right++){
+
+            char ch = str.charAt(right);
+            map.put(ch, map.getOrDefault(ch, 0)+1);
+
+            while(Math.min(map.getOrDefault('T', 0), map.getOrDefault('F', 0)) > k){
+                char c = str.charAt(left);
+                if(map.containsKey(c)){
+                    if(map.get(c) == 1){
+                        map.remove(c);
+                    }else{
+                        map.put(c, map.get(c)-1);
+                    }
+                }
+                left++;
+            }
+            int len = right-left+1;
+            ans = Math.max(len, ans);
+        }
+        return ans;
+    }
+}

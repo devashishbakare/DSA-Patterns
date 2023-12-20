@@ -1,0 +1,36 @@
+problem 3 : 
+
+Note : 
+
+- this problem is much similar to the previous one but here we are keeping the reminder in map not a sum
+- if reminder is negative you have to do make that remainder a positive one
+
+see below example for more understanding
+
+youtube vedio explain : https://www.youtube.com/watch?v=GrV3MTR_Uk0
+
+formula photo : https://www.notion.so/Sliding-Window-151a8cab118748f885825c7eb7ce4282?pvs=4#7af6f83386bd4a348b8ddea2c734cbf1
+
+Link ; https://www.geeksforgeeks.org/problems/longest-subarray-with-sum-divisible-by-k1259/1?page=1&category=sliding-window&sortBy=submissions
+
+int longSubarrWthSumDivByK(int a[], int n, int k)
+    {
+        Map<Integer, Integer> store = new HashMap<>();
+        int left = 0;
+        int ans = 0;
+        int size = a.length, sum = 0;
+        for(int i = 0; i < size; i++){
+            sum += a[i];
+            if(sum % k == 0)  ans = Math.max(ans, i+1);
+            int rem = sum % k;
+            if(rem < 0) rem += k;
+            if(store.containsKey(rem)){
+                int index = store.get(rem);
+                ans = Math.max(ans, i-index);
+            }else{
+                store.put(rem, i);
+            }
+        }
+        return ans;
+       
+    }

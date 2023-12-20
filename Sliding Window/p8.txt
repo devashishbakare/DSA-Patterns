@@ -1,0 +1,32 @@
+Sliding window but using Map only
+
+- In this kind of problems we have to look back whether this sum will be obtain before or not
+- we have use the map to store the past results, see below example
+- we store the sum of every value with there index
+- we can look back and get the index of specific sum
+
+
+https://www.geeksforgeeks.org/problems/largest-subarray-of-0s-and-1s/1?page=1&category=sliding-window&sortBy=submissions
+
+
+int maxLen(int[] arr, int N)
+    {
+        Map<Integer, Integer> store = new HashMap<>();
+        int sum = 0, len = 0;
+        store.put(0, -1);
+        for(int i = 0; i < arr.length; i++){
+            
+            if( arr[i] == 0){
+                sum -= 1;
+            }else{
+                sum += 1;
+            }
+            
+            if(store.containsKey(sum)){
+                len = Math.max(len, i-store.get(sum));   
+            }else{
+                store.put(sum, i);
+            }
+        }
+        return len;
+    }

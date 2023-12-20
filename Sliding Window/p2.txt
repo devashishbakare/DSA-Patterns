@@ -1,0 +1,61 @@
+link ; https://www.geeksforgeeks.org/maximum-mex-from-all-subarrays-of-length-k/
+
+Notes : 
+
+Note 
+
+- *The **MEX** is the **[smallest positive integer that is not present in the array](https://www.geeksforgeeks.org/find-the-smallest-positive-number-missing-from-an-unsorted-array/)**.*
+
+***Input:***
+
+*arr[] = {3, 2, 1, 4}, K = 2*
+
+***Output:***
+
+*3*
+
+***Explanation:***
+
+*All subarrays having length 2 are {3, 2}, {2, 1}, {1, 4}.*
+
+*In subarray {3, 2}, the smallest positive integer which is not present is 1.*
+
+*In subarray {2, 1}, the smallest positive integer which is not present is 3.*
+
+*In subarray {1, 4}, the smallest positive integer which is not present is 2.*
+
+Important to note :
+
+here we can use the TreeSet because we get the always data sorted in each operation
+
+- we have to add 1 → N+1 element in treeset
+- remove each element from treeset from window
+- who ever in the peek will be the min element
+- we have to add the arr[left] again in treeset because, arr[left] may be the MEX element of next window
+
+code :
+	static void maxMEX(int arr[], int N, int k)
+	{
+		TreeSet<Integer> s = new TreeSet<>(); 
+		for(int l=1;l<=N+1;l++) s.add(l);
+		
+		int i=0;
+		int j=0;
+	  int mex = 0;
+		
+		while(j < N){
+			if(s.contains(arr[j])){
+				s.remove(arr[j]);
+			}
+			int windowSize = j-i+1;
+			
+			if(windowSize < k){
+					j++;
+			}else if(windowSize == k){
+					mex = s.pollFirst();
+					s.add(arr[i]);
+					i++;
+					j++;
+				}
+		}
+}

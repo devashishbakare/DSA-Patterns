@@ -1,0 +1,38 @@
+Pattern :  Variable / Dynamic sliding window
+Problem 2 : variable window with prefix sum
+Note : this problem will work on the positive value only, **not for negative**, for negative look into sliding window the map problem 2 :
+Link : https://www.geeksforgeeks.org/problems/longest-sub-array-with-sum-k0809/1?page=1&category=sliding-window&sortBy=submissions
+
+
+code : 
+class Solution{
+    public static int lenOfLongSubarr (int nums[], int N, int k) {
+        
+        long pre[] = new long[N];
+        pre[0] = nums[0];
+       
+			  for(int i = 1; i < N; i++){
+            pre[i] = pre[i-1] + nums[i];
+        }
+
+        int left = 0;
+        int ans = 0;
+        for(int right = 0; right < N; right++){
+            long sum = pre[right];
+            if(sum == k){
+                ans = Math.max(right+1, ans);
+            }
+            while(left < N && sum > k){
+                sum -= pre[left];
+                left++;
+                if(sum == k){
+                    int len = right-left+1;
+                    ans = Math.max(ans, len);
+                }
+            }
+            
+        }
+        return ans;
+        
+    }
+}

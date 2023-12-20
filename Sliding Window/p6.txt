@@ -1,0 +1,57 @@
+Problem 3 : Variable window with Acquire and release technique
+
+https://www.geeksforgeeks.org/problems/smallest-distant-window3132/1?page=1&category=sliding-window&sortBy=submissions
+
+**Note** : 
+
+- first we need acquire until unique count is match
+- then reduce / release from left, until unique count is not change
+- when unique count change then we start acquiring again
+
+
+    public int findSubString( String str) {
+      
+      Map<Character, Integer> map = new HashMap<>();
+      int matchCount = 0, size = str.length();
+      Set<Character> set = new HashSet<>();
+      for(int i = 0; i < str.length(); i++) set.add(str.charAt(i));
+      int uniqueCount = set.size();
+      int maxLen = str.length();
+      int left = 0;
+      
+      for(int right = 0; right < size; right++){
+          
+          char ch = str.charAt(right);
+          
+          if(matchCount < uniqueCount){
+              
+              if(map.containsKey(ch) == false){
+                  map.put(ch, 1);
+                  matchCount++;
+              }else{
+                  map.put(ch, map.get(ch)+1);
+              }
+          }
+          if(matchCount == uniqueCount){
+              
+              maxLen = Math.min(maxLen, right-left+1);
+              
+              while(left < size && matchCount == uniqueCount){
+                  
+                  char leftChar = str.charAt(left);
+                  if(map.get(leftChar) == 1){
+                      matchCount--;
+                      map.remove(leftChar);
+                      left++;
+                      break;
+                  }else{
+                      map.put(leftChar, map.get(leftChar)-1);
+                      left++;
+                      maxLen = Math.min(maxLen, right-left+1);
+                  }
+                  
+              }
+          }     
+      }
+      return maxLen;
+  }
