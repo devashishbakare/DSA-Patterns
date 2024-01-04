@@ -1,0 +1,39 @@
+link : https://www.codingninjas.com/studio/problems/rotation_7449070?utm_source=striver&utm_medium=website&utm_campaign=a_zcoursetuf&leftPanelTabValue=PROBLEM
+
+Note : 
+
+- we have to find out the mininum value and its index, so we can tell, how many times we have rotated it
+
+code : 
+
+public class Solution {
+    public static int findKRotation(int []arr){
+        int size = arr.length;
+        int low = 0, high = size-1;
+
+        int minValue = (int)1e9+1;
+        int minIndex = -1;
+
+        while(low <= high){
+            int mid = low + (high-low)/2;
+            
+            if(arr[low] <= arr[mid]){
+                // left part is sorted
+                if(arr[low] < minValue){
+                    minValue = arr[low];
+                    minIndex = low;
+                }
+                low = mid+1;
+            }else{
+                // right part is sorted
+                if(minValue > arr[mid]){
+                    minValue = arr[mid];
+                    minIndex = mid;
+                }
+                high = mid-1;
+            }
+
+        }
+        return minIndex == -1 ? 0 : minIndex;
+    }
+}

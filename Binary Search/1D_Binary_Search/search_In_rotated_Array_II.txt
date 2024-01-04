@@ -1,0 +1,48 @@
+link : https://leetcode.com/problems/search-in-rotated-sorted-array-ii/description/
+
+Note : what is different in a this problem?
+        - elemen are sorted and having a dublicate, we can't compare the low, mid and high
+        example : 
+        arr = { 3, 4, 5, 3, 3, 3, 3}
+        low = 3, mid = 3, high = 3, 
+        - how can we compare which half is sorted, so we have to add one condtion here
+        if(nums[low] == nums[mid] && nums[mid] == nums[high]){
+                low++;
+                high--;
+                continue;
+         }
+         - just shrink the search space, until we can compare
+
+code : 
+class Solution {
+    public boolean search(int[] nums, int target) {
+        int size = nums.length;
+        int low = 0, high = size-1;
+        
+        while(low <= high){
+            int mid = low + (high-low)/2;
+            if(nums[mid] == target) return true;
+            if(nums[low] == nums[mid] && nums[mid] == nums[high]){
+                low++;
+                high--;
+                continue;
+            }
+            if(nums[mid] <= nums[high]){
+                // right side is sorted
+                if(target >= nums[mid] && target <= nums[high]){
+                    low = mid+1;
+                }else{
+                    high = mid-1;
+                }
+            }else{
+                // left side is sorted
+                if(target >= nums[low] && target <= nums[mid]){
+                   high = mid-1;
+                }else{
+                   low = mid+1;
+                }
+            }
+        }
+        return false;
+    }
+}

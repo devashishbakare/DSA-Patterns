@@ -1,3 +1,24 @@
+upperBound Striver solution : 
+Note : -1 is important
+int ub = upperBound(arr, n, k)-1;
+public static int upperBound(ArrayList<Integer> arr, int n, int x) {
+        int low = 0, high = n - 1;
+        int ans = n;
+
+        while (low <= high) {
+            int mid = (low + high) / 2;
+	           // find next index of last occurences
+            if (arr.get(mid) > x) {
+                ans = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1; // look on the right
+            }
+        }
+        return ans;
+  }
+
+
 public class Upper_Bound_Java {
 
 	public static void main(String[] args) {

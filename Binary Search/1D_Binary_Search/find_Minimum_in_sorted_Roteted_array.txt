@@ -1,0 +1,27 @@
+link : https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/description/
+
+Note : 
+- we need to figure out the sorted part and take the minimum out of it and now look for not sorted part
+
+code : 
+
+class Solution {
+    public int findMin(int[] nums) {
+        int size = nums.length;
+        int low = 0, high = size-1;
+        int minValue = 5001;
+        while(low <= high){
+            int mid = low + (high-low)/2;
+            if(nums[low] <= nums[mid]){
+                // left part is sorted
+                minValue = Math.min(minValue, nums[low]);
+                low = mid+1;
+            }else{
+                // right part is sorted
+                minValue = Math.min(minValue, nums[mid]);
+                high = mid-1;
+            }
+        }
+        return minValue;
+    }
+}

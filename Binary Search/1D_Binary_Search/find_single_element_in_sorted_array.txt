@@ -1,0 +1,63 @@
+link : https://leetcode.com/problems/single-element-in-a-sorted-array/description/
+
+Most important : 
+- if you dealing with mid-1 and mid + 1 then cover 0th and nth case should be handle before
+- then start low = 1 and high = size-2; as used in below code
+
+note : 
+
+- if there is pair then possition of elements will be like this
+index ->  even odd even odd even odd even odd even  
+            1   1   2    2   3    4    4   5   5
+- condition you need to understand 
+
+    if(nums[mid] == nums[mid-1]){
+        //same element found in previous index and mid is odd then cut left part 
+        // else cut the right part
+    }
+    else if(nums[mid] == nums[mid+1]){
+        // same element found in next index and mid found in odd index then cut the righ part
+        // else cut the right part 
+    }
+    
+code : 
+class Solution {
+    public int singleNonDuplicate(int[] nums) {
+        int size = nums.length;
+
+        // adding this condition due to avoid case where we need to check
+        // mid-1 == mid || mid == mid+1, basically cutting the corners
+
+        if(size == 1) return nums[0];
+        if(nums[0] != nums[1]) return nums[0];
+        if(nums[size-1] != nums[size-2]) return nums[size-1];
+
+
+        int low = 1, high = size-2;
+
+        while(low <= high){
+            int mid = low + (high-low)/2;
+            if(nums[mid] != nums[mid-1] && nums[mid] != nums[mid+1]){
+                return nums[mid];
+            } 
+            else if(nums[mid] == nums[mid-1]){
+                if(mid % 2 == 1){
+                    // if mid is odd then cut the left part
+                    low = mid+1;
+                }else{
+                    high = mid-1;
+                }
+            }else if(nums[mid] == nums[mid+1]){
+                if(mid % 2 == 1){
+                    // if mid is odd the cut the right part
+                    high = mid-1;
+                }else{
+                    low = mid+1;
+                }
+
+            }
+        }
+        return -1;
+    }
+}
+
