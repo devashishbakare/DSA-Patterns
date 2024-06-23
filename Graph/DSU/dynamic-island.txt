@@ -7,7 +7,7 @@ Learning :
 we can traverse through the grid/matrix in liniar way 
 if you waant to acess matrix[2][1], m = 3; n = 3
 Liniar way = row(2) * number of column(n) + col(1) -> 7
-fomula -> row * n + col;
+fomula -> row * n(number of column) + col;
 
 we need to create a DSU of M*N length;
 
