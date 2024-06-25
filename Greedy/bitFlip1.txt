@@ -1,0 +1,23 @@
+problem : https://leetcode.com/problems/minimum-operations-to-make-binary-array-elements-equal-to-one-i/description/
+
+editorial : https://www.youtube.com/watch?v=oe9HR-cLAHo&t=802s
+
+why greedy : 
+due to it has mension you can't keep the 0 in array, when ever you see a 0 then you have to flip to 1 so straight forward
+
+code : 
+class Solution {
+    public int minOperations(int[] nums) {
+        int res = 0;
+        for(int i = 0; i <= nums.length-3; i++){
+            if(nums[i] == 1) continue;
+            for(int j = i; j < i + 3; j++){
+                nums[j] = nums[j] ^ 1;
+            }
+            res++;
+        }
+        int n = nums.length;
+        if(nums[n-1] == 0 || nums[n-2] == 0) return -1;
+        return res;
+    }
+}
