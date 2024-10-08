@@ -81,3 +81,62 @@ class Trie {
         
     }
 }
+
+
+// this is also a raw way to implement it 
+
+public class Trie {
+
+    public static class TreeNode {
+        public TreeNode children[];
+        public boolean isEnd;
+
+        public TreeNode(){
+            children = new TreeNode[26];
+            isEnd = false;
+        }
+    }
+
+
+    public static TreeNode root;
+
+    Trie() {
+        root = new TreeNode();
+    }
+
+
+    //Inserts a word into the trie
+
+    public static void insert(String word) {
+        TreeNode node = root;
+        for(int i = 0; i < word.length(); i++){
+            char ch = word.charAt(i);
+            int ind = ch-'a';
+            if(node.children[ind] == null){
+                node.children[ind] = new TreeNode();
+            }
+            node = node.children[ind];
+        }
+        node.isEnd = true;
+    }
+
+    public static boolean search(String word) {
+        TreeNode node = root;
+        for(char ch : word.toCharArray()){
+            int ind = ch-'a';
+            if(node.children[ind] == null) return false;
+            node = node.children[ind];
+        }
+        return node.isEnd;
+    }
+
+    public static boolean startsWith(String prefix) {
+        TreeNode node = root;
+        for(char ch : prefix.toCharArray()){
+            int ind = ch-'a';
+            if(node.children[ind] == null) return false;
+            node = node.children[ind];
+        }
+        return true;
+    }
+}

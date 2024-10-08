@@ -115,3 +115,82 @@ public class Trie {
     }
 
 }
+
+// this is also another raw to do it
+import java.util.* ;
+import java.io.*; 
+
+public class Trie {
+
+    public static TreeNode root;
+
+    public static class TreeNode {
+        public TreeNode children[];
+        public int prefixCount;
+        public int endCount;
+
+        public TreeNode() {
+            children = new TreeNode[26];
+            prefixCount = 0;
+            endCount = 0;
+        }
+    }
+
+    public Trie() {
+        root = new TreeNode();
+    }
+
+    
+    public void insert(String word) {
+        TreeNode node = root;
+        for (char ch : word.toCharArray()) {
+            int ind = ch - 'a';
+            if (node.children[ind] == null) {
+                node.children[ind] = new TreeNode();
+                //not present then add a new node
+            }
+            node = node.children[ind];
+            node.prefixCount++; 
+            //here above you need to increment count to added node not the current Node
+        }
+        node.endCount++; 
+    }
+
+    
+    public int countWordsEqualTo(String word) {
+        TreeNode node = root;
+        for (char ch : word.toCharArray()) {
+            int ind = ch - 'a';
+            if (node.children[ind] == null) {
+                return 0;
+            }
+            node = node.children[ind];
+        }
+        return node.endCount;
+    }
+
+    
+    public int countWordsStartingWith(String prefix) {
+        TreeNode node = root;
+        for (char ch : prefix.toCharArray()) {
+            int ind = ch - 'a';
+            if (node.children[ind] == null) {
+                return 0;
+            }
+            node = node.children[ind];
+        }
+        return node.prefixCount;
+    }
+    // here don't put null on past node, as there multiple other source/reference store in one of 25 spaces
+    // while deleting make sure prefix count reduct from after getting the next node reference not the current one, 
+    public void erase(String word) {
+        TreeNode node = root;
+        for (char ch : word.toCharArray()) {
+            int ind = ch - 'a';
+            if (node.children[ind] == null) return; 
+            node = node.children[ind];
+            node.prefixCount--; 
+        }
+        node.endCount--; 
+    }
+}
